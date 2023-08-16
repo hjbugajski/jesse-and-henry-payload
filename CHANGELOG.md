@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.0.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v2.4.2...v3.0.0) (2023-08-16)
+
+### ⚠ BREAKING CHANGES
+
+- rename HeroTitle to Hero
+
+### refactor
+
+- rename HeroTitle to Hero ([843c829](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/843c829efd104cd8bd01e6fc023a6a17fd6cc702))
+
 ## [2.4.2](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v2.4.1...v2.4.2) (2023-08-10)
 
 ## [2.4.1](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v2.4.0...v2.4.1) (2023-07-15)
