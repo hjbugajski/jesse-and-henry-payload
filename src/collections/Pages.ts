@@ -2,7 +2,7 @@ import { CollectionConfig } from 'payload/types';
 
 import { isAdmin } from '../access';
 import Content from '../blocks/Content';
-import { HeroTitle } from '../blocks/HeroTitle';
+import { Hero } from '../blocks/Hero';
 import { useSlug } from '../hooks/useSlug';
 
 const Pages: CollectionConfig = {
@@ -59,7 +59,7 @@ const Pages: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content, HeroTitle],
+              blocks: [Content, Hero],
             },
           ],
         },

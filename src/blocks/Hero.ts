@@ -1,7 +1,7 @@
 import { Block } from 'payload/types';
 
-export const HeroTitle: Block = {
-  slug: 'heroTitle',
+export const Hero: Block = {
+  slug: 'hero',
   fields: [
     {
       name: 'titleOne',
