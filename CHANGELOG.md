@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.1.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v3.0.0...v3.1.0) (2023-08-30)
+
+### Features
+
+- **blocks/Content:** add width field ([da1ddab](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/da1ddabc0403e4dc967fe0661e7493a401bd259d))
+- **blocks:** add ButtonLink ([13924f4](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/13924f4880cd0ec3970b281ff4b6d0bccb3832b4))
+- **blocks:** add Section ([fabb62d](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/fabb62d685807758260d72e322267fc03c95d66a))
+- **fields:** add link ([0b4d633](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/0b4d633516932c18828b36436c930014b290efef))
+- **globals:** add NavMenu ([39b92bd](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/39b92bd30cb025bd316d3bedc4a3739a1a8fde14))
+
 ## [3.0.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v2.4.2...v3.0.0) (2023-08-16)
 
 ### ⚠ BREAKING CHANGES
