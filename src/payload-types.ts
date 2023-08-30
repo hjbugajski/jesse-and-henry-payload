@@ -15,7 +15,9 @@ export interface Config {
     sides: Side;
     users: User;
   };
-  globals: {};
+  globals: {
+    navMenu: NavMenu;
+  };
 }
 export interface Guest {
   id: string;
@@ -78,6 +80,7 @@ export interface Page {
   content: {
     layout?: (
       | {
+          width?: 'full' | 'max';
           content: {
             [k: string]: unknown;
           }[];
@@ -92,6 +95,39 @@ export interface Page {
           id?: string;
           blockName?: string;
           blockType: 'hero';
+        }
+      | {
+          id: string;
+          title: string;
+          description?: {
+            [k: string]: unknown;
+          }[];
+          border: 'none' | 'left' | 'right';
+          layout?: (
+            | {
+                width?: 'full' | 'max';
+                content: {
+                  [k: string]: unknown;
+                }[];
+                id?: string;
+                blockName?: string;
+                blockType: 'content';
+              }
+            | {
+                icon?: string;
+                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+                type: 'reference' | 'external';
+                newTab?: boolean;
+                text: string;
+                reference: string | Page;
+                url: string;
+                id?: string;
+                blockName?: string;
+                blockType: 'buttonLink';
+              }
+          )[];
+          blockName?: string;
+          blockType: 'section';
         }
     )[];
   };
@@ -112,4 +148,17 @@ export interface User {
   loginAttempts?: number;
   lockUntil?: string;
   password?: string;
+}
+export interface NavMenu {
+  id: string;
+  links?: {
+    type: 'reference' | 'external';
+    newTab?: boolean;
+    text: string;
+    reference: string | Page;
+    url: string;
+    id?: string;
+  }[];
+  updatedAt?: string;
+  createdAt?: string;
 }
