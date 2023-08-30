@@ -80,6 +80,7 @@ export interface Page {
   content: {
     layout?: (
       | {
+          width?: 'full' | 'max';
           content: {
             [k: string]: unknown;
           }[];
