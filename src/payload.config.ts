@@ -8,6 +8,7 @@ import Parties from './collections/Parties';
 import Relations from './collections/Relations';
 import Sides from './collections/Sides';
 import Users from './collections/Users';
+import NavMenu from './globals/NavMenu';
 
 export default buildConfig({
   admin: {
@@ -15,6 +16,7 @@ export default buildConfig({
     css: path.resolve(__dirname, 'custom/styles/index.scss'),
   },
   collections: [Guests, Pages, Parties, Relations, Sides, Users],
+  globals: [NavMenu],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
