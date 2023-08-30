@@ -3,12 +3,16 @@ import { CollectionConfig } from 'payload/types';
 import { isAdmin } from '../access';
 import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
+import { Section } from '../blocks/Section';
 import { useSlug } from '../hooks/useSlug';
 
 const Pages: CollectionConfig = {
   slug: 'pages',
   versions: {
     drafts: true,
+  },
+  admin: {
+    useAsTitle: 'name',
   },
   access: {
     create: isAdmin,
@@ -59,7 +63,7 @@ const Pages: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content, Hero],
+              blocks: [Content, Hero, Section],
             },
           ],
         },

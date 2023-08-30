@@ -96,6 +96,39 @@ export interface Page {
           blockName?: string;
           blockType: 'hero';
         }
+      | {
+          id: string;
+          title: string;
+          description?: {
+            [k: string]: unknown;
+          }[];
+          border: 'none' | 'left' | 'right';
+          layout?: (
+            | {
+                width?: 'full' | 'max';
+                content: {
+                  [k: string]: unknown;
+                }[];
+                id?: string;
+                blockName?: string;
+                blockType: 'content';
+              }
+            | {
+                icon?: string;
+                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+                type: 'reference' | 'external';
+                newTab?: boolean;
+                text: string;
+                reference: string | Page;
+                url: string;
+                id?: string;
+                blockName?: string;
+                blockType: 'buttonLink';
+              }
+          )[];
+          blockName?: string;
+          blockType: 'section';
+        }
     )[];
   };
   updatedAt: string;
