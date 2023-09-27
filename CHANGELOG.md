@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.0.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v3.1.1...v4.0.0) (2023-09-27)
+
+### Features
+
+- **access:** add isAuthed ([a81669a](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/a81669a67fd02a7fa35742313f553588a305db81))
+- add Alert block ([f62161a](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/f62161a863b8caca6fbd5fb3cedff311e03b87f2))
+- add ProtectedPages collection ([97acc23](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/97acc2310f1bfd60bc4e50bf3ad9dcb899404d73))
+- **fields:** add color, width, and richText/venue ([e444246](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/e4442465a08772c16f8f2e2247f375f4fce8bdad))
+- generate graphql schema ([5f0102f](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/5f0102f7968935f5dcc6a3cdfdc9a851e8e0cfc2))
+- update and add fields to blocks, update link ([c4761da](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/c4761da3c2f9a256ac9b24ce54695cbc9cdc478e))
+
 ## [3.1.1](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v3.1.0...v3.1.1) (2023-09-26)
 
 ## [3.1.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v3.0.0...v3.1.0) (2023-08-30)

@@ -1,31 +1,24 @@
 import { CollectionConfig } from 'payload/types';
 
-import { isAdmin } from '../access';
+import Pages from './Pages';
+import { isAuthedFieldLevel } from '../access';
 import { Alert } from '../blocks/Alert';
 import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
 import { Section } from '../blocks/Section';
-import { useSlug } from '../hooks/useSlug';
+import { useProtectedSlug } from '../hooks/useSlug';
 
-const Pages: CollectionConfig = {
-  slug: 'pages',
-  versions: {
-    drafts: true,
-  },
-  admin: {
-    useAsTitle: 'name',
-  },
-  access: {
-    create: isAdmin,
-    read: () => true,
-    update: isAdmin,
-    delete: isAdmin,
-  },
+const ProtectedPages: CollectionConfig = {
+  ...Pages,
+  slug: 'protected-pages',
   fields: [
     {
       name: 'name',
       type: 'text',
       required: true,
+      access: {
+        read: isAuthedFieldLevel,
+      },
     },
     {
       name: 'slug',
@@ -35,7 +28,7 @@ const Pages: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [useSlug],
+        beforeValidate: [useProtectedSlug],
       },
     },
     {
@@ -49,11 +42,17 @@ const Pages: CollectionConfig = {
               name: 'title',
               type: 'text',
               required: true,
+              access: {
+                read: isAuthedFieldLevel,
+              },
             },
             {
               name: 'description',
               type: 'textarea',
               required: true,
+              access: {
+                read: isAuthedFieldLevel,
+              },
             },
           ],
         },
@@ -65,6 +64,9 @@ const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               blocks: [Alert, Content, Hero, Section],
+              access: {
+                read: isAuthedFieldLevel,
+              },
             },
           ],
         },
@@ -73,4 +75,4 @@ const Pages: CollectionConfig = {
   ],
 };
 
-export default Pages;
+export default ProtectedPages;

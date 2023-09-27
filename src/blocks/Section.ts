@@ -1,7 +1,9 @@
 import { Block } from 'payload/types';
 
+import { Alert } from './Alert';
 import ButtonLink from './ButtonLink';
 import Content from './Content';
+import venue from '../fields/richText/venue';
 
 export const Section: Block = {
   slug: 'section',
@@ -20,6 +22,25 @@ export const Section: Block = {
     {
       name: 'description',
       type: 'richText',
+      admin: {
+        elements: [
+          'h1',
+          'h2',
+          'h3',
+          'h4',
+          'h5',
+          'h6',
+          'indent',
+          'textAlign',
+          'ol',
+          'ul',
+          'blockquote',
+          'link',
+          'relationship',
+          'upload',
+          venue,
+        ],
+      },
     },
     {
       name: 'border',
@@ -44,7 +65,7 @@ export const Section: Block = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Content, ButtonLink],
+      blocks: [Alert, ButtonLink, Content],
     },
   ],
 };
