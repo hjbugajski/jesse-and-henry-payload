@@ -1,6 +1,7 @@
 import { CollectionConfig } from 'payload/types';
 
 import { isAdmin } from '../access';
+import { Alert } from '../blocks/Alert';
 import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
 import { Section } from '../blocks/Section';
@@ -63,7 +64,7 @@ const Pages: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content, Hero, Section],
+              blocks: [Alert, Content, Hero, Section],
             },
           ],
         },

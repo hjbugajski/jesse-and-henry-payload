@@ -1,5 +1,6 @@
 import { Block } from 'payload/types';
 
+import { Alert } from './Alert';
 import ButtonLink from './ButtonLink';
 import Content from './Content';
 import venue from '../fields/richText/venue';
@@ -64,7 +65,7 @@ export const Section: Block = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Content, ButtonLink],
+      blocks: [Alert, ButtonLink, Content],
     },
   ],
 };

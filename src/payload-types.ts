@@ -80,6 +80,26 @@ export interface Page {
   content: {
     layout?: (
       | {
+          title: string;
+          icon: string;
+          content: {
+            [k: string]: unknown;
+          }[];
+          color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+          link: {
+            type: 'reference' | 'external';
+            newTab?: boolean;
+            text: string;
+            reference: string | Page;
+            url: string;
+            icon?: string;
+          };
+          width?: 'full' | 'max';
+          id?: string;
+          blockName?: string;
+          blockType: 'alert';
+        }
+      | {
           width?: 'full' | 'max';
           content: {
             [k: string]: unknown;
@@ -105,13 +125,24 @@ export interface Page {
           border: 'none' | 'left' | 'right';
           layout?: (
             | {
-                width?: 'full' | 'max';
+                title: string;
+                icon: string;
                 content: {
                   [k: string]: unknown;
                 }[];
+                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+                link: {
+                  type: 'reference' | 'external';
+                  newTab?: boolean;
+                  text: string;
+                  reference: string | Page;
+                  url: string;
+                  icon?: string;
+                };
+                width?: 'full' | 'max';
                 id?: string;
                 blockName?: string;
-                blockType: 'content';
+                blockType: 'alert';
               }
             | {
                 icon?: string;
@@ -127,6 +158,15 @@ export interface Page {
                 id?: string;
                 blockName?: string;
                 blockType: 'buttonLink';
+              }
+            | {
+                width?: 'full' | 'max';
+                content: {
+                  [k: string]: unknown;
+                }[];
+                id?: string;
+                blockName?: string;
+                blockType: 'content';
               }
           )[];
           blockName?: string;
