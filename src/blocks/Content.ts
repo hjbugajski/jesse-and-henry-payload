@@ -1,25 +1,34 @@
 import { Block } from 'payload/types';
 
+import venue from '../fields/richText/venue';
+import { width } from '../fields/width';
+
 const Content: Block = {
   slug: 'content',
   fields: [
-    {
-      name: 'width',
-      type: 'select',
-      options: [
-        {
-          label: 'Full Width',
-          value: 'full',
-        },
-        {
-          label: 'Max Width',
-          value: 'max',
-        },
-      ],
-    },
+    width,
     {
       name: 'content',
       type: 'richText',
+      admin: {
+        elements: [
+          'h1',
+          'h2',
+          'h3',
+          'h4',
+          'h5',
+          'h6',
+          'indent',
+          'textAlign',
+          'ol',
+          'ul',
+          'blockquote',
+          'link',
+          'relationship',
+          'upload',
+          venue,
+        ],
+      },
       required: true,
     },
   ],

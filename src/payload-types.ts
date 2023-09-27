@@ -116,11 +116,14 @@ export interface Page {
             | {
                 icon?: string;
                 color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                type: 'reference' | 'external';
-                newTab?: boolean;
-                text: string;
-                reference: string | Page;
-                url: string;
+                link: {
+                  type: 'reference' | 'external';
+                  newTab?: boolean;
+                  text: string;
+                  reference: string | Page;
+                  url: string;
+                  icon?: string;
+                };
                 id?: string;
                 blockName?: string;
                 blockType: 'buttonLink';
@@ -152,11 +155,14 @@ export interface User {
 export interface NavMenu {
   id: string;
   links?: {
-    type: 'reference' | 'external';
-    newTab?: boolean;
-    text: string;
-    reference: string | Page;
-    url: string;
+    link: {
+      type: 'reference' | 'external';
+      newTab?: boolean;
+      text: string;
+      reference: string | Page;
+      url: string;
+      icon?: string;
+    };
     id?: string;
   }[];
   updatedAt?: string;

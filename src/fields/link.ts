@@ -1,7 +1,8 @@
 import { Field } from 'payload/types';
 
 export const link: Field = {
-  type: 'row',
+  name: 'link',
+  type: 'group',
   fields: [
     {
       name: 'type',
@@ -61,6 +62,10 @@ export const link: Field = {
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'external',
       },
+    },
+    {
+      name: 'icon',
+      type: 'text',
     },
   ],
 };
