@@ -11,7 +11,6 @@ export interface Config {
     guests: Guest;
     pages: Page;
     parties: Party;
-    'protected-pages': ProtectedPage;
     relations: Relation;
     sides: Side;
     users: User;
@@ -72,8 +71,9 @@ export interface Relation {
 }
 export interface Page {
   id: string;
-  name: string;
   slug?: string;
+  protected?: boolean;
+  name: string;
   meta: {
     title: string;
     description: string;
@@ -91,15 +91,7 @@ export interface Page {
             type: 'reference' | 'external';
             newTab?: boolean;
             text: string;
-            reference:
-              | {
-                  value: string | Page;
-                  relationTo: 'pages';
-                }
-              | {
-                  value: string | ProtectedPage;
-                  relationTo: 'protected-pages';
-                };
+            reference: string | Page;
             url: string;
             icon?: string;
           };
@@ -144,15 +136,7 @@ export interface Page {
                   type: 'reference' | 'external';
                   newTab?: boolean;
                   text: string;
-                  reference:
-                    | {
-                        value: string | Page;
-                        relationTo: 'pages';
-                      }
-                    | {
-                        value: string | ProtectedPage;
-                        relationTo: 'protected-pages';
-                      };
+                  reference: string | Page;
                   url: string;
                   icon?: string;
                 };
@@ -168,148 +152,7 @@ export interface Page {
                   type: 'reference' | 'external';
                   newTab?: boolean;
                   text: string;
-                  reference:
-                    | {
-                        value: string | Page;
-                        relationTo: 'pages';
-                      }
-                    | {
-                        value: string | ProtectedPage;
-                        relationTo: 'protected-pages';
-                      };
-                  url: string;
-                  icon?: string;
-                };
-                id?: string;
-                blockName?: string;
-                blockType: 'buttonLink';
-              }
-            | {
-                width?: 'full' | 'max';
-                content: {
-                  [k: string]: unknown;
-                }[];
-                id?: string;
-                blockName?: string;
-                blockType: 'content';
-              }
-          )[];
-          blockName?: string;
-          blockType: 'section';
-        }
-    )[];
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: 'draft' | 'published';
-}
-export interface ProtectedPage {
-  id: string;
-  name: string;
-  slug?: string;
-  meta: {
-    title: string;
-    description: string;
-  };
-  content: {
-    layout?: (
-      | {
-          title: string;
-          icon: string;
-          content: {
-            [k: string]: unknown;
-          }[];
-          color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-          link: {
-            type: 'reference' | 'external';
-            newTab?: boolean;
-            text: string;
-            reference:
-              | {
-                  value: string | Page;
-                  relationTo: 'pages';
-                }
-              | {
-                  value: string | ProtectedPage;
-                  relationTo: 'protected-pages';
-                };
-            url: string;
-            icon?: string;
-          };
-          width?: 'full' | 'max';
-          id?: string;
-          blockName?: string;
-          blockType: 'alert';
-        }
-      | {
-          width?: 'full' | 'max';
-          content: {
-            [k: string]: unknown;
-          }[];
-          id?: string;
-          blockName?: string;
-          blockType: 'content';
-        }
-      | {
-          titleOne: string;
-          titleTwo: string;
-          subtitle: string;
-          id?: string;
-          blockName?: string;
-          blockType: 'hero';
-        }
-      | {
-          id: string;
-          title: string;
-          description?: {
-            [k: string]: unknown;
-          }[];
-          border: 'none' | 'left' | 'right';
-          layout?: (
-            | {
-                title: string;
-                icon: string;
-                content: {
-                  [k: string]: unknown;
-                }[];
-                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                link: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
-                  text: string;
-                  reference:
-                    | {
-                        value: string | Page;
-                        relationTo: 'pages';
-                      }
-                    | {
-                        value: string | ProtectedPage;
-                        relationTo: 'protected-pages';
-                      };
-                  url: string;
-                  icon?: string;
-                };
-                width?: 'full' | 'max';
-                id?: string;
-                blockName?: string;
-                blockType: 'alert';
-              }
-            | {
-                icon?: string;
-                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                link: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
-                  text: string;
-                  reference:
-                    | {
-                        value: string | Page;
-                        relationTo: 'pages';
-                      }
-                    | {
-                        value: string | ProtectedPage;
-                        relationTo: 'protected-pages';
-                      };
+                  reference: string | Page;
                   url: string;
                   icon?: string;
                 };
@@ -357,15 +200,7 @@ export interface NavMenu {
       type: 'reference' | 'external';
       newTab?: boolean;
       text: string;
-      reference:
-        | {
-            value: string | Page;
-            relationTo: 'pages';
-          }
-        | {
-            value: string | ProtectedPage;
-            relationTo: 'protected-pages';
-          };
+      reference: string | Page;
       url: string;
       icon?: string;
     };
