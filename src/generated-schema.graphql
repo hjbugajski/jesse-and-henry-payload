@@ -16,16 +16,6 @@ type Query {
   docAccessParty(id: String!): partiesDocAccess
   versionParty(id: String): PartyVersion
   versionsParties(where: versionsParty_where, page: Int, limit: Int, sort: String): versionsParties
-  ProtectedPage(id: String!, draft: Boolean): ProtectedPage
-  ProtectedPages(where: ProtectedPage_where, draft: Boolean, page: Int, limit: Int, sort: String): ProtectedPages
-  docAccessProtectedPage(id: String!): protected_pagesDocAccess
-  versionProtectedPage(id: String): ProtectedPageVersion
-  versionsProtectedPages(
-    where: versionsProtectedPage_where
-    page: Int
-    limit: Int
-    sort: String
-  ): versionsProtectedPages
   Relation(id: String!, draft: Boolean): Relation
   Relations(where: Relation_where, draft: Boolean, page: Int, limit: Int, sort: String): Relations
   docAccessRelation(id: String!): relationsDocAccess
@@ -1280,8 +1270,9 @@ type guestsMe {
 
 type Page {
   id: String
-  name: String
   slug: String
+  protected: Boolean
+  name: String
   meta: Page_Meta
   content: Page_Content
   updatedAt: DateTime
@@ -1305,6 +1296,7 @@ type Alert {
   icon: String
   content(depth: Int): JSON
   color: Alert_color
+  action: Boolean
   link: Alert_Link
   width: Alert_width
   id: String
@@ -1330,7 +1322,7 @@ type Alert_Link {
   type: Alert_Link_type!
   newTab: Boolean
   text: String!
-  reference: Alert_Link_Reference_Relationship
+  reference: Page
   url: String
   icon: String
 }
@@ -1340,39 +1332,10 @@ enum Alert_Link_type {
   external
 }
 
-type Alert_Link_Reference_Relationship {
-  relationTo: Alert_Link_Reference_RelationTo
-  value: Alert_Link_Reference
+enum Alert_width {
+  full
+  max
 }
-
-enum Alert_Link_Reference_RelationTo {
-  pages
-  protected_pages
-}
-
-union Alert_Link_Reference = Page | ProtectedPage
-
-type ProtectedPage {
-  id: String
-  name: String
-  slug: String
-  meta: ProtectedPage_Meta
-  content: ProtectedPage_Content
-  updatedAt: DateTime
-  createdAt: DateTime
-  _status: ProtectedPage__status
-}
-
-type ProtectedPage_Meta {
-  title: String
-  description: String
-}
-
-type ProtectedPage_Content {
-  layout: [ProtectedPage_Content_Layout!]
-}
-
-union ProtectedPage_Content_Layout = Alert | Content | Hero | Section
 
 type Content {
   width: Content_width
@@ -1397,11 +1360,12 @@ type Hero {
 }
 
 type Section {
-  id: String
+  anchorId: String
   title: String
   description(depth: Int): JSON
   border: Section_border
   layout: [Section_Layout!]
+  id: String
   blockName: String
   blockType: String
 }
@@ -1415,7 +1379,6 @@ enum Section_border {
 union Section_Layout = Alert | ButtonLink | Content
 
 type ButtonLink {
-  icon: String
   color: ButtonLink_color
   link: ButtonLink_Link
   id: String
@@ -1436,7 +1399,7 @@ type ButtonLink_Link {
   type: ButtonLink_Link_type!
   newTab: Boolean
   text: String!
-  reference: ButtonLink_Link_Reference_Relationship
+  reference: Page
   url: String
   icon: String
 }
@@ -1444,28 +1407,6 @@ type ButtonLink_Link {
 enum ButtonLink_Link_type {
   reference
   external
-}
-
-type ButtonLink_Link_Reference_Relationship {
-  relationTo: ButtonLink_Link_Reference_RelationTo
-  value: ButtonLink_Link_Reference
-}
-
-enum ButtonLink_Link_Reference_RelationTo {
-  pages
-  protected_pages
-}
-
-union ButtonLink_Link_Reference = Page | ProtectedPage
-
-enum ProtectedPage__status {
-  draft
-  published
-}
-
-enum Alert_width {
-  full
-  max
 }
 
 enum Page__status {
@@ -1488,8 +1429,9 @@ type Pages {
 }
 
 input Page_where {
-  name: Page_name_operator
   slug: Page_slug_operator
+  protected: Page_protected_operator
+  name: Page_name_operator
   meta__title: Page_meta__title_operator
   meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
@@ -1498,16 +1440,6 @@ input Page_where {
   id: Page_id_operator
   OR: [Page_where_or]
   AND: [Page_where_and]
-}
-
-input Page_name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
 }
 
 input Page_slug_operator {
@@ -1519,6 +1451,22 @@ input Page_slug_operator {
   not_in: [String]
   all: [String]
   exists: Boolean
+}
+
+input Page_protected_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input Page_name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
 }
 
 input Page_meta__title_operator {
@@ -1586,8 +1534,9 @@ input Page_id_operator {
 }
 
 input Page_where_or {
-  name: Page_name_operator
   slug: Page_slug_operator
+  protected: Page_protected_operator
+  name: Page_name_operator
   meta__title: Page_meta__title_operator
   meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
@@ -1597,8 +1546,9 @@ input Page_where_or {
 }
 
 input Page_where_and {
-  name: Page_name_operator
   slug: Page_slug_operator
+  protected: Page_protected_operator
+  name: Page_name_operator
   meta__title: Page_meta__title_operator
   meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
@@ -1617,37 +1567,15 @@ type pagesDocAccess {
 }
 
 type PagesDocAccessFields {
-  name: PagesDocAccessFields_name
   slug: PagesDocAccessFields_slug
+  protected: PagesDocAccessFields_protected
+  name: PagesDocAccessFields_name
   title: PagesDocAccessFields_title
   description: PagesDocAccessFields_description
   layout: PagesDocAccessFields_layout
   updatedAt: PagesDocAccessFields_updatedAt
   createdAt: PagesDocAccessFields_createdAt
   _status: PagesDocAccessFields__status
-}
-
-type PagesDocAccessFields_name {
-  create: PagesDocAccessFields_name_Create
-  read: PagesDocAccessFields_name_Read
-  update: PagesDocAccessFields_name_Update
-  delete: PagesDocAccessFields_name_Delete
-}
-
-type PagesDocAccessFields_name_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Delete {
-  permission: Boolean!
 }
 
 type PagesDocAccessFields_slug {
@@ -1670,6 +1598,52 @@ type PagesDocAccessFields_slug_Update {
 }
 
 type PagesDocAccessFields_slug_Delete {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected {
+  create: PagesDocAccessFields_protected_Create
+  read: PagesDocAccessFields_protected_Read
+  update: PagesDocAccessFields_protected_Update
+  delete: PagesDocAccessFields_protected_Delete
+}
+
+type PagesDocAccessFields_protected_Create {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Read {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Update {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Delete {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_name {
+  create: PagesDocAccessFields_name_Create
+  read: PagesDocAccessFields_name_Read
+  update: PagesDocAccessFields_name_Update
+  delete: PagesDocAccessFields_name_Delete
+}
+
+type PagesDocAccessFields_name_Create {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_name_Read {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_name_Update {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_name_Delete {
   permission: Boolean!
 }
 
@@ -1846,8 +1820,9 @@ type PageVersion {
 }
 
 type PageVersion_Version {
-  name: String!
   slug: String
+  protected: Boolean
+  name: String
   meta: PageVersion_Version_Meta
   content: PageVersion_Version_Content
   updatedAt: DateTime
@@ -1887,8 +1862,9 @@ type versionsPages {
 
 input versionsPage_where {
   parent: versionsPage_parent_operator
-  version__name: versionsPage_version__name_operator
   version__slug: versionsPage_version__slug_operator
+  version__protected: versionsPage_version__protected_operator
+  version__name: versionsPage_version__name_operator
   meta__title: versionsPage_meta__title_operator
   meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
@@ -1911,16 +1887,6 @@ input versionsPage_parent_operator {
   exists: Boolean
 }
 
-input versionsPage_version__name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
 input versionsPage_version__slug_operator {
   equals: String
   not_equals: String
@@ -1930,6 +1896,22 @@ input versionsPage_version__slug_operator {
   not_in: [String]
   all: [String]
   exists: Boolean
+}
+
+input versionsPage_version__protected_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input versionsPage_version__name_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
 }
 
 input versionsPage_meta__title_operator {
@@ -2026,8 +2008,9 @@ input versionsPage_id_operator {
 
 input versionsPage_where_or {
   parent: versionsPage_parent_operator
-  version__name: versionsPage_version__name_operator
   version__slug: versionsPage_version__slug_operator
+  version__protected: versionsPage_version__protected_operator
+  version__name: versionsPage_version__name_operator
   meta__title: versionsPage_meta__title_operator
   meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
@@ -2041,8 +2024,9 @@ input versionsPage_where_or {
 
 input versionsPage_where_and {
   parent: versionsPage_parent_operator
-  version__name: versionsPage_version__name_operator
   version__slug: versionsPage_version__slug_operator
+  version__protected: versionsPage_version__protected_operator
+  version__name: versionsPage_version__name_operator
   meta__title: versionsPage_meta__title_operator
   meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
@@ -2567,587 +2551,6 @@ input versionsParty_where_and {
   createdAt: versionsParty_createdAt_operator
   updatedAt: versionsParty_updatedAt_operator
   id: versionsParty_id_operator
-}
-
-type ProtectedPages {
-  docs: [ProtectedPage]
-  totalDocs: Int
-  offset: Int
-  limit: Int
-  totalPages: Int
-  page: Int
-  pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
-  prevPage: Int
-  nextPage: Int
-}
-
-input ProtectedPage_where {
-  name: ProtectedPage_name_operator
-  slug: ProtectedPage_slug_operator
-  meta__title: ProtectedPage_meta__title_operator
-  meta__description: ProtectedPage_meta__description_operator
-  updatedAt: ProtectedPage_updatedAt_operator
-  createdAt: ProtectedPage_createdAt_operator
-  _status: ProtectedPage__status_operator
-  id: ProtectedPage_id_operator
-  OR: [ProtectedPage_where_or]
-  AND: [ProtectedPage_where_and]
-}
-
-input ProtectedPage_name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input ProtectedPage_slug_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input ProtectedPage_meta__title_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input ProtectedPage_meta__description_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-}
-
-input ProtectedPage_updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input ProtectedPage_createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input ProtectedPage__status_operator {
-  equals: ProtectedPage__status_Input
-  not_equals: ProtectedPage__status_Input
-  in: [ProtectedPage__status_Input]
-  not_in: [ProtectedPage__status_Input]
-  all: [ProtectedPage__status_Input]
-  exists: Boolean
-}
-
-enum ProtectedPage__status_Input {
-  draft
-  published
-}
-
-input ProtectedPage_id_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input ProtectedPage_where_or {
-  name: ProtectedPage_name_operator
-  slug: ProtectedPage_slug_operator
-  meta__title: ProtectedPage_meta__title_operator
-  meta__description: ProtectedPage_meta__description_operator
-  updatedAt: ProtectedPage_updatedAt_operator
-  createdAt: ProtectedPage_createdAt_operator
-  _status: ProtectedPage__status_operator
-  id: ProtectedPage_id_operator
-}
-
-input ProtectedPage_where_and {
-  name: ProtectedPage_name_operator
-  slug: ProtectedPage_slug_operator
-  meta__title: ProtectedPage_meta__title_operator
-  meta__description: ProtectedPage_meta__description_operator
-  updatedAt: ProtectedPage_updatedAt_operator
-  createdAt: ProtectedPage_createdAt_operator
-  _status: ProtectedPage__status_operator
-  id: ProtectedPage_id_operator
-}
-
-type protected_pagesDocAccess {
-  fields: ProtectedPagesDocAccessFields
-  create: ProtectedPagesCreateDocAccess
-  read: ProtectedPagesReadDocAccess
-  update: ProtectedPagesUpdateDocAccess
-  delete: ProtectedPagesDeleteDocAccess
-  readVersions: ProtectedPagesReadVersionsDocAccess
-}
-
-type ProtectedPagesDocAccessFields {
-  name: ProtectedPagesDocAccessFields_name
-  slug: ProtectedPagesDocAccessFields_slug
-  title: ProtectedPagesDocAccessFields_title
-  description: ProtectedPagesDocAccessFields_description
-  layout: ProtectedPagesDocAccessFields_layout
-  updatedAt: ProtectedPagesDocAccessFields_updatedAt
-  createdAt: ProtectedPagesDocAccessFields_createdAt
-  _status: ProtectedPagesDocAccessFields__status
-}
-
-type ProtectedPagesDocAccessFields_name {
-  create: ProtectedPagesDocAccessFields_name_Create
-  read: ProtectedPagesDocAccessFields_name_Read
-  update: ProtectedPagesDocAccessFields_name_Update
-  delete: ProtectedPagesDocAccessFields_name_Delete
-}
-
-type ProtectedPagesDocAccessFields_name_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_name_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_name_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_name_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_slug {
-  create: ProtectedPagesDocAccessFields_slug_Create
-  read: ProtectedPagesDocAccessFields_slug_Read
-  update: ProtectedPagesDocAccessFields_slug_Update
-  delete: ProtectedPagesDocAccessFields_slug_Delete
-}
-
-type ProtectedPagesDocAccessFields_slug_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_slug_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_slug_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_slug_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_title {
-  create: ProtectedPagesDocAccessFields_title_Create
-  read: ProtectedPagesDocAccessFields_title_Read
-  update: ProtectedPagesDocAccessFields_title_Update
-  delete: ProtectedPagesDocAccessFields_title_Delete
-}
-
-type ProtectedPagesDocAccessFields_title_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_title_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_title_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_title_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_description {
-  create: ProtectedPagesDocAccessFields_description_Create
-  read: ProtectedPagesDocAccessFields_description_Read
-  update: ProtectedPagesDocAccessFields_description_Update
-  delete: ProtectedPagesDocAccessFields_description_Delete
-}
-
-type ProtectedPagesDocAccessFields_description_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_description_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_description_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_description_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_layout {
-  create: ProtectedPagesDocAccessFields_layout_Create
-  read: ProtectedPagesDocAccessFields_layout_Read
-  update: ProtectedPagesDocAccessFields_layout_Update
-  delete: ProtectedPagesDocAccessFields_layout_Delete
-}
-
-type ProtectedPagesDocAccessFields_layout_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_layout_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_layout_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_layout_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_updatedAt {
-  create: ProtectedPagesDocAccessFields_updatedAt_Create
-  read: ProtectedPagesDocAccessFields_updatedAt_Read
-  update: ProtectedPagesDocAccessFields_updatedAt_Update
-  delete: ProtectedPagesDocAccessFields_updatedAt_Delete
-}
-
-type ProtectedPagesDocAccessFields_updatedAt_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_updatedAt_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_updatedAt_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_updatedAt_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_createdAt {
-  create: ProtectedPagesDocAccessFields_createdAt_Create
-  read: ProtectedPagesDocAccessFields_createdAt_Read
-  update: ProtectedPagesDocAccessFields_createdAt_Update
-  delete: ProtectedPagesDocAccessFields_createdAt_Delete
-}
-
-type ProtectedPagesDocAccessFields_createdAt_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_createdAt_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_createdAt_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields_createdAt_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields__status {
-  create: ProtectedPagesDocAccessFields__status_Create
-  read: ProtectedPagesDocAccessFields__status_Read
-  update: ProtectedPagesDocAccessFields__status_Update
-  delete: ProtectedPagesDocAccessFields__status_Delete
-}
-
-type ProtectedPagesDocAccessFields__status_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields__status_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields__status_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesDocAccessFields__status_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesCreateDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesReadDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesUpdateDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesDeleteDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesReadVersionsDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPageVersion {
-  parent: ProtectedPage
-  version: ProtectedPageVersion_Version
-  createdAt: DateTime
-  updatedAt: DateTime
-  latest: Boolean
-  id: String
-}
-
-type ProtectedPageVersion_Version {
-  name: String
-  slug: String
-  meta: ProtectedPageVersion_Version_Meta
-  content: ProtectedPageVersion_Version_Content
-  updatedAt: DateTime
-  createdAt: DateTime
-  _status: ProtectedPageVersion_Version__status
-}
-
-type ProtectedPageVersion_Version_Meta {
-  title: String
-  description: String
-}
-
-type ProtectedPageVersion_Version_Content {
-  layout: [ProtectedPageVersion_Version_Content_Layout!]
-}
-
-union ProtectedPageVersion_Version_Content_Layout = Alert | Content | Hero | Section
-
-enum ProtectedPageVersion_Version__status {
-  draft
-  published
-}
-
-type versionsProtectedPages {
-  docs: [ProtectedPageVersion]
-  totalDocs: Int
-  offset: Int
-  limit: Int
-  totalPages: Int
-  page: Int
-  pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
-  prevPage: Int
-  nextPage: Int
-}
-
-input versionsProtectedPage_where {
-  parent: versionsProtectedPage_parent_operator
-  version__name: versionsProtectedPage_version__name_operator
-  version__slug: versionsProtectedPage_version__slug_operator
-  meta__title: versionsProtectedPage_meta__title_operator
-  meta__description: versionsProtectedPage_meta__description_operator
-  version__updatedAt: versionsProtectedPage_version__updatedAt_operator
-  version__createdAt: versionsProtectedPage_version__createdAt_operator
-  version___status: versionsProtectedPage_version___status_operator
-  createdAt: versionsProtectedPage_createdAt_operator
-  updatedAt: versionsProtectedPage_updatedAt_operator
-  latest: versionsProtectedPage_latest_operator
-  id: versionsProtectedPage_id_operator
-  OR: [versionsProtectedPage_where_or]
-  AND: [versionsProtectedPage_where_and]
-}
-
-input versionsProtectedPage_parent_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsProtectedPage_version__name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsProtectedPage_version__slug_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsProtectedPage_meta__title_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsProtectedPage_meta__description_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-}
-
-input versionsProtectedPage_version__updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsProtectedPage_version__createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsProtectedPage_version___status_operator {
-  equals: versionsProtectedPage_version___status_Input
-  not_equals: versionsProtectedPage_version___status_Input
-  in: [versionsProtectedPage_version___status_Input]
-  not_in: [versionsProtectedPage_version___status_Input]
-  all: [versionsProtectedPage_version___status_Input]
-  exists: Boolean
-}
-
-enum versionsProtectedPage_version___status_Input {
-  draft
-  published
-}
-
-input versionsProtectedPage_createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsProtectedPage_updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsProtectedPage_latest_operator {
-  equals: Boolean
-  not_equals: Boolean
-  exists: Boolean
-}
-
-input versionsProtectedPage_id_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsProtectedPage_where_or {
-  parent: versionsProtectedPage_parent_operator
-  version__name: versionsProtectedPage_version__name_operator
-  version__slug: versionsProtectedPage_version__slug_operator
-  meta__title: versionsProtectedPage_meta__title_operator
-  meta__description: versionsProtectedPage_meta__description_operator
-  version__updatedAt: versionsProtectedPage_version__updatedAt_operator
-  version__createdAt: versionsProtectedPage_version__createdAt_operator
-  version___status: versionsProtectedPage_version___status_operator
-  createdAt: versionsProtectedPage_createdAt_operator
-  updatedAt: versionsProtectedPage_updatedAt_operator
-  latest: versionsProtectedPage_latest_operator
-  id: versionsProtectedPage_id_operator
-}
-
-input versionsProtectedPage_where_and {
-  parent: versionsProtectedPage_parent_operator
-  version__name: versionsProtectedPage_version__name_operator
-  version__slug: versionsProtectedPage_version__slug_operator
-  meta__title: versionsProtectedPage_meta__title_operator
-  meta__description: versionsProtectedPage_meta__description_operator
-  version__updatedAt: versionsProtectedPage_version__updatedAt_operator
-  version__createdAt: versionsProtectedPage_version__createdAt_operator
-  version___status: versionsProtectedPage_version___status_operator
-  createdAt: versionsProtectedPage_createdAt_operator
-  updatedAt: versionsProtectedPage_updatedAt_operator
-  latest: versionsProtectedPage_latest_operator
-  id: versionsProtectedPage_id_operator
 }
 
 type Relations {
@@ -3983,7 +3386,7 @@ type NavMenu_Links_Link {
   type: NavMenu_Links_Link_type!
   newTab: Boolean
   text: String!
-  reference: NavMenu_Links_Link_Reference_Relationship
+  reference: Page
   url: String
   icon: String
 }
@@ -3992,18 +3395,6 @@ enum NavMenu_Links_Link_type {
   reference
   external
 }
-
-type NavMenu_Links_Link_Reference_Relationship {
-  relationTo: NavMenu_Links_Link_Reference_RelationTo
-  value: NavMenu_Links_Link_Reference
-}
-
-enum NavMenu_Links_Link_Reference_RelationTo {
-  pages
-  protected_pages
-}
-
-union NavMenu_Links_Link_Reference = Page | ProtectedPage
 
 type navMenuDocAccess {
   fields: NavMenuDocAccessFields
@@ -4308,7 +3699,6 @@ type Access {
   guests: guestsAccess
   pages: pagesAccess
   parties: partiesAccess
-  protected_pages: protected_pagesAccess
   relations: relationsAccess
   sides: sidesAccess
   users: usersAccess
@@ -4752,37 +4142,15 @@ type pagesAccess {
 }
 
 type PagesFields {
-  name: PagesFields_name
   slug: PagesFields_slug
+  protected: PagesFields_protected
+  name: PagesFields_name
   title: PagesFields_title
   description: PagesFields_description
   layout: PagesFields_layout
   updatedAt: PagesFields_updatedAt
   createdAt: PagesFields_createdAt
   _status: PagesFields__status
-}
-
-type PagesFields_name {
-  create: PagesFields_name_Create
-  read: PagesFields_name_Read
-  update: PagesFields_name_Update
-  delete: PagesFields_name_Delete
-}
-
-type PagesFields_name_Create {
-  permission: Boolean!
-}
-
-type PagesFields_name_Read {
-  permission: Boolean!
-}
-
-type PagesFields_name_Update {
-  permission: Boolean!
-}
-
-type PagesFields_name_Delete {
-  permission: Boolean!
 }
 
 type PagesFields_slug {
@@ -4805,6 +4173,52 @@ type PagesFields_slug_Update {
 }
 
 type PagesFields_slug_Delete {
+  permission: Boolean!
+}
+
+type PagesFields_protected {
+  create: PagesFields_protected_Create
+  read: PagesFields_protected_Read
+  update: PagesFields_protected_Update
+  delete: PagesFields_protected_Delete
+}
+
+type PagesFields_protected_Create {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Read {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Update {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Delete {
+  permission: Boolean!
+}
+
+type PagesFields_name {
+  create: PagesFields_name_Create
+  read: PagesFields_name_Read
+  update: PagesFields_name_Update
+  delete: PagesFields_name_Delete
+}
+
+type PagesFields_name_Create {
+  permission: Boolean!
+}
+
+type PagesFields_name_Read {
+  permission: Boolean!
+}
+
+type PagesFields_name_Update {
+  permission: Boolean!
+}
+
+type PagesFields_name_Delete {
   permission: Boolean!
 }
 
@@ -5148,235 +4562,6 @@ type PartiesDeleteAccess {
 }
 
 type PartiesReadVersionsAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type protected_pagesAccess {
-  fields: ProtectedPagesFields
-  create: ProtectedPagesCreateAccess
-  read: ProtectedPagesReadAccess
-  update: ProtectedPagesUpdateAccess
-  delete: ProtectedPagesDeleteAccess
-  readVersions: ProtectedPagesReadVersionsAccess
-}
-
-type ProtectedPagesFields {
-  name: ProtectedPagesFields_name
-  slug: ProtectedPagesFields_slug
-  title: ProtectedPagesFields_title
-  description: ProtectedPagesFields_description
-  layout: ProtectedPagesFields_layout
-  updatedAt: ProtectedPagesFields_updatedAt
-  createdAt: ProtectedPagesFields_createdAt
-  _status: ProtectedPagesFields__status
-}
-
-type ProtectedPagesFields_name {
-  create: ProtectedPagesFields_name_Create
-  read: ProtectedPagesFields_name_Read
-  update: ProtectedPagesFields_name_Update
-  delete: ProtectedPagesFields_name_Delete
-}
-
-type ProtectedPagesFields_name_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_name_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_name_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_name_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_slug {
-  create: ProtectedPagesFields_slug_Create
-  read: ProtectedPagesFields_slug_Read
-  update: ProtectedPagesFields_slug_Update
-  delete: ProtectedPagesFields_slug_Delete
-}
-
-type ProtectedPagesFields_slug_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_slug_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_slug_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_slug_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_title {
-  create: ProtectedPagesFields_title_Create
-  read: ProtectedPagesFields_title_Read
-  update: ProtectedPagesFields_title_Update
-  delete: ProtectedPagesFields_title_Delete
-}
-
-type ProtectedPagesFields_title_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_title_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_title_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_title_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_description {
-  create: ProtectedPagesFields_description_Create
-  read: ProtectedPagesFields_description_Read
-  update: ProtectedPagesFields_description_Update
-  delete: ProtectedPagesFields_description_Delete
-}
-
-type ProtectedPagesFields_description_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_description_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_description_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_description_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_layout {
-  create: ProtectedPagesFields_layout_Create
-  read: ProtectedPagesFields_layout_Read
-  update: ProtectedPagesFields_layout_Update
-  delete: ProtectedPagesFields_layout_Delete
-}
-
-type ProtectedPagesFields_layout_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_layout_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_layout_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_layout_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_updatedAt {
-  create: ProtectedPagesFields_updatedAt_Create
-  read: ProtectedPagesFields_updatedAt_Read
-  update: ProtectedPagesFields_updatedAt_Update
-  delete: ProtectedPagesFields_updatedAt_Delete
-}
-
-type ProtectedPagesFields_updatedAt_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_updatedAt_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_updatedAt_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_updatedAt_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_createdAt {
-  create: ProtectedPagesFields_createdAt_Create
-  read: ProtectedPagesFields_createdAt_Read
-  update: ProtectedPagesFields_createdAt_Update
-  delete: ProtectedPagesFields_createdAt_Delete
-}
-
-type ProtectedPagesFields_createdAt_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_createdAt_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_createdAt_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields_createdAt_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields__status {
-  create: ProtectedPagesFields__status_Create
-  read: ProtectedPagesFields__status_Read
-  update: ProtectedPagesFields__status_Update
-  delete: ProtectedPagesFields__status_Delete
-}
-
-type ProtectedPagesFields__status_Create {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields__status_Read {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields__status_Update {
-  permission: Boolean!
-}
-
-type ProtectedPagesFields__status_Delete {
-  permission: Boolean!
-}
-
-type ProtectedPagesCreateAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesReadAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesUpdateAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesDeleteAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type ProtectedPagesReadVersionsAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -6151,15 +5336,6 @@ type Mutation {
   updateParty(id: String!, data: mutationPartyUpdateInput!, draft: Boolean, autosave: Boolean): Party
   deleteParty(id: String!): Party
   restoreVersionParty(id: String): Party
-  createProtectedPage(data: mutationProtectedPageInput!, draft: Boolean): ProtectedPage
-  updateProtectedPage(
-    id: String!
-    data: mutationProtectedPageUpdateInput!
-    draft: Boolean
-    autosave: Boolean
-  ): ProtectedPage
-  deleteProtectedPage(id: String!): ProtectedPage
-  restoreVersionProtectedPage(id: String): ProtectedPage
   createRelation(data: mutationRelationInput!, draft: Boolean): Relation
   updateRelation(id: String!, data: mutationRelationUpdateInput!, draft: Boolean, autosave: Boolean): Relation
   deleteRelation(id: String!): Relation
@@ -6284,8 +5460,9 @@ type guestsResetPassword {
 }
 
 input mutationPageInput {
-  name: String!
   slug: String
+  protected: Boolean
+  name: String
   meta: mutationPage_MetaInput
   content: mutationPage_ContentInput
   updatedAt: String
@@ -6308,8 +5485,9 @@ enum Page__status_MutationInput {
 }
 
 input mutationPageUpdateInput {
-  name: String
   slug: String
+  protected: Boolean
+  name: String
   meta: mutationPageUpdate_MetaInput
   content: mutationPageUpdate_ContentInput
   updatedAt: String
@@ -6373,54 +5551,6 @@ enum PartyUpdate_color_MutationInput {
   pink
   red
   orange
-}
-
-input mutationProtectedPageInput {
-  name: String
-  slug: String
-  meta: mutationProtectedPage_MetaInput
-  content: mutationProtectedPage_ContentInput
-  updatedAt: String
-  createdAt: String
-  _status: ProtectedPage__status_MutationInput
-}
-
-input mutationProtectedPage_MetaInput {
-  title: String
-  description: String
-}
-
-input mutationProtectedPage_ContentInput {
-  layout: JSON
-}
-
-enum ProtectedPage__status_MutationInput {
-  draft
-  published
-}
-
-input mutationProtectedPageUpdateInput {
-  name: String
-  slug: String
-  meta: mutationProtectedPageUpdate_MetaInput
-  content: mutationProtectedPageUpdate_ContentInput
-  updatedAt: String
-  createdAt: String
-  _status: ProtectedPageUpdate__status_MutationInput
-}
-
-input mutationProtectedPageUpdate_MetaInput {
-  title: String
-  description: String
-}
-
-input mutationProtectedPageUpdate_ContentInput {
-  layout: JSON
-}
-
-enum ProtectedPageUpdate__status_MutationInput {
-  draft
-  published
 }
 
 input mutationRelationInput {
@@ -6582,17 +5712,7 @@ input mutationNavMenu_Links_LinkInput {
   type: String!
   newTab: Boolean
   text: String!
-  reference: NavMenu_Links_Link_ReferenceRelationshipInput
+  reference: String
   url: String
   icon: String
-}
-
-input NavMenu_Links_Link_ReferenceRelationshipInput {
-  relationTo: NavMenu_Links_Link_ReferenceRelationshipInputRelationTo
-  value: JSON
-}
-
-enum NavMenu_Links_Link_ReferenceRelationshipInputRelationTo {
-  pages
-  protected_pages
 }

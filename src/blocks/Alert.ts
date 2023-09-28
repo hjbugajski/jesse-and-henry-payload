@@ -23,7 +23,17 @@ export const Alert: Block = {
       required: true,
     },
     color,
-    link,
+    {
+      name: 'action',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
+      ...link,
+      admin: {
+        condition: (_, siblingData) => siblingData.action,
+      },
+    },
     width,
   ],
 };

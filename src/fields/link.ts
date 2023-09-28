@@ -47,7 +47,7 @@ export const link: Field = {
       name: 'reference',
       label: 'Page',
       type: 'relationship',
-      relationTo: ['pages', 'protected-pages'],
+      relationTo: 'pages',
       required: true,
       maxDepth: 1,
       admin: {

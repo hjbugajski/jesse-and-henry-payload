@@ -5,14 +5,7 @@ import { color } from '../fields/color';
 
 const ButtonLink: Block = {
   slug: 'buttonLink',
-  fields: [
-    {
-      name: 'icon',
-      type: 'text',
-    },
-    color,
-    link,
-  ],
+  fields: [color, link],
 };
 
 export default ButtonLink;

@@ -1,6 +1,6 @@
 import { CollectionConfig } from 'payload/types';
 
-import { isAdmin } from '../access';
+import { isAdmin, isProtectedField } from '../access';
 import { Alert } from '../blocks/Alert';
 import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
@@ -23,11 +23,6 @@ const Pages: CollectionConfig = {
   },
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
-    {
       name: 'slug',
       type: 'text',
       unique: true,
@@ -36,6 +31,22 @@ const Pages: CollectionConfig = {
       },
       hooks: {
         beforeValidate: [useSlug],
+      },
+    },
+    {
+      name: 'protected',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'name',
+      type: 'text',
+      required: true,
+      access: {
+        read: isProtectedField,
       },
     },
     {
@@ -60,6 +71,9 @@ const Pages: CollectionConfig = {
         {
           label: 'Content',
           name: 'content',
+          access: {
+            read: isProtectedField,
+          },
           fields: [
             {
               name: 'layout',

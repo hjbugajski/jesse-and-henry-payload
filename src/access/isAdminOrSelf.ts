@@ -18,6 +18,6 @@ export const isAdminOrSelf: Access = ({ req: { user } }) => {
   };
 };
 
-export const isAdminOrSelfFieldLevel: FieldAccess<{ id: string }, unknown, User> = ({ req: { user }, id }) => {
+export const isAdminOrSelfField: FieldAccess<{ id: string }, unknown, User> = ({ req: { user }, id }) => {
   return user?.roles?.includes('admin') || user?.id === id;
 };

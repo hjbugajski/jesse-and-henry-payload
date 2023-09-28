@@ -7,7 +7,7 @@ import {
   PayloadRequest,
 } from 'payload/types';
 
-import { isAdmin, isAdminFieldLevel, isAdminSelfOrParty } from '../access';
+import { isAdmin, isAdminField, isAdminSelfOrParty } from '../access';
 import GuestList from '../custom/components/GuestList';
 import { Guest, Party } from '../payload-types';
 
@@ -214,7 +214,7 @@ const Guests: CollectionConfig = {
             res.status(200).json({
               message: 'Guest successfully created.',
               doc,
-            })
+            }),
           )
           .catch((err) => res.status(500).json(err));
       },
@@ -239,14 +239,14 @@ const Guests: CollectionConfig = {
               data: {
                 sort: index,
               },
-            })
-          )
+            }),
+          ),
         )
           .then((results) =>
             res.status(200).json({
               message: 'Guests reordered.',
               results,
-            })
+            }),
           )
           .catch((err) => res.status(500).json(err));
       },
@@ -258,9 +258,9 @@ const Guests: CollectionConfig = {
       label: 'Email',
       type: 'email',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -284,9 +284,9 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'parties',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -295,9 +295,9 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'sides',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -306,9 +306,9 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'relations',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -316,9 +316,9 @@ const Guests: CollectionConfig = {
       label: 'Phone',
       type: 'text',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -326,9 +326,9 @@ const Guests: CollectionConfig = {
       label: 'Address',
       type: 'textarea',
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
     {
@@ -355,9 +355,9 @@ const Guests: CollectionConfig = {
         position: 'sidebar',
       },
       access: {
-        create: isAdminFieldLevel,
-        read: isAdminFieldLevel,
-        update: isAdminFieldLevel,
+        create: isAdminField,
+        read: isAdminField,
+        update: isAdminField,
       },
     },
   ],

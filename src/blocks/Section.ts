@@ -9,8 +9,8 @@ export const Section: Block = {
   slug: 'section',
   fields: [
     {
-      name: 'id',
-      label: 'ID',
+      name: 'anchorId',
+      label: 'Anchor ID',
       type: 'text',
       required: true,
     },

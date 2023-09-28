@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [5.0.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v4.0.0...v5.0.0) (2023-09-28)
+
+### ⚠ BREAKING CHANGES
+
+- **blocks/Section:** rename id to anchorId as to not override generated id
+- **blocks/ButtonLink:** remove icon field in favor of icon field in link
+- **blocks/Alert:** make action link optional
+- **collections:** remove ProtectedPages in favor of access controls on Pages
+
+### Bug Fixes
+
+- **blocks/Alert:** make action link optional ([6f0ffb6](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/6f0ffb60031d2d06811fb6902629494021bf330f))
+- **blocks/ButtonLink:** remove icon field in favor of icon field in link ([750e5c2](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/750e5c27394cfc7ab4dd37a4e3655ca08bd76fcb))
+- **blocks/Section:** rename id to anchorId as to not override generated id ([6f1bb06](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/6f1bb06f323ef9e3ec12cb8425aa66a29777dc23))
+- **collections:** remove ProtectedPages in favor of access controls on Pages ([81107a1](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/81107a1960e12716a6572849e3582379f54440ff))
+- **fields/width:** add default value ([03c6cfc](https://github.com/hjbugajski/jesse-and-henry-payload-cms/commit/03c6cfc4991bb820ec8d27caa5a661bd22e58e1f))
+
 ## [4.0.0](https://github.com/hjbugajski/jesse-and-henry-payload-cms/compare/v3.1.1...v4.0.0) (2023-09-27)
 
 ### Features
