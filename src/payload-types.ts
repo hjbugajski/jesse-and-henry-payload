@@ -87,7 +87,8 @@ export interface Page {
             [k: string]: unknown;
           }[];
           color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-          link: {
+          action?: boolean;
+          link?: {
             type: 'reference' | 'external';
             newTab?: boolean;
             text: string;
@@ -118,7 +119,7 @@ export interface Page {
           blockType: 'hero';
         }
       | {
-          id: string;
+          anchorId: string;
           title: string;
           description?: {
             [k: string]: unknown;
@@ -132,7 +133,8 @@ export interface Page {
                   [k: string]: unknown;
                 }[];
                 color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                link: {
+                action?: boolean;
+                link?: {
                   type: 'reference' | 'external';
                   newTab?: boolean;
                   text: string;
@@ -146,7 +148,6 @@ export interface Page {
                 blockType: 'alert';
               }
             | {
-                icon?: string;
                 color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
                 link: {
                   type: 'reference' | 'external';
@@ -170,6 +171,7 @@ export interface Page {
                 blockType: 'content';
               }
           )[];
+          id?: string;
           blockName?: string;
           blockType: 'section';
         }

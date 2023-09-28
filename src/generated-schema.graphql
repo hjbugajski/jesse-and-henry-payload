@@ -1296,6 +1296,7 @@ type Alert {
   icon: String
   content(depth: Int): JSON
   color: Alert_color
+  action: Boolean
   link: Alert_Link
   width: Alert_width
   id: String
@@ -1359,11 +1360,12 @@ type Hero {
 }
 
 type Section {
-  id: String
+  anchorId: String
   title: String
   description(depth: Int): JSON
   border: Section_border
   layout: [Section_Layout!]
+  id: String
   blockName: String
   blockType: String
 }
@@ -1377,7 +1379,6 @@ enum Section_border {
 union Section_Layout = Alert | ButtonLink | Content
 
 type ButtonLink {
-  icon: String
   color: ButtonLink_color
   link: ButtonLink_Link
   id: String
