@@ -84,36 +84,31 @@ const SelectEditor = memo(
     } = props;
 
     const refContainer = useRef(null);
+    const { serverURL } = useConfig();
 
     const [value, setValue] = useState(
       collection ? initialValue : initialOptions.find((option) => getValue(option) === initialValue)
     );
 
-    const { serverURL } = useConfig();
-
     const loadOptions = useCallback(async () => {
-      const res = await fetch(`${serverURL}/api/${collection}?limit=250`, {
-        credentials: 'include',
-      });
+      const response = await fetch(`${serverURL}/api/${collection}?limit=250`, { credentials: 'include' });
 
-      if (res.status !== 200) {
-        return [];
+      if (response.ok) {
+        const { docs } = await response.json();
+
+        return docs;
       }
 
-      const data = await res.json();
-
-      return data.docs;
+      return [];
     }, [collection, serverURL]);
 
     const onChange = useCallback(
       async (option: any) => {
         setValue(option);
-
         await timeout(50);
-
         stopEditing();
       },
-      [stopEditing]
+      [setValue, stopEditing]
     );
 
     useImperativeHandle(

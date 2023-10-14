@@ -1,8 +1,9 @@
-import { Block } from 'payload/types';
+import { Block, Field } from 'payload/types';
 
-import { link } from '../fields';
+import { linkGroup } from '../fields';
 import { color } from '../fields/color';
 import { width } from '../fields/width';
+import { deepMerge } from '../utils/deepMerge';
 
 export const Alert: Block = {
   slug: 'alert',
@@ -28,12 +29,11 @@ export const Alert: Block = {
       type: 'checkbox',
       defaultValue: false,
     },
-    {
-      ...link,
+    deepMerge<Field>(linkGroup, {
       admin: {
         condition: (_, siblingData) => siblingData.action,
       },
-    },
+    }),
     width,
   ],
 };

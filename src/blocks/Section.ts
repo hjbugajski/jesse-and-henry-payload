@@ -23,29 +23,14 @@ export const Section: Block = {
       name: 'description',
       type: 'richText',
       admin: {
-        elements: [
-          'h1',
-          'h2',
-          'h3',
-          'h4',
-          'h5',
-          'h6',
-          'indent',
-          'textAlign',
-          'ol',
-          'ul',
-          'blockquote',
-          'link',
-          'relationship',
-          'upload',
-          venue,
-        ],
+        elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
       },
     },
     {
       name: 'border',
       type: 'select',
       required: true,
+      defaultValue: 'none',
       options: [
         {
           label: 'None',
@@ -60,7 +45,6 @@ export const Section: Block = {
           value: 'right',
         },
       ],
-      defaultValue: 'none',
     },
     {
       name: 'layout',

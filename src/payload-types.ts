@@ -89,12 +89,12 @@ export interface Page {
           color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
           action?: boolean;
           link?: {
-            type: 'reference' | 'external';
-            newTab?: boolean;
             text: string;
+            icon?: string;
+            type: 'reference' | 'external';
             reference: string | Page;
             url: string;
-            icon?: string;
+            newTab?: boolean;
           };
           width?: 'full' | 'max';
           id?: string;
@@ -135,12 +135,12 @@ export interface Page {
                 color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
                 action?: boolean;
                 link?: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
                   text: string;
+                  icon?: string;
+                  type: 'reference' | 'external';
                   reference: string | Page;
                   url: string;
-                  icon?: string;
+                  newTab?: boolean;
                 };
                 width?: 'full' | 'max';
                 id?: string;
@@ -150,12 +150,12 @@ export interface Page {
             | {
                 color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
                 link: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
                   text: string;
+                  icon?: string;
+                  type: 'reference' | 'external';
                   reference: string | Page;
                   url: string;
-                  icon?: string;
+                  newTab?: boolean;
                 };
                 id?: string;
                 blockName?: string;
@@ -198,14 +198,12 @@ export interface User {
 export interface NavMenu {
   id: string;
   links?: {
-    link: {
-      type: 'reference' | 'external';
-      newTab?: boolean;
-      text: string;
-      reference: string | Page;
-      url: string;
-      icon?: string;
-    };
+    text: string;
+    icon?: string;
+    type: 'reference' | 'external';
+    reference: string | Page;
+    url: string;
+    newTab?: boolean;
     id?: string;
   }[];
   updatedAt?: string;

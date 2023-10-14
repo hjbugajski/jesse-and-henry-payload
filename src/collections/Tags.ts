@@ -20,15 +20,16 @@ const Tags: CollectionConfig = {
   fields: [
     {
       name: 'value',
-      label: 'Value',
       type: 'text',
       required: true,
       unique: true,
     },
     {
       name: 'color',
-      label: 'Color',
       type: 'select',
+      admin: {
+        isClearable: true,
+      },
       options: [
         {
           label: 'Green',
@@ -71,13 +72,9 @@ const Tags: CollectionConfig = {
           value: 'orange',
         },
       ],
-      admin: {
-        isClearable: true,
-      },
     },
     {
       name: 'sort',
-      label: 'Sort',
       type: 'number',
       defaultValue: 0,
     },
