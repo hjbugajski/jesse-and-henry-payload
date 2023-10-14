@@ -881,14 +881,20 @@ type LinkGroupField {
   text: String!
   icon: String
   type: LinkGroupField_type!
-  reference: Page
+  relationship: Page
   url: String
+  anchor: String
+  rel: [LinkGroupField_rel!]
   newTab: Boolean
 }
 
 enum LinkGroupField_type {
-  reference
+  relationship
   external
+}
+
+enum LinkGroupField_rel {
+  noreferrer
 }
 
 enum AlertBlock_width {
@@ -2718,15 +2724,21 @@ type LinkArrayField {
   text: String
   icon: String
   type: LinkArrayField_type
-  reference: Page
+  relationship: Page
   url: String
+  anchor: String
+  rel: [LinkArrayField_rel!]
   newTab: Boolean
   id: String
 }
 
 enum LinkArrayField_type {
-  reference
+  relationship
   external
+}
+
+enum LinkArrayField_rel {
+  noreferrer
 }
 
 type navigationDocAccess {
@@ -2769,8 +2781,10 @@ type NavigationDocAccessFields_links_Fields {
   text: NavigationDocAccessFields_links_text
   icon: NavigationDocAccessFields_links_icon
   type: NavigationDocAccessFields_links_type
-  reference: NavigationDocAccessFields_links_reference
+  relationship: NavigationDocAccessFields_links_relationship
   url: NavigationDocAccessFields_links_url
+  anchor: NavigationDocAccessFields_links_anchor
+  rel: NavigationDocAccessFields_links_rel
   newTab: NavigationDocAccessFields_links_newTab
   id: NavigationDocAccessFields_links_id
 }
@@ -2844,26 +2858,26 @@ type NavigationDocAccessFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavigationDocAccessFields_links_reference {
-  create: NavigationDocAccessFields_links_reference_Create
-  read: NavigationDocAccessFields_links_reference_Read
-  update: NavigationDocAccessFields_links_reference_Update
-  delete: NavigationDocAccessFields_links_reference_Delete
+type NavigationDocAccessFields_links_relationship {
+  create: NavigationDocAccessFields_links_relationship_Create
+  read: NavigationDocAccessFields_links_relationship_Read
+  update: NavigationDocAccessFields_links_relationship_Update
+  delete: NavigationDocAccessFields_links_relationship_Delete
 }
 
-type NavigationDocAccessFields_links_reference_Create {
+type NavigationDocAccessFields_links_relationship_Create {
   permission: Boolean!
 }
 
-type NavigationDocAccessFields_links_reference_Read {
+type NavigationDocAccessFields_links_relationship_Read {
   permission: Boolean!
 }
 
-type NavigationDocAccessFields_links_reference_Update {
+type NavigationDocAccessFields_links_relationship_Update {
   permission: Boolean!
 }
 
-type NavigationDocAccessFields_links_reference_Delete {
+type NavigationDocAccessFields_links_relationship_Delete {
   permission: Boolean!
 }
 
@@ -2887,6 +2901,52 @@ type NavigationDocAccessFields_links_url_Update {
 }
 
 type NavigationDocAccessFields_links_url_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_anchor {
+  create: NavigationDocAccessFields_links_anchor_Create
+  read: NavigationDocAccessFields_links_anchor_Read
+  update: NavigationDocAccessFields_links_anchor_Update
+  delete: NavigationDocAccessFields_links_anchor_Delete
+}
+
+type NavigationDocAccessFields_links_anchor_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_anchor_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_anchor_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_anchor_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_rel {
+  create: NavigationDocAccessFields_links_rel_Create
+  read: NavigationDocAccessFields_links_rel_Read
+  update: NavigationDocAccessFields_links_rel_Update
+  delete: NavigationDocAccessFields_links_rel_Delete
+}
+
+type NavigationDocAccessFields_links_rel_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_rel_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_rel_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_links_rel_Delete {
   permission: Boolean!
 }
 
@@ -4358,8 +4418,10 @@ type NavigationFields_links_Fields {
   text: NavigationFields_links_text
   icon: NavigationFields_links_icon
   type: NavigationFields_links_type
-  reference: NavigationFields_links_reference
+  relationship: NavigationFields_links_relationship
   url: NavigationFields_links_url
+  anchor: NavigationFields_links_anchor
+  rel: NavigationFields_links_rel
   newTab: NavigationFields_links_newTab
   id: NavigationFields_links_id
 }
@@ -4433,26 +4495,26 @@ type NavigationFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavigationFields_links_reference {
-  create: NavigationFields_links_reference_Create
-  read: NavigationFields_links_reference_Read
-  update: NavigationFields_links_reference_Update
-  delete: NavigationFields_links_reference_Delete
+type NavigationFields_links_relationship {
+  create: NavigationFields_links_relationship_Create
+  read: NavigationFields_links_relationship_Read
+  update: NavigationFields_links_relationship_Update
+  delete: NavigationFields_links_relationship_Delete
 }
 
-type NavigationFields_links_reference_Create {
+type NavigationFields_links_relationship_Create {
   permission: Boolean!
 }
 
-type NavigationFields_links_reference_Read {
+type NavigationFields_links_relationship_Read {
   permission: Boolean!
 }
 
-type NavigationFields_links_reference_Update {
+type NavigationFields_links_relationship_Update {
   permission: Boolean!
 }
 
-type NavigationFields_links_reference_Delete {
+type NavigationFields_links_relationship_Delete {
   permission: Boolean!
 }
 
@@ -4476,6 +4538,52 @@ type NavigationFields_links_url_Update {
 }
 
 type NavigationFields_links_url_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_links_anchor {
+  create: NavigationFields_links_anchor_Create
+  read: NavigationFields_links_anchor_Read
+  update: NavigationFields_links_anchor_Update
+  delete: NavigationFields_links_anchor_Delete
+}
+
+type NavigationFields_links_anchor_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_links_anchor_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_links_anchor_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_links_anchor_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_links_rel {
+  create: NavigationFields_links_rel_Create
+  read: NavigationFields_links_rel_Read
+  update: NavigationFields_links_rel_Update
+  delete: NavigationFields_links_rel_Delete
+}
+
+type NavigationFields_links_rel_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_links_rel_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_links_rel_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_links_rel_Delete {
   permission: Boolean!
 }
 
@@ -4970,8 +5078,14 @@ input mutationNavigation_LinksInput {
   text: String!
   icon: String
   type: String!
-  reference: String
+  relationship: String
   url: String
+  anchor: String
+  rel: [Navigation_Links_rel_MutationInput]
   newTab: Boolean
   id: String
+}
+
+enum Navigation_Links_rel_MutationInput {
+  noreferrer
 }

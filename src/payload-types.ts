@@ -9,9 +9,11 @@
 export type LinkArrayField = {
   text: string;
   icon?: string;
-  type: 'reference' | 'external';
-  reference: string | Page;
+  type: 'relationship' | 'external';
+  relationship: string | Page;
   url: string;
+  anchor?: string;
+  rel?: 'noreferrer'[];
   newTab?: boolean;
   id?: string;
 }[];
@@ -112,9 +114,11 @@ export interface AlertBlock {
 export interface LinkGroupField {
   text: string;
   icon?: string;
-  type: 'reference' | 'external';
-  reference: string | Page;
+  type: 'relationship' | 'external';
+  relationship: string | Page;
   url: string;
+  anchor?: string;
+  rel?: 'noreferrer'[];
   newTab?: boolean;
 }
 export interface ContentBlock {

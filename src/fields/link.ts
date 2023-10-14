@@ -19,11 +19,11 @@ export const linkFields: Field[] = [
       layout: 'horizontal',
     },
     required: true,
-    defaultValue: 'reference',
+    defaultValue: 'relationship',
     options: [
       {
         label: 'Internal',
-        value: 'reference',
+        value: 'relationship',
       },
       {
         label: 'External',
@@ -32,14 +32,14 @@ export const linkFields: Field[] = [
     ],
   },
   {
-    name: 'reference',
+    name: 'relationship',
     label: 'Page',
     type: 'relationship',
     relationTo: 'pages',
     required: true,
     maxDepth: 1,
     admin: {
-      condition: (_, siblingData) => siblingData?.type === 'reference',
+      condition: (_, siblingData) => siblingData?.type === 'relationship',
     },
   },
   {
@@ -47,6 +47,20 @@ export const linkFields: Field[] = [
     label: 'External URL',
     type: 'text',
     required: true,
+    admin: {
+      condition: (_, siblingData) => siblingData?.type === 'external',
+    },
+  },
+  {
+    name: 'anchor',
+    type: 'text',
+  },
+  {
+    name: 'rel',
+    label: 'Rel Attribute',
+    type: 'select',
+    hasMany: true,
+    options: ['noreferrer'],
     admin: {
       condition: (_, siblingData) => siblingData?.type === 'external',
     },
