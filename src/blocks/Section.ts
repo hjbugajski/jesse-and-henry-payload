@@ -7,6 +7,7 @@ import venue from '../fields/richText/venue';
 
 export const Section: Block = {
   slug: 'section',
+  interfaceName: 'SectionBlock',
   fields: [
     {
       name: 'anchorId',

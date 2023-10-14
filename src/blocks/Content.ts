@@ -5,6 +5,7 @@ import { width } from '../fields/width';
 
 const Content: Block = {
   slug: 'content',
+  interfaceName: 'ContentBlock',
   fields: [
     width,
     {

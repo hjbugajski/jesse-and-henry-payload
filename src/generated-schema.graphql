@@ -848,16 +848,16 @@ type Page_Content {
   layout: [Page_Content_Layout!]
 }
 
-union Page_Content_Layout = Alert | Content | Hero | Section
+union Page_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
 
-type Alert {
+type AlertBlock {
   title: String
   icon: String
   content(depth: Int): JSON
-  color: Alert_color
+  color: AlertBlock_color
   action: Boolean
-  link: Alert_Link
-  width: Alert_width
+  link: LinkGroupField
+  width: AlertBlock_width
   id: String
   blockName: String
   blockType: String
@@ -868,7 +868,7 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-enum Alert_color {
+enum AlertBlock_color {
   neutral
   neutral_variant
   primary
@@ -877,39 +877,39 @@ enum Alert_color {
   danger
 }
 
-type Alert_Link {
+type LinkGroupField {
   text: String!
   icon: String
-  type: Alert_Link_type!
+  type: LinkGroupField_type!
   reference: Page
   url: String
   newTab: Boolean
 }
 
-enum Alert_Link_type {
+enum LinkGroupField_type {
   reference
   external
 }
 
-enum Alert_width {
+enum AlertBlock_width {
   full
   max
 }
 
-type Content {
-  width: Content_width
+type ContentBlock {
+  width: ContentBlock_width
   content(depth: Int): JSON
   id: String
   blockName: String
   blockType: String
 }
 
-enum Content_width {
+enum ContentBlock_width {
   full
   max
 }
 
-type Hero {
+type HeroBlock {
   titleOne: String
   titleTwo: String
   subtitle: String
@@ -918,54 +918,40 @@ type Hero {
   blockType: String
 }
 
-type Section {
+type SectionBlock {
   anchorId: String
   title: String
   description(depth: Int): JSON
-  border: Section_border
-  layout: [Section_Layout!]
+  border: SectionBlock_border
+  layout: [SectionBlock_Layout!]
   id: String
   blockName: String
   blockType: String
 }
 
-enum Section_border {
+enum SectionBlock_border {
   none
   left
   right
 }
 
-union Section_Layout = Alert | ButtonLink | Content
+union SectionBlock_Layout = AlertBlock | ButtonLinkBlock | ContentBlock
 
-type ButtonLink {
-  color: ButtonLink_color
-  link: ButtonLink_Link
+type ButtonLinkBlock {
+  color: ButtonLinkBlock_color
+  link: LinkGroupField
   id: String
   blockName: String
   blockType: String
 }
 
-enum ButtonLink_color {
+enum ButtonLinkBlock_color {
   neutral
   neutral_variant
   primary
   secondary
   tertiary
   danger
-}
-
-type ButtonLink_Link {
-  text: String!
-  icon: String
-  type: ButtonLink_Link_type!
-  reference: Page
-  url: String
-  newTab: Boolean
-}
-
-enum ButtonLink_Link_type {
-  reference
-  external
 }
 
 enum Page__status {
@@ -1398,7 +1384,7 @@ type PageVersion_Version_Content {
   layout: [PageVersion_Version_Content_Layout!]
 }
 
-union PageVersion_Version_Content_Layout = Alert | Content | Hero | Section
+union PageVersion_Version_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
 
 enum PageVersion_Version__status {
   draft
@@ -2723,22 +2709,22 @@ type usersMe {
 }
 
 type Navigation {
-  links: [Navigation_Links!]
+  links: [LinkArrayField!]
   updatedAt: DateTime
   createdAt: DateTime
 }
 
-type Navigation_Links {
+type LinkArrayField {
   text: String
   icon: String
-  type: Navigation_Links_type
+  type: LinkArrayField_type
   reference: Page
   url: String
   newTab: Boolean
   id: String
 }
 
-enum Navigation_Links_type {
+enum LinkArrayField_type {
   reference
   external
 }

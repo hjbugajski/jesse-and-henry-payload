@@ -61,12 +61,14 @@ export const linkFields: Field[] = [
 export const linkGroup: Field = {
   name: 'link',
   type: 'group',
+  interfaceName: 'LinkGroupField',
   fields: linkFields,
 };
 
 export const linkArray: Field = {
   name: 'links',
   type: 'array',
+  interfaceName: 'LinkArrayField',
   admin: {
     components: {
       RowLabel: RowLabel('text', 'Link'),

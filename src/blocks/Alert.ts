@@ -7,6 +7,7 @@ import { deepMerge } from '../utils/deepMerge';
 
 export const Alert: Block = {
   slug: 'alert',
+  interfaceName: 'AlertBlock',
   fields: [
     {
       name: 'title',

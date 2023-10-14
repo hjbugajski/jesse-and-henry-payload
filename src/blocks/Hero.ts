@@ -2,6 +2,7 @@ import { Block } from 'payload/types';
 
 export const Hero: Block = {
   slug: 'hero',
+  interfaceName: 'HeroBlock',
   fields: [
     {
       name: 'titleOne',
