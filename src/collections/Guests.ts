@@ -214,7 +214,7 @@ const Guests: CollectionConfig = {
             res.status(200).json({
               message: 'Guest successfully created.',
               doc,
-            }),
+            })
           )
           .catch((err) => res.status(500).json(err));
       },
@@ -239,14 +239,14 @@ const Guests: CollectionConfig = {
               data: {
                 sort: index,
               },
-            }),
-          ),
+            })
+          )
         )
           .then((results) =>
             res.status(200).json({
               message: 'Guests reordered.',
               results,
-            }),
+            })
           )
           .catch((err) => res.status(500).json(err));
       },
