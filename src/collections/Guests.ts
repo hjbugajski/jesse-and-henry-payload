@@ -7,10 +7,11 @@ import {
   PayloadRequest,
 } from 'payload/types';
 
-import { isAdmin, isAdminField, isAdminSelfOrParty } from '../access';
+import { hasRole, hasRoleField, hasRoleSelfOrParty, Role } from '../access';
 import GuestList from '../custom/components/GuestList';
 import { Guest, Party } from '../payload-types';
 
+// eslint-disable-next-line import/no-named-as-default-member
 dotenv.config();
 
 const cleanString = (str: string) => str.toLowerCase().replace(/[^a-zA-Z]/g, '');
@@ -186,17 +187,17 @@ const Guests: CollectionConfig = {
   },
   defaultSort: 'sort',
   access: {
-    create: isAdmin,
-    read: isAdminSelfOrParty,
-    update: isAdminSelfOrParty,
-    delete: isAdmin,
+    create: hasRole(Role.Admin),
+    read: hasRoleSelfOrParty(Role.Admin),
+    update: hasRoleSelfOrParty(Role.Admin),
+    delete: hasRole(Role.Admin),
   },
   endpoints: [
     {
       path: '/',
       method: 'post',
       handler: async (req, res) => {
-        if (!isAdmin({ req })) {
+        if (!hasRole(Role.Admin)({ req })) {
           return res.status(401).json({
             message: 'Unauthorized',
           });
@@ -223,7 +224,7 @@ const Guests: CollectionConfig = {
       path: '/reorder',
       method: 'patch',
       handler: async (req, res) => {
-        if (!isAdmin({ req })) {
+        if (!hasRole(Role.Admin)({ req })) {
           return res.status(401).json({
             message: 'Unauthorized',
           });
@@ -258,9 +259,8 @@ const Guests: CollectionConfig = {
       label: 'Email',
       type: 'email',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -284,9 +284,8 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'parties',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -295,9 +294,8 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'sides',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -306,9 +304,8 @@ const Guests: CollectionConfig = {
       type: 'relationship',
       relationTo: 'relations',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -316,9 +313,8 @@ const Guests: CollectionConfig = {
       label: 'Phone',
       type: 'text',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -326,9 +322,8 @@ const Guests: CollectionConfig = {
       label: 'Address',
       type: 'textarea',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -355,9 +350,8 @@ const Guests: CollectionConfig = {
         position: 'sidebar',
       },
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
   ],

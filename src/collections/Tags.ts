@@ -1,14 +1,14 @@
 import { CollectionConfig } from 'payload/types';
 
-import { isAdmin } from '../access';
+import { hasRole, Role } from '../access';
 
 const Tags: CollectionConfig = {
   slug: 'tags',
   access: {
-    create: isAdmin,
-    read: isAdmin,
-    update: isAdmin,
-    delete: isAdmin,
+    create: hasRole(Role.Admin),
+    read: hasRole(Role.Admin),
+    update: hasRole(Role.Admin),
+    delete: hasRole(Role.Admin),
   },
   admin: {
     useAsTitle: 'value',
