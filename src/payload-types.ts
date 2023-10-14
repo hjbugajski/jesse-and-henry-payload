@@ -16,7 +16,7 @@ export interface Config {
     users: User;
   };
   globals: {
-    navMenu: NavMenu;
+    navigation: Navigation;
   };
 }
 export interface Guest {
@@ -195,7 +195,7 @@ export interface User {
   lockUntil?: string;
   password?: string;
 }
-export interface NavMenu {
+export interface Navigation {
   id: string;
   links?: {
     text: string;

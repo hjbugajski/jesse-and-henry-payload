@@ -23,8 +23,8 @@ type Query {
   docAccessUser(id: String!): usersDocAccess
   meUser: usersMe
   initializedUser: Boolean
-  NavMenu(draft: Boolean): NavMenu
-  docAccessNavMenu: navMenuDocAccess
+  Navigation(draft: Boolean): Navigation
+  docAccessNavigation: navigationDocAccess
   Preference(key: String): Preference
   Access: Access
 }
@@ -2722,286 +2722,286 @@ type usersMe {
   collection: String
 }
 
-type NavMenu {
-  links: [NavMenu_Links!]
+type Navigation {
+  links: [Navigation_Links!]
   updatedAt: DateTime
   createdAt: DateTime
 }
 
-type NavMenu_Links {
+type Navigation_Links {
   text: String
   icon: String
-  type: NavMenu_Links_type
+  type: Navigation_Links_type
   reference: Page
   url: String
   newTab: Boolean
   id: String
 }
 
-enum NavMenu_Links_type {
+enum Navigation_Links_type {
   reference
   external
 }
 
-type navMenuDocAccess {
-  fields: NavMenuDocAccessFields
-  read: NavMenuReadDocAccess
-  update: NavMenuUpdateDocAccess
+type navigationDocAccess {
+  fields: NavigationDocAccessFields
+  read: NavigationReadDocAccess
+  update: NavigationUpdateDocAccess
 }
 
-type NavMenuDocAccessFields {
-  links: NavMenuDocAccessFields_links
-  updatedAt: NavMenuDocAccessFields_updatedAt
-  createdAt: NavMenuDocAccessFields_createdAt
+type NavigationDocAccessFields {
+  links: NavigationDocAccessFields_links
+  updatedAt: NavigationDocAccessFields_updatedAt
+  createdAt: NavigationDocAccessFields_createdAt
 }
 
-type NavMenuDocAccessFields_links {
-  create: NavMenuDocAccessFields_links_Create
-  read: NavMenuDocAccessFields_links_Read
-  update: NavMenuDocAccessFields_links_Update
-  delete: NavMenuDocAccessFields_links_Delete
-  fields: NavMenuDocAccessFields_links_Fields
+type NavigationDocAccessFields_links {
+  create: NavigationDocAccessFields_links_Create
+  read: NavigationDocAccessFields_links_Read
+  update: NavigationDocAccessFields_links_Update
+  delete: NavigationDocAccessFields_links_Delete
+  fields: NavigationDocAccessFields_links_Fields
 }
 
-type NavMenuDocAccessFields_links_Create {
+type NavigationDocAccessFields_links_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Read {
+type NavigationDocAccessFields_links_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Update {
+type NavigationDocAccessFields_links_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Delete {
+type NavigationDocAccessFields_links_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Fields {
-  text: NavMenuDocAccessFields_links_text
-  icon: NavMenuDocAccessFields_links_icon
-  type: NavMenuDocAccessFields_links_type
-  reference: NavMenuDocAccessFields_links_reference
-  url: NavMenuDocAccessFields_links_url
-  newTab: NavMenuDocAccessFields_links_newTab
-  id: NavMenuDocAccessFields_links_id
+type NavigationDocAccessFields_links_Fields {
+  text: NavigationDocAccessFields_links_text
+  icon: NavigationDocAccessFields_links_icon
+  type: NavigationDocAccessFields_links_type
+  reference: NavigationDocAccessFields_links_reference
+  url: NavigationDocAccessFields_links_url
+  newTab: NavigationDocAccessFields_links_newTab
+  id: NavigationDocAccessFields_links_id
 }
 
-type NavMenuDocAccessFields_links_text {
-  create: NavMenuDocAccessFields_links_text_Create
-  read: NavMenuDocAccessFields_links_text_Read
-  update: NavMenuDocAccessFields_links_text_Update
-  delete: NavMenuDocAccessFields_links_text_Delete
+type NavigationDocAccessFields_links_text {
+  create: NavigationDocAccessFields_links_text_Create
+  read: NavigationDocAccessFields_links_text_Read
+  update: NavigationDocAccessFields_links_text_Update
+  delete: NavigationDocAccessFields_links_text_Delete
 }
 
-type NavMenuDocAccessFields_links_text_Create {
+type NavigationDocAccessFields_links_text_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_text_Read {
+type NavigationDocAccessFields_links_text_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_text_Update {
+type NavigationDocAccessFields_links_text_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_text_Delete {
+type NavigationDocAccessFields_links_text_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_icon {
-  create: NavMenuDocAccessFields_links_icon_Create
-  read: NavMenuDocAccessFields_links_icon_Read
-  update: NavMenuDocAccessFields_links_icon_Update
-  delete: NavMenuDocAccessFields_links_icon_Delete
+type NavigationDocAccessFields_links_icon {
+  create: NavigationDocAccessFields_links_icon_Create
+  read: NavigationDocAccessFields_links_icon_Read
+  update: NavigationDocAccessFields_links_icon_Update
+  delete: NavigationDocAccessFields_links_icon_Delete
 }
 
-type NavMenuDocAccessFields_links_icon_Create {
+type NavigationDocAccessFields_links_icon_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_icon_Read {
+type NavigationDocAccessFields_links_icon_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_icon_Update {
+type NavigationDocAccessFields_links_icon_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_icon_Delete {
+type NavigationDocAccessFields_links_icon_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_type {
-  create: NavMenuDocAccessFields_links_type_Create
-  read: NavMenuDocAccessFields_links_type_Read
-  update: NavMenuDocAccessFields_links_type_Update
-  delete: NavMenuDocAccessFields_links_type_Delete
+type NavigationDocAccessFields_links_type {
+  create: NavigationDocAccessFields_links_type_Create
+  read: NavigationDocAccessFields_links_type_Read
+  update: NavigationDocAccessFields_links_type_Update
+  delete: NavigationDocAccessFields_links_type_Delete
 }
 
-type NavMenuDocAccessFields_links_type_Create {
+type NavigationDocAccessFields_links_type_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_type_Read {
+type NavigationDocAccessFields_links_type_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_type_Update {
+type NavigationDocAccessFields_links_type_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_type_Delete {
+type NavigationDocAccessFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_reference {
-  create: NavMenuDocAccessFields_links_reference_Create
-  read: NavMenuDocAccessFields_links_reference_Read
-  update: NavMenuDocAccessFields_links_reference_Update
-  delete: NavMenuDocAccessFields_links_reference_Delete
+type NavigationDocAccessFields_links_reference {
+  create: NavigationDocAccessFields_links_reference_Create
+  read: NavigationDocAccessFields_links_reference_Read
+  update: NavigationDocAccessFields_links_reference_Update
+  delete: NavigationDocAccessFields_links_reference_Delete
 }
 
-type NavMenuDocAccessFields_links_reference_Create {
+type NavigationDocAccessFields_links_reference_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_reference_Read {
+type NavigationDocAccessFields_links_reference_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_reference_Update {
+type NavigationDocAccessFields_links_reference_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_reference_Delete {
+type NavigationDocAccessFields_links_reference_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_url {
-  create: NavMenuDocAccessFields_links_url_Create
-  read: NavMenuDocAccessFields_links_url_Read
-  update: NavMenuDocAccessFields_links_url_Update
-  delete: NavMenuDocAccessFields_links_url_Delete
+type NavigationDocAccessFields_links_url {
+  create: NavigationDocAccessFields_links_url_Create
+  read: NavigationDocAccessFields_links_url_Read
+  update: NavigationDocAccessFields_links_url_Update
+  delete: NavigationDocAccessFields_links_url_Delete
 }
 
-type NavMenuDocAccessFields_links_url_Create {
+type NavigationDocAccessFields_links_url_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_url_Read {
+type NavigationDocAccessFields_links_url_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_url_Update {
+type NavigationDocAccessFields_links_url_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_url_Delete {
+type NavigationDocAccessFields_links_url_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_newTab {
-  create: NavMenuDocAccessFields_links_newTab_Create
-  read: NavMenuDocAccessFields_links_newTab_Read
-  update: NavMenuDocAccessFields_links_newTab_Update
-  delete: NavMenuDocAccessFields_links_newTab_Delete
+type NavigationDocAccessFields_links_newTab {
+  create: NavigationDocAccessFields_links_newTab_Create
+  read: NavigationDocAccessFields_links_newTab_Read
+  update: NavigationDocAccessFields_links_newTab_Update
+  delete: NavigationDocAccessFields_links_newTab_Delete
 }
 
-type NavMenuDocAccessFields_links_newTab_Create {
+type NavigationDocAccessFields_links_newTab_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_newTab_Read {
+type NavigationDocAccessFields_links_newTab_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_newTab_Update {
+type NavigationDocAccessFields_links_newTab_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_newTab_Delete {
+type NavigationDocAccessFields_links_newTab_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id {
-  create: NavMenuDocAccessFields_links_id_Create
-  read: NavMenuDocAccessFields_links_id_Read
-  update: NavMenuDocAccessFields_links_id_Update
-  delete: NavMenuDocAccessFields_links_id_Delete
+type NavigationDocAccessFields_links_id {
+  create: NavigationDocAccessFields_links_id_Create
+  read: NavigationDocAccessFields_links_id_Read
+  update: NavigationDocAccessFields_links_id_Update
+  delete: NavigationDocAccessFields_links_id_Delete
 }
 
-type NavMenuDocAccessFields_links_id_Create {
+type NavigationDocAccessFields_links_id_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Read {
+type NavigationDocAccessFields_links_id_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Update {
+type NavigationDocAccessFields_links_id_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Delete {
+type NavigationDocAccessFields_links_id_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt {
-  create: NavMenuDocAccessFields_updatedAt_Create
-  read: NavMenuDocAccessFields_updatedAt_Read
-  update: NavMenuDocAccessFields_updatedAt_Update
-  delete: NavMenuDocAccessFields_updatedAt_Delete
+type NavigationDocAccessFields_updatedAt {
+  create: NavigationDocAccessFields_updatedAt_Create
+  read: NavigationDocAccessFields_updatedAt_Read
+  update: NavigationDocAccessFields_updatedAt_Update
+  delete: NavigationDocAccessFields_updatedAt_Delete
 }
 
-type NavMenuDocAccessFields_updatedAt_Create {
+type NavigationDocAccessFields_updatedAt_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Read {
+type NavigationDocAccessFields_updatedAt_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Update {
+type NavigationDocAccessFields_updatedAt_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Delete {
+type NavigationDocAccessFields_updatedAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt {
-  create: NavMenuDocAccessFields_createdAt_Create
-  read: NavMenuDocAccessFields_createdAt_Read
-  update: NavMenuDocAccessFields_createdAt_Update
-  delete: NavMenuDocAccessFields_createdAt_Delete
+type NavigationDocAccessFields_createdAt {
+  create: NavigationDocAccessFields_createdAt_Create
+  read: NavigationDocAccessFields_createdAt_Read
+  update: NavigationDocAccessFields_createdAt_Update
+  delete: NavigationDocAccessFields_createdAt_Delete
 }
 
-type NavMenuDocAccessFields_createdAt_Create {
+type NavigationDocAccessFields_createdAt_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Read {
+type NavigationDocAccessFields_createdAt_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Update {
+type NavigationDocAccessFields_createdAt_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Delete {
+type NavigationDocAccessFields_createdAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuReadDocAccess {
+type NavigationReadDocAccess {
   permission: Boolean!
   where: JSONObject
 }
 
-type NavMenuUpdateDocAccess {
+type NavigationUpdateDocAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -3021,7 +3021,7 @@ type Access {
   relations: relationsAccess
   sides: sidesAccess
   users: usersAccess
-  navMenu: navMenuAccess
+  navigation: navigationAccess
 }
 
 type guestsAccess {
@@ -4332,265 +4332,265 @@ type UsersUnlockAccess {
   where: JSONObject
 }
 
-type navMenuAccess {
-  fields: NavMenuFields
-  read: NavMenuReadAccess
-  update: NavMenuUpdateAccess
+type navigationAccess {
+  fields: NavigationFields
+  read: NavigationReadAccess
+  update: NavigationUpdateAccess
 }
 
-type NavMenuFields {
-  links: NavMenuFields_links
-  updatedAt: NavMenuFields_updatedAt
-  createdAt: NavMenuFields_createdAt
+type NavigationFields {
+  links: NavigationFields_links
+  updatedAt: NavigationFields_updatedAt
+  createdAt: NavigationFields_createdAt
 }
 
-type NavMenuFields_links {
-  create: NavMenuFields_links_Create
-  read: NavMenuFields_links_Read
-  update: NavMenuFields_links_Update
-  delete: NavMenuFields_links_Delete
-  fields: NavMenuFields_links_Fields
+type NavigationFields_links {
+  create: NavigationFields_links_Create
+  read: NavigationFields_links_Read
+  update: NavigationFields_links_Update
+  delete: NavigationFields_links_Delete
+  fields: NavigationFields_links_Fields
 }
 
-type NavMenuFields_links_Create {
+type NavigationFields_links_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Read {
+type NavigationFields_links_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Update {
+type NavigationFields_links_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Delete {
+type NavigationFields_links_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Fields {
-  text: NavMenuFields_links_text
-  icon: NavMenuFields_links_icon
-  type: NavMenuFields_links_type
-  reference: NavMenuFields_links_reference
-  url: NavMenuFields_links_url
-  newTab: NavMenuFields_links_newTab
-  id: NavMenuFields_links_id
+type NavigationFields_links_Fields {
+  text: NavigationFields_links_text
+  icon: NavigationFields_links_icon
+  type: NavigationFields_links_type
+  reference: NavigationFields_links_reference
+  url: NavigationFields_links_url
+  newTab: NavigationFields_links_newTab
+  id: NavigationFields_links_id
 }
 
-type NavMenuFields_links_text {
-  create: NavMenuFields_links_text_Create
-  read: NavMenuFields_links_text_Read
-  update: NavMenuFields_links_text_Update
-  delete: NavMenuFields_links_text_Delete
+type NavigationFields_links_text {
+  create: NavigationFields_links_text_Create
+  read: NavigationFields_links_text_Read
+  update: NavigationFields_links_text_Update
+  delete: NavigationFields_links_text_Delete
 }
 
-type NavMenuFields_links_text_Create {
+type NavigationFields_links_text_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_text_Read {
+type NavigationFields_links_text_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_text_Update {
+type NavigationFields_links_text_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_text_Delete {
+type NavigationFields_links_text_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_icon {
-  create: NavMenuFields_links_icon_Create
-  read: NavMenuFields_links_icon_Read
-  update: NavMenuFields_links_icon_Update
-  delete: NavMenuFields_links_icon_Delete
+type NavigationFields_links_icon {
+  create: NavigationFields_links_icon_Create
+  read: NavigationFields_links_icon_Read
+  update: NavigationFields_links_icon_Update
+  delete: NavigationFields_links_icon_Delete
 }
 
-type NavMenuFields_links_icon_Create {
+type NavigationFields_links_icon_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_icon_Read {
+type NavigationFields_links_icon_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_icon_Update {
+type NavigationFields_links_icon_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_icon_Delete {
+type NavigationFields_links_icon_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_type {
-  create: NavMenuFields_links_type_Create
-  read: NavMenuFields_links_type_Read
-  update: NavMenuFields_links_type_Update
-  delete: NavMenuFields_links_type_Delete
+type NavigationFields_links_type {
+  create: NavigationFields_links_type_Create
+  read: NavigationFields_links_type_Read
+  update: NavigationFields_links_type_Update
+  delete: NavigationFields_links_type_Delete
 }
 
-type NavMenuFields_links_type_Create {
+type NavigationFields_links_type_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_type_Read {
+type NavigationFields_links_type_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_type_Update {
+type NavigationFields_links_type_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_type_Delete {
+type NavigationFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_reference {
-  create: NavMenuFields_links_reference_Create
-  read: NavMenuFields_links_reference_Read
-  update: NavMenuFields_links_reference_Update
-  delete: NavMenuFields_links_reference_Delete
+type NavigationFields_links_reference {
+  create: NavigationFields_links_reference_Create
+  read: NavigationFields_links_reference_Read
+  update: NavigationFields_links_reference_Update
+  delete: NavigationFields_links_reference_Delete
 }
 
-type NavMenuFields_links_reference_Create {
+type NavigationFields_links_reference_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_reference_Read {
+type NavigationFields_links_reference_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_reference_Update {
+type NavigationFields_links_reference_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_reference_Delete {
+type NavigationFields_links_reference_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_url {
-  create: NavMenuFields_links_url_Create
-  read: NavMenuFields_links_url_Read
-  update: NavMenuFields_links_url_Update
-  delete: NavMenuFields_links_url_Delete
+type NavigationFields_links_url {
+  create: NavigationFields_links_url_Create
+  read: NavigationFields_links_url_Read
+  update: NavigationFields_links_url_Update
+  delete: NavigationFields_links_url_Delete
 }
 
-type NavMenuFields_links_url_Create {
+type NavigationFields_links_url_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_url_Read {
+type NavigationFields_links_url_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_url_Update {
+type NavigationFields_links_url_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_url_Delete {
+type NavigationFields_links_url_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_newTab {
-  create: NavMenuFields_links_newTab_Create
-  read: NavMenuFields_links_newTab_Read
-  update: NavMenuFields_links_newTab_Update
-  delete: NavMenuFields_links_newTab_Delete
+type NavigationFields_links_newTab {
+  create: NavigationFields_links_newTab_Create
+  read: NavigationFields_links_newTab_Read
+  update: NavigationFields_links_newTab_Update
+  delete: NavigationFields_links_newTab_Delete
 }
 
-type NavMenuFields_links_newTab_Create {
+type NavigationFields_links_newTab_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_newTab_Read {
+type NavigationFields_links_newTab_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_newTab_Update {
+type NavigationFields_links_newTab_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_newTab_Delete {
+type NavigationFields_links_newTab_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id {
-  create: NavMenuFields_links_id_Create
-  read: NavMenuFields_links_id_Read
-  update: NavMenuFields_links_id_Update
-  delete: NavMenuFields_links_id_Delete
+type NavigationFields_links_id {
+  create: NavigationFields_links_id_Create
+  read: NavigationFields_links_id_Read
+  update: NavigationFields_links_id_Update
+  delete: NavigationFields_links_id_Delete
 }
 
-type NavMenuFields_links_id_Create {
+type NavigationFields_links_id_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Read {
+type NavigationFields_links_id_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Update {
+type NavigationFields_links_id_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Delete {
+type NavigationFields_links_id_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt {
-  create: NavMenuFields_updatedAt_Create
-  read: NavMenuFields_updatedAt_Read
-  update: NavMenuFields_updatedAt_Update
-  delete: NavMenuFields_updatedAt_Delete
+type NavigationFields_updatedAt {
+  create: NavigationFields_updatedAt_Create
+  read: NavigationFields_updatedAt_Read
+  update: NavigationFields_updatedAt_Update
+  delete: NavigationFields_updatedAt_Delete
 }
 
-type NavMenuFields_updatedAt_Create {
+type NavigationFields_updatedAt_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Read {
+type NavigationFields_updatedAt_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Update {
+type NavigationFields_updatedAt_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Delete {
+type NavigationFields_updatedAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt {
-  create: NavMenuFields_createdAt_Create
-  read: NavMenuFields_createdAt_Read
-  update: NavMenuFields_createdAt_Update
-  delete: NavMenuFields_createdAt_Delete
+type NavigationFields_createdAt {
+  create: NavigationFields_createdAt_Create
+  read: NavigationFields_createdAt_Read
+  update: NavigationFields_createdAt_Update
+  delete: NavigationFields_createdAt_Delete
 }
 
-type NavMenuFields_createdAt_Create {
+type NavigationFields_createdAt_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Read {
+type NavigationFields_createdAt_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Update {
+type NavigationFields_createdAt_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Delete {
+type NavigationFields_createdAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuReadAccess {
+type NavigationReadAccess {
   permission: Boolean!
   where: JSONObject
 }
 
-type NavMenuUpdateAccess {
+type NavigationUpdateAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -4629,7 +4629,7 @@ type Mutation {
   forgotPasswordUser(email: String!, disableEmail: Boolean, expiration: Int): Boolean!
   resetPasswordUser(token: String, password: String): usersResetPassword
   verifyEmailUser(token: String): Boolean
-  updateNavMenu(data: mutationNavMenuInput!, draft: Boolean): NavMenu
+  updateNavigation(data: mutationNavigationInput!, draft: Boolean): Navigation
   updatePreference(key: String!, value: JSON): Preference
   deletePreference(key: String!): Preference
 }
@@ -4974,13 +4974,13 @@ type usersResetPassword {
   user: User
 }
 
-input mutationNavMenuInput {
-  links: [mutationNavMenu_LinksInput]
+input mutationNavigationInput {
+  links: [mutationNavigation_LinksInput]
   updatedAt: String
   createdAt: String
 }
 
-input mutationNavMenu_LinksInput {
+input mutationNavigation_LinksInput {
   text: String!
   icon: String
   type: String!

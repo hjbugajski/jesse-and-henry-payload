@@ -3,8 +3,8 @@ import { GlobalConfig } from 'payload/types';
 import { hasRole, Role } from '../access';
 import { linkArray } from '../fields';
 
-const NavMenu: GlobalConfig = {
-  slug: 'navMenu',
+const Navigation: GlobalConfig = {
+  slug: 'navigation',
   access: {
     read: () => true,
     update: hasRole(Role.Admin),
@@ -12,4 +12,4 @@ const NavMenu: GlobalConfig = {
   fields: [linkArray],
 };
 
-export default NavMenu;
+export default Navigation;
