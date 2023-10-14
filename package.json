@@ -16,6 +16,7 @@
     "prepare": "husky install",
     "eslint": "eslint . --ignore-path .gitignore",
     "prettier": "prettier --write . --ignore-unknown --ignore-path .gitignore",
+    "stylelint": "npx stylelint '**/*.scss' --ignore-path .gitignore --fix",
     "release": "commit-and-tag-version -s",
     "release:minor": "commit-and-tag-version -s --release-as minor",
     "release:major": "commit-and-tag-version -s --release-as major",
@@ -55,7 +56,12 @@
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "nodemon": "^3.0.1",
+    "postcss": "^8.4.31",
+    "postcss-scss": "^4.0.9",
     "prettier": "^3.0.3",
+    "stylelint": "^15.10.3",
+    "stylelint-config-clean-order": "^5.2.0",
+    "stylelint-config-standard-scss": "^11.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   }
