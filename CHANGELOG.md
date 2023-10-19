@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [6.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v5.0.0...v6.0.0) (2023-10-19)
+
+### ⚠ BREAKING CHANGES
+
+- **fields/link:** rename reference to relationship, add anchor, rel fields
+- **globals:** rename NavMenu to Navigation
+
+### refactor
+
+- **globals:** rename NavMenu to Navigation ([5e371b9](https://github.com/hjbugajski/jesse-and-henry-payload/commit/5e371b97ef519e834debc294b657fdace26e4448))
+
+### Features
+
+- add interface names ([1df71ae](https://github.com/hjbugajski/jesse-and-henry-payload/commit/1df71aec81d27015714e1d2844aac63acb0d4366))
+- **fields/link:** rename reference to relationship, add anchor, rel fields ([c4fa650](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c4fa6505ff7f59666e93b1813ea51f3cce939d27))
+
+### Build
+
+- **deps:** bump postcss from 8.4.30 to 8.4.31 ([dd73b04](https://github.com/hjbugajski/jesse-and-henry-payload/commit/dd73b04113e6090894c2a22a627b3a15c7ae4e09))
+
 ## [5.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v4.0.0...v5.0.0) (2023-09-28)
 
 ### ⚠ BREAKING CHANGES
