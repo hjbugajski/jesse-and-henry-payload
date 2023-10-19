@@ -1,11 +1,16 @@
-import { CollectionConfig } from 'payload/types';
+import { CollectionConfig, FieldHook } from 'payload/types';
 
-import { isAdmin, isProtectedField } from '../access';
+import { hasAuthAndNotProtectedField, hasRole, hasRoleOrPublished, Role } from '../access';
 import { Alert } from '../blocks/Alert';
 import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
 import { Section } from '../blocks/Section';
-import { useSlug } from '../hooks/useSlug';
+
+export const useSlug: FieldHook = ({ operation, siblingData }) => {
+  if (operation === 'create') {
+    return siblingData.name.toLowerCase().replace(/\s+/g, '-');
+  }
+};
 
 const Pages: CollectionConfig = {
   slug: 'pages',
@@ -16,10 +21,10 @@ const Pages: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    create: isAdmin,
-    read: () => true,
-    update: isAdmin,
-    delete: isAdmin,
+    create: hasRole(Role.Admin),
+    read: hasRoleOrPublished(Role.Admin),
+    update: hasRole(Role.Admin),
+    delete: hasRole(Role.Admin),
   },
   fields: [
     {
@@ -46,14 +51,13 @@ const Pages: CollectionConfig = {
       type: 'text',
       required: true,
       access: {
-        read: isProtectedField,
+        read: hasAuthAndNotProtectedField(),
       },
     },
     {
       type: 'tabs',
       tabs: [
         {
-          label: 'Meta',
           name: 'meta',
           fields: [
             {
@@ -69,10 +73,9 @@ const Pages: CollectionConfig = {
           ],
         },
         {
-          label: 'Content',
           name: 'content',
           access: {
-            read: isProtectedField,
+            read: hasAuthAndNotProtectedField(),
           },
           fields: [
             {

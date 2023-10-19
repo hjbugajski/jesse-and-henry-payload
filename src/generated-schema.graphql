@@ -2,8 +2,6 @@ type Query {
   Guest(id: String!, draft: Boolean): Guest
   Guests(where: Guest_where, draft: Boolean, page: Int, limit: Int, sort: String): Guests
   docAccessGuest(id: String!): guestsDocAccess
-  versionGuest(id: String): GuestVersion
-  versionsGuests(where: versionsGuest_where, page: Int, limit: Int, sort: String): versionsGuests
   meGuest: guestsMe
   initializedGuest: Boolean
   Page(id: String!, draft: Boolean): Page
@@ -14,8 +12,6 @@ type Query {
   Party(id: String!, draft: Boolean): Party
   Parties(where: Party_where, draft: Boolean, page: Int, limit: Int, sort: String): Parties
   docAccessParty(id: String!): partiesDocAccess
-  versionParty(id: String): PartyVersion
-  versionsParties(where: versionsParty_where, page: Int, limit: Int, sort: String): versionsParties
   Relation(id: String!, draft: Boolean): Relation
   Relations(where: Relation_where, draft: Boolean, page: Int, limit: Int, sort: String): Relations
   docAccessRelation(id: String!): relationsDocAccess
@@ -27,8 +23,8 @@ type Query {
   docAccessUser(id: String!): usersDocAccess
   meUser: usersMe
   initializedUser: Boolean
-  NavMenu(draft: Boolean): NavMenu
-  docAccessNavMenu: navMenuDocAccess
+  Navigation(draft: Boolean): Navigation
+  docAccessNavigation: navigationDocAccess
   Preference(key: String): Preference
   Access: Access
 }
@@ -405,7 +401,6 @@ type guestsDocAccess {
   update: GuestsUpdateDocAccess
   delete: GuestsDeleteDocAccess
   unlock: GuestsUnlockDocAccess
-  readVersions: GuestsReadVersionsDocAccess
 }
 
 type GuestsDocAccessFields {
@@ -825,442 +820,6 @@ type GuestsUnlockDocAccess {
   where: JSONObject
 }
 
-type GuestsReadVersionsDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type GuestVersion {
-  parent: Guest
-  version: GuestVersion_Version
-  createdAt: DateTime
-  updatedAt: DateTime
-  id: String
-}
-
-type GuestVersion_Version {
-  first: String
-  middle: String
-  last: String
-  party: Party
-  side: Side
-  relation: Relation
-  phone: String
-  address: String
-  rsvpWelcomeParty: GuestVersion_Version_rsvpWelcomeParty
-  rsvpWedding: GuestVersion_Version_rsvpWedding
-  rsvpBrunch: GuestVersion_Version_rsvpBrunch
-  sort: Float
-  updatedAt: DateTime
-  createdAt: DateTime
-  email: EmailAddress
-  resetPasswordToken: String
-  resetPasswordExpiration: DateTime
-  salt: String
-  hash: String
-  loginAttempts: Float
-  lockUntil: DateTime
-  password: String
-}
-
-enum GuestVersion_Version_rsvpWelcomeParty {
-  accept
-  decline
-}
-
-enum GuestVersion_Version_rsvpWedding {
-  accept
-  decline
-}
-
-enum GuestVersion_Version_rsvpBrunch {
-  accept
-  decline
-}
-
-type versionsGuests {
-  docs: [GuestVersion]
-  totalDocs: Int
-  offset: Int
-  limit: Int
-  totalPages: Int
-  page: Int
-  pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
-  prevPage: Int
-  nextPage: Int
-}
-
-input versionsGuest_where {
-  parent: versionsGuest_parent_operator
-  version__first: versionsGuest_version__first_operator
-  version__middle: versionsGuest_version__middle_operator
-  version__last: versionsGuest_version__last_operator
-  version__party: versionsGuest_version__party_operator
-  version__side: versionsGuest_version__side_operator
-  version__relation: versionsGuest_version__relation_operator
-  version__phone: versionsGuest_version__phone_operator
-  version__address: versionsGuest_version__address_operator
-  version__rsvpWelcomeParty: versionsGuest_version__rsvpWelcomeParty_operator
-  version__rsvpWedding: versionsGuest_version__rsvpWedding_operator
-  version__rsvpBrunch: versionsGuest_version__rsvpBrunch_operator
-  version__sort: versionsGuest_version__sort_operator
-  version__updatedAt: versionsGuest_version__updatedAt_operator
-  version__createdAt: versionsGuest_version__createdAt_operator
-  version__email: versionsGuest_version__email_operator
-  version__resetPasswordToken: versionsGuest_version__resetPasswordToken_operator
-  version__resetPasswordExpiration: versionsGuest_version__resetPasswordExpiration_operator
-  version__salt: versionsGuest_version__salt_operator
-  version__hash: versionsGuest_version__hash_operator
-  version__loginAttempts: versionsGuest_version__loginAttempts_operator
-  version__lockUntil: versionsGuest_version__lockUntil_operator
-  version__password: versionsGuest_version__password_operator
-  createdAt: versionsGuest_createdAt_operator
-  updatedAt: versionsGuest_updatedAt_operator
-  id: versionsGuest_id_operator
-  OR: [versionsGuest_where_or]
-  AND: [versionsGuest_where_and]
-}
-
-input versionsGuest_parent_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__first_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__middle_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__last_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__party_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__side_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__relation_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__phone_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__address_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  exists: Boolean
-}
-
-input versionsGuest_version__rsvpWelcomeParty_operator {
-  equals: versionsGuest_version__rsvpWelcomeParty_Input
-  not_equals: versionsGuest_version__rsvpWelcomeParty_Input
-  in: [versionsGuest_version__rsvpWelcomeParty_Input]
-  not_in: [versionsGuest_version__rsvpWelcomeParty_Input]
-  all: [versionsGuest_version__rsvpWelcomeParty_Input]
-  exists: Boolean
-}
-
-enum versionsGuest_version__rsvpWelcomeParty_Input {
-  accept
-  decline
-}
-
-input versionsGuest_version__rsvpWedding_operator {
-  equals: versionsGuest_version__rsvpWedding_Input
-  not_equals: versionsGuest_version__rsvpWedding_Input
-  in: [versionsGuest_version__rsvpWedding_Input]
-  not_in: [versionsGuest_version__rsvpWedding_Input]
-  all: [versionsGuest_version__rsvpWedding_Input]
-  exists: Boolean
-}
-
-enum versionsGuest_version__rsvpWedding_Input {
-  accept
-  decline
-}
-
-input versionsGuest_version__rsvpBrunch_operator {
-  equals: versionsGuest_version__rsvpBrunch_Input
-  not_equals: versionsGuest_version__rsvpBrunch_Input
-  in: [versionsGuest_version__rsvpBrunch_Input]
-  not_in: [versionsGuest_version__rsvpBrunch_Input]
-  all: [versionsGuest_version__rsvpBrunch_Input]
-  exists: Boolean
-}
-
-enum versionsGuest_version__rsvpBrunch_Input {
-  accept
-  decline
-}
-
-input versionsGuest_version__sort_operator {
-  equals: Float
-  not_equals: Float
-  greater_than_equal: Float
-  greater_than: Float
-  less_than_equal: Float
-  less_than: Float
-  exists: Boolean
-}
-
-input versionsGuest_version__updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_version__createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_version__email_operator {
-  equals: EmailAddress
-  not_equals: EmailAddress
-  like: EmailAddress
-  contains: EmailAddress
-  in: [EmailAddress]
-  not_in: [EmailAddress]
-  all: [EmailAddress]
-}
-
-input versionsGuest_version__resetPasswordToken_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__resetPasswordExpiration_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_version__salt_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__hash_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_version__loginAttempts_operator {
-  equals: Float
-  not_equals: Float
-  greater_than_equal: Float
-  greater_than: Float
-  less_than_equal: Float
-  less_than: Float
-  exists: Boolean
-}
-
-input versionsGuest_version__lockUntil_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_version__password_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsGuest_createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsGuest_id_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsGuest_where_or {
-  parent: versionsGuest_parent_operator
-  version__first: versionsGuest_version__first_operator
-  version__middle: versionsGuest_version__middle_operator
-  version__last: versionsGuest_version__last_operator
-  version__party: versionsGuest_version__party_operator
-  version__side: versionsGuest_version__side_operator
-  version__relation: versionsGuest_version__relation_operator
-  version__phone: versionsGuest_version__phone_operator
-  version__address: versionsGuest_version__address_operator
-  version__rsvpWelcomeParty: versionsGuest_version__rsvpWelcomeParty_operator
-  version__rsvpWedding: versionsGuest_version__rsvpWedding_operator
-  version__rsvpBrunch: versionsGuest_version__rsvpBrunch_operator
-  version__sort: versionsGuest_version__sort_operator
-  version__updatedAt: versionsGuest_version__updatedAt_operator
-  version__createdAt: versionsGuest_version__createdAt_operator
-  version__email: versionsGuest_version__email_operator
-  version__resetPasswordToken: versionsGuest_version__resetPasswordToken_operator
-  version__resetPasswordExpiration: versionsGuest_version__resetPasswordExpiration_operator
-  version__salt: versionsGuest_version__salt_operator
-  version__hash: versionsGuest_version__hash_operator
-  version__loginAttempts: versionsGuest_version__loginAttempts_operator
-  version__lockUntil: versionsGuest_version__lockUntil_operator
-  version__password: versionsGuest_version__password_operator
-  createdAt: versionsGuest_createdAt_operator
-  updatedAt: versionsGuest_updatedAt_operator
-  id: versionsGuest_id_operator
-}
-
-input versionsGuest_where_and {
-  parent: versionsGuest_parent_operator
-  version__first: versionsGuest_version__first_operator
-  version__middle: versionsGuest_version__middle_operator
-  version__last: versionsGuest_version__last_operator
-  version__party: versionsGuest_version__party_operator
-  version__side: versionsGuest_version__side_operator
-  version__relation: versionsGuest_version__relation_operator
-  version__phone: versionsGuest_version__phone_operator
-  version__address: versionsGuest_version__address_operator
-  version__rsvpWelcomeParty: versionsGuest_version__rsvpWelcomeParty_operator
-  version__rsvpWedding: versionsGuest_version__rsvpWedding_operator
-  version__rsvpBrunch: versionsGuest_version__rsvpBrunch_operator
-  version__sort: versionsGuest_version__sort_operator
-  version__updatedAt: versionsGuest_version__updatedAt_operator
-  version__createdAt: versionsGuest_version__createdAt_operator
-  version__email: versionsGuest_version__email_operator
-  version__resetPasswordToken: versionsGuest_version__resetPasswordToken_operator
-  version__resetPasswordExpiration: versionsGuest_version__resetPasswordExpiration_operator
-  version__salt: versionsGuest_version__salt_operator
-  version__hash: versionsGuest_version__hash_operator
-  version__loginAttempts: versionsGuest_version__loginAttempts_operator
-  version__lockUntil: versionsGuest_version__lockUntil_operator
-  version__password: versionsGuest_version__password_operator
-  createdAt: versionsGuest_createdAt_operator
-  updatedAt: versionsGuest_updatedAt_operator
-  id: versionsGuest_id_operator
-}
-
 type guestsMe {
   token: String
   user: Guest
@@ -1289,16 +848,16 @@ type Page_Content {
   layout: [Page_Content_Layout!]
 }
 
-union Page_Content_Layout = Alert | Content | Hero | Section
+union Page_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
 
-type Alert {
+type AlertBlock {
   title: String
   icon: String
   content(depth: Int): JSON
-  color: Alert_color
+  color: AlertBlock_color
   action: Boolean
-  link: Alert_Link
-  width: Alert_width
+  link: LinkGroupField
+  width: AlertBlock_width
   id: String
   blockName: String
   blockType: String
@@ -1309,7 +868,7 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-enum Alert_color {
+enum AlertBlock_color {
   neutral
   neutral_variant
   primary
@@ -1318,39 +877,45 @@ enum Alert_color {
   danger
 }
 
-type Alert_Link {
-  type: Alert_Link_type!
-  newTab: Boolean
+type LinkGroupField {
   text: String!
-  reference: Page
-  url: String
   icon: String
+  type: LinkGroupField_type!
+  relationship: Page
+  url: String
+  anchor: String
+  rel: [LinkGroupField_rel!]
+  newTab: Boolean
 }
 
-enum Alert_Link_type {
-  reference
+enum LinkGroupField_type {
+  relationship
   external
 }
 
-enum Alert_width {
+enum LinkGroupField_rel {
+  noreferrer
+}
+
+enum AlertBlock_width {
   full
   max
 }
 
-type Content {
-  width: Content_width
+type ContentBlock {
+  width: ContentBlock_width
   content(depth: Int): JSON
   id: String
   blockName: String
   blockType: String
 }
 
-enum Content_width {
+enum ContentBlock_width {
   full
   max
 }
 
-type Hero {
+type HeroBlock {
   titleOne: String
   titleTwo: String
   subtitle: String
@@ -1359,54 +924,40 @@ type Hero {
   blockType: String
 }
 
-type Section {
+type SectionBlock {
   anchorId: String
   title: String
   description(depth: Int): JSON
-  border: Section_border
-  layout: [Section_Layout!]
+  border: SectionBlock_border
+  layout: [SectionBlock_Layout!]
   id: String
   blockName: String
   blockType: String
 }
 
-enum Section_border {
+enum SectionBlock_border {
   none
   left
   right
 }
 
-union Section_Layout = Alert | ButtonLink | Content
+union SectionBlock_Layout = AlertBlock | ButtonLinkBlock | ContentBlock
 
-type ButtonLink {
-  color: ButtonLink_color
-  link: ButtonLink_Link
+type ButtonLinkBlock {
+  color: ButtonLinkBlock_color
+  link: LinkGroupField
   id: String
   blockName: String
   blockType: String
 }
 
-enum ButtonLink_color {
+enum ButtonLinkBlock_color {
   neutral
   neutral_variant
   primary
   secondary
   tertiary
   danger
-}
-
-type ButtonLink_Link {
-  type: ButtonLink_Link_type!
-  newTab: Boolean
-  text: String!
-  reference: Page
-  url: String
-  icon: String
-}
-
-enum ButtonLink_Link_type {
-  reference
-  external
 }
 
 enum Page__status {
@@ -1839,7 +1390,7 @@ type PageVersion_Version_Content {
   layout: [PageVersion_Version_Content_Layout!]
 }
 
-union PageVersion_Version_Content_Layout = Alert | Content | Hero | Section
+union PageVersion_Version_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
 
 enum PageVersion_Version__status {
   draft
@@ -2176,7 +1727,6 @@ type partiesDocAccess {
   read: PartiesReadDocAccess
   update: PartiesUpdateDocAccess
   delete: PartiesDeleteDocAccess
-  readVersions: PartiesReadVersionsDocAccess
 }
 
 type PartiesDocAccessFields {
@@ -2344,213 +1894,6 @@ type PartiesUpdateDocAccess {
 type PartiesDeleteDocAccess {
   permission: Boolean!
   where: JSONObject
-}
-
-type PartiesReadVersionsDocAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type PartyVersion {
-  parent: Party
-  version: PartyVersion_Version
-  createdAt: DateTime
-  updatedAt: DateTime
-  id: String
-}
-
-type PartyVersion_Version {
-  value: String
-  color: PartyVersion_Version_color
-  sort: Float
-  code: String
-  updatedAt: DateTime
-  createdAt: DateTime
-}
-
-enum PartyVersion_Version_color {
-  green
-  teal
-  cyan
-  blue
-  violet
-  purple
-  plum
-  pink
-  red
-  orange
-}
-
-type versionsParties {
-  docs: [PartyVersion]
-  totalDocs: Int
-  offset: Int
-  limit: Int
-  totalPages: Int
-  page: Int
-  pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
-  prevPage: Int
-  nextPage: Int
-}
-
-input versionsParty_where {
-  parent: versionsParty_parent_operator
-  version__value: versionsParty_version__value_operator
-  version__color: versionsParty_version__color_operator
-  version__sort: versionsParty_version__sort_operator
-  version__code: versionsParty_version__code_operator
-  version__updatedAt: versionsParty_version__updatedAt_operator
-  version__createdAt: versionsParty_version__createdAt_operator
-  createdAt: versionsParty_createdAt_operator
-  updatedAt: versionsParty_updatedAt_operator
-  id: versionsParty_id_operator
-  OR: [versionsParty_where_or]
-  AND: [versionsParty_where_and]
-}
-
-input versionsParty_parent_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsParty_version__value_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsParty_version__color_operator {
-  equals: versionsParty_version__color_Input
-  not_equals: versionsParty_version__color_Input
-  in: [versionsParty_version__color_Input]
-  not_in: [versionsParty_version__color_Input]
-  all: [versionsParty_version__color_Input]
-  exists: Boolean
-}
-
-enum versionsParty_version__color_Input {
-  green
-  teal
-  cyan
-  blue
-  violet
-  purple
-  plum
-  pink
-  red
-  orange
-}
-
-input versionsParty_version__sort_operator {
-  equals: Float
-  not_equals: Float
-  greater_than_equal: Float
-  greater_than: Float
-  less_than_equal: Float
-  less_than: Float
-  exists: Boolean
-}
-
-input versionsParty_version__code_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsParty_version__updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsParty_version__createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsParty_createdAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsParty_updatedAt_operator {
-  equals: DateTime
-  not_equals: DateTime
-  greater_than_equal: DateTime
-  greater_than: DateTime
-  less_than_equal: DateTime
-  less_than: DateTime
-  like: DateTime
-  exists: Boolean
-}
-
-input versionsParty_id_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-  exists: Boolean
-}
-
-input versionsParty_where_or {
-  parent: versionsParty_parent_operator
-  version__value: versionsParty_version__value_operator
-  version__color: versionsParty_version__color_operator
-  version__sort: versionsParty_version__sort_operator
-  version__code: versionsParty_version__code_operator
-  version__updatedAt: versionsParty_version__updatedAt_operator
-  version__createdAt: versionsParty_version__createdAt_operator
-  createdAt: versionsParty_createdAt_operator
-  updatedAt: versionsParty_updatedAt_operator
-  id: versionsParty_id_operator
-}
-
-input versionsParty_where_and {
-  parent: versionsParty_parent_operator
-  version__value: versionsParty_version__value_operator
-  version__color: versionsParty_version__color_operator
-  version__sort: versionsParty_version__sort_operator
-  version__code: versionsParty_version__code_operator
-  version__updatedAt: versionsParty_version__updatedAt_operator
-  version__createdAt: versionsParty_version__createdAt_operator
-  createdAt: versionsParty_createdAt_operator
-  updatedAt: versionsParty_updatedAt_operator
-  id: versionsParty_id_operator
 }
 
 type Relations {
@@ -3371,318 +2714,340 @@ type usersMe {
   collection: String
 }
 
-type NavMenu {
-  links: [NavMenu_Links!]
+type Navigation {
+  links: [LinkArrayField!]
   updatedAt: DateTime
   createdAt: DateTime
 }
 
-type NavMenu_Links {
-  link: NavMenu_Links_Link
+type LinkArrayField {
+  text: String
+  icon: String
+  type: LinkArrayField_type
+  relationship: Page
+  url: String
+  anchor: String
+  rel: [LinkArrayField_rel!]
+  newTab: Boolean
   id: String
 }
 
-type NavMenu_Links_Link {
-  type: NavMenu_Links_Link_type!
-  newTab: Boolean
-  text: String!
-  reference: Page
-  url: String
-  icon: String
-}
-
-enum NavMenu_Links_Link_type {
-  reference
+enum LinkArrayField_type {
+  relationship
   external
 }
 
-type navMenuDocAccess {
-  fields: NavMenuDocAccessFields
-  read: NavMenuReadDocAccess
-  update: NavMenuUpdateDocAccess
+enum LinkArrayField_rel {
+  noreferrer
 }
 
-type NavMenuDocAccessFields {
-  links: NavMenuDocAccessFields_links
-  updatedAt: NavMenuDocAccessFields_updatedAt
-  createdAt: NavMenuDocAccessFields_createdAt
+type navigationDocAccess {
+  fields: NavigationDocAccessFields
+  read: NavigationReadDocAccess
+  update: NavigationUpdateDocAccess
 }
 
-type NavMenuDocAccessFields_links {
-  create: NavMenuDocAccessFields_links_Create
-  read: NavMenuDocAccessFields_links_Read
-  update: NavMenuDocAccessFields_links_Update
-  delete: NavMenuDocAccessFields_links_Delete
-  fields: NavMenuDocAccessFields_links_Fields
+type NavigationDocAccessFields {
+  links: NavigationDocAccessFields_links
+  updatedAt: NavigationDocAccessFields_updatedAt
+  createdAt: NavigationDocAccessFields_createdAt
 }
 
-type NavMenuDocAccessFields_links_Create {
+type NavigationDocAccessFields_links {
+  create: NavigationDocAccessFields_links_Create
+  read: NavigationDocAccessFields_links_Read
+  update: NavigationDocAccessFields_links_Update
+  delete: NavigationDocAccessFields_links_Delete
+  fields: NavigationDocAccessFields_links_Fields
+}
+
+type NavigationDocAccessFields_links_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Read {
+type NavigationDocAccessFields_links_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Update {
+type NavigationDocAccessFields_links_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Delete {
+type NavigationDocAccessFields_links_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_Fields {
-  link: NavMenuDocAccessFields_links_link
-  id: NavMenuDocAccessFields_links_id
+type NavigationDocAccessFields_links_Fields {
+  text: NavigationDocAccessFields_links_text
+  icon: NavigationDocAccessFields_links_icon
+  type: NavigationDocAccessFields_links_type
+  relationship: NavigationDocAccessFields_links_relationship
+  url: NavigationDocAccessFields_links_url
+  anchor: NavigationDocAccessFields_links_anchor
+  rel: NavigationDocAccessFields_links_rel
+  newTab: NavigationDocAccessFields_links_newTab
+  id: NavigationDocAccessFields_links_id
 }
 
-type NavMenuDocAccessFields_links_link {
-  create: NavMenuDocAccessFields_links_link_Create
-  read: NavMenuDocAccessFields_links_link_Read
-  update: NavMenuDocAccessFields_links_link_Update
-  delete: NavMenuDocAccessFields_links_link_Delete
-  fields: NavMenuDocAccessFields_links_link_Fields
+type NavigationDocAccessFields_links_text {
+  create: NavigationDocAccessFields_links_text_Create
+  read: NavigationDocAccessFields_links_text_Read
+  update: NavigationDocAccessFields_links_text_Update
+  delete: NavigationDocAccessFields_links_text_Delete
 }
 
-type NavMenuDocAccessFields_links_link_Create {
+type NavigationDocAccessFields_links_text_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_Read {
+type NavigationDocAccessFields_links_text_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_Update {
+type NavigationDocAccessFields_links_text_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_Delete {
+type NavigationDocAccessFields_links_text_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_Fields {
-  type: NavMenuDocAccessFields_links_link_type
-  newTab: NavMenuDocAccessFields_links_link_newTab
-  text: NavMenuDocAccessFields_links_link_text
-  reference: NavMenuDocAccessFields_links_link_reference
-  url: NavMenuDocAccessFields_links_link_url
-  icon: NavMenuDocAccessFields_links_link_icon
+type NavigationDocAccessFields_links_icon {
+  create: NavigationDocAccessFields_links_icon_Create
+  read: NavigationDocAccessFields_links_icon_Read
+  update: NavigationDocAccessFields_links_icon_Update
+  delete: NavigationDocAccessFields_links_icon_Delete
 }
 
-type NavMenuDocAccessFields_links_link_type {
-  create: NavMenuDocAccessFields_links_link_type_Create
-  read: NavMenuDocAccessFields_links_link_type_Read
-  update: NavMenuDocAccessFields_links_link_type_Update
-  delete: NavMenuDocAccessFields_links_link_type_Delete
-}
-
-type NavMenuDocAccessFields_links_link_type_Create {
+type NavigationDocAccessFields_links_icon_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_type_Read {
+type NavigationDocAccessFields_links_icon_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_type_Update {
+type NavigationDocAccessFields_links_icon_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_type_Delete {
+type NavigationDocAccessFields_links_icon_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_newTab {
-  create: NavMenuDocAccessFields_links_link_newTab_Create
-  read: NavMenuDocAccessFields_links_link_newTab_Read
-  update: NavMenuDocAccessFields_links_link_newTab_Update
-  delete: NavMenuDocAccessFields_links_link_newTab_Delete
+type NavigationDocAccessFields_links_type {
+  create: NavigationDocAccessFields_links_type_Create
+  read: NavigationDocAccessFields_links_type_Read
+  update: NavigationDocAccessFields_links_type_Update
+  delete: NavigationDocAccessFields_links_type_Delete
 }
 
-type NavMenuDocAccessFields_links_link_newTab_Create {
+type NavigationDocAccessFields_links_type_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_newTab_Read {
+type NavigationDocAccessFields_links_type_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_newTab_Update {
+type NavigationDocAccessFields_links_type_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_newTab_Delete {
+type NavigationDocAccessFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_text {
-  create: NavMenuDocAccessFields_links_link_text_Create
-  read: NavMenuDocAccessFields_links_link_text_Read
-  update: NavMenuDocAccessFields_links_link_text_Update
-  delete: NavMenuDocAccessFields_links_link_text_Delete
+type NavigationDocAccessFields_links_relationship {
+  create: NavigationDocAccessFields_links_relationship_Create
+  read: NavigationDocAccessFields_links_relationship_Read
+  update: NavigationDocAccessFields_links_relationship_Update
+  delete: NavigationDocAccessFields_links_relationship_Delete
 }
 
-type NavMenuDocAccessFields_links_link_text_Create {
+type NavigationDocAccessFields_links_relationship_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_text_Read {
+type NavigationDocAccessFields_links_relationship_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_text_Update {
+type NavigationDocAccessFields_links_relationship_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_text_Delete {
+type NavigationDocAccessFields_links_relationship_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_reference {
-  create: NavMenuDocAccessFields_links_link_reference_Create
-  read: NavMenuDocAccessFields_links_link_reference_Read
-  update: NavMenuDocAccessFields_links_link_reference_Update
-  delete: NavMenuDocAccessFields_links_link_reference_Delete
+type NavigationDocAccessFields_links_url {
+  create: NavigationDocAccessFields_links_url_Create
+  read: NavigationDocAccessFields_links_url_Read
+  update: NavigationDocAccessFields_links_url_Update
+  delete: NavigationDocAccessFields_links_url_Delete
 }
 
-type NavMenuDocAccessFields_links_link_reference_Create {
+type NavigationDocAccessFields_links_url_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_reference_Read {
+type NavigationDocAccessFields_links_url_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_reference_Update {
+type NavigationDocAccessFields_links_url_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_reference_Delete {
+type NavigationDocAccessFields_links_url_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_url {
-  create: NavMenuDocAccessFields_links_link_url_Create
-  read: NavMenuDocAccessFields_links_link_url_Read
-  update: NavMenuDocAccessFields_links_link_url_Update
-  delete: NavMenuDocAccessFields_links_link_url_Delete
+type NavigationDocAccessFields_links_anchor {
+  create: NavigationDocAccessFields_links_anchor_Create
+  read: NavigationDocAccessFields_links_anchor_Read
+  update: NavigationDocAccessFields_links_anchor_Update
+  delete: NavigationDocAccessFields_links_anchor_Delete
 }
 
-type NavMenuDocAccessFields_links_link_url_Create {
+type NavigationDocAccessFields_links_anchor_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_url_Read {
+type NavigationDocAccessFields_links_anchor_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_url_Update {
+type NavigationDocAccessFields_links_anchor_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_url_Delete {
+type NavigationDocAccessFields_links_anchor_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_icon {
-  create: NavMenuDocAccessFields_links_link_icon_Create
-  read: NavMenuDocAccessFields_links_link_icon_Read
-  update: NavMenuDocAccessFields_links_link_icon_Update
-  delete: NavMenuDocAccessFields_links_link_icon_Delete
+type NavigationDocAccessFields_links_rel {
+  create: NavigationDocAccessFields_links_rel_Create
+  read: NavigationDocAccessFields_links_rel_Read
+  update: NavigationDocAccessFields_links_rel_Update
+  delete: NavigationDocAccessFields_links_rel_Delete
 }
 
-type NavMenuDocAccessFields_links_link_icon_Create {
+type NavigationDocAccessFields_links_rel_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_icon_Read {
+type NavigationDocAccessFields_links_rel_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_icon_Update {
+type NavigationDocAccessFields_links_rel_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_link_icon_Delete {
+type NavigationDocAccessFields_links_rel_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id {
-  create: NavMenuDocAccessFields_links_id_Create
-  read: NavMenuDocAccessFields_links_id_Read
-  update: NavMenuDocAccessFields_links_id_Update
-  delete: NavMenuDocAccessFields_links_id_Delete
+type NavigationDocAccessFields_links_newTab {
+  create: NavigationDocAccessFields_links_newTab_Create
+  read: NavigationDocAccessFields_links_newTab_Read
+  update: NavigationDocAccessFields_links_newTab_Update
+  delete: NavigationDocAccessFields_links_newTab_Delete
 }
 
-type NavMenuDocAccessFields_links_id_Create {
+type NavigationDocAccessFields_links_newTab_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Read {
+type NavigationDocAccessFields_links_newTab_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Update {
+type NavigationDocAccessFields_links_newTab_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_links_id_Delete {
+type NavigationDocAccessFields_links_newTab_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt {
-  create: NavMenuDocAccessFields_updatedAt_Create
-  read: NavMenuDocAccessFields_updatedAt_Read
-  update: NavMenuDocAccessFields_updatedAt_Update
-  delete: NavMenuDocAccessFields_updatedAt_Delete
+type NavigationDocAccessFields_links_id {
+  create: NavigationDocAccessFields_links_id_Create
+  read: NavigationDocAccessFields_links_id_Read
+  update: NavigationDocAccessFields_links_id_Update
+  delete: NavigationDocAccessFields_links_id_Delete
 }
 
-type NavMenuDocAccessFields_updatedAt_Create {
+type NavigationDocAccessFields_links_id_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Read {
+type NavigationDocAccessFields_links_id_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Update {
+type NavigationDocAccessFields_links_id_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_updatedAt_Delete {
+type NavigationDocAccessFields_links_id_Delete {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt {
-  create: NavMenuDocAccessFields_createdAt_Create
-  read: NavMenuDocAccessFields_createdAt_Read
-  update: NavMenuDocAccessFields_createdAt_Update
-  delete: NavMenuDocAccessFields_createdAt_Delete
+type NavigationDocAccessFields_updatedAt {
+  create: NavigationDocAccessFields_updatedAt_Create
+  read: NavigationDocAccessFields_updatedAt_Read
+  update: NavigationDocAccessFields_updatedAt_Update
+  delete: NavigationDocAccessFields_updatedAt_Delete
 }
 
-type NavMenuDocAccessFields_createdAt_Create {
+type NavigationDocAccessFields_updatedAt_Create {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Read {
+type NavigationDocAccessFields_updatedAt_Read {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Update {
+type NavigationDocAccessFields_updatedAt_Update {
   permission: Boolean!
 }
 
-type NavMenuDocAccessFields_createdAt_Delete {
+type NavigationDocAccessFields_updatedAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuReadDocAccess {
+type NavigationDocAccessFields_createdAt {
+  create: NavigationDocAccessFields_createdAt_Create
+  read: NavigationDocAccessFields_createdAt_Read
+  update: NavigationDocAccessFields_createdAt_Update
+  delete: NavigationDocAccessFields_createdAt_Delete
+}
+
+type NavigationDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type NavigationReadDocAccess {
   permission: Boolean!
   where: JSONObject
 }
 
-type NavMenuUpdateDocAccess {
+type NavigationUpdateDocAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -3702,7 +3067,7 @@ type Access {
   relations: relationsAccess
   sides: sidesAccess
   users: usersAccess
-  navMenu: navMenuAccess
+  navigation: navigationAccess
 }
 
 type guestsAccess {
@@ -3712,7 +3077,6 @@ type guestsAccess {
   update: GuestsUpdateAccess
   delete: GuestsDeleteAccess
   unlock: GuestsUnlockAccess
-  readVersions: GuestsReadVersionsAccess
 }
 
 type GuestsFields {
@@ -4127,11 +3491,6 @@ type GuestsUnlockAccess {
   where: JSONObject
 }
 
-type GuestsReadVersionsAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
 type pagesAccess {
   fields: PagesFields
   create: PagesCreateAccess
@@ -4391,7 +3750,6 @@ type partiesAccess {
   read: PartiesReadAccess
   update: PartiesUpdateAccess
   delete: PartiesDeleteAccess
-  readVersions: PartiesReadVersionsAccess
 }
 
 type PartiesFields {
@@ -4557,11 +3915,6 @@ type PartiesUpdateAccess {
 }
 
 type PartiesDeleteAccess {
-  permission: Boolean!
-  where: JSONObject
-}
-
-type PartiesReadVersionsAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -5025,293 +4378,313 @@ type UsersUnlockAccess {
   where: JSONObject
 }
 
-type navMenuAccess {
-  fields: NavMenuFields
-  read: NavMenuReadAccess
-  update: NavMenuUpdateAccess
+type navigationAccess {
+  fields: NavigationFields
+  read: NavigationReadAccess
+  update: NavigationUpdateAccess
 }
 
-type NavMenuFields {
-  links: NavMenuFields_links
-  updatedAt: NavMenuFields_updatedAt
-  createdAt: NavMenuFields_createdAt
+type NavigationFields {
+  links: NavigationFields_links
+  updatedAt: NavigationFields_updatedAt
+  createdAt: NavigationFields_createdAt
 }
 
-type NavMenuFields_links {
-  create: NavMenuFields_links_Create
-  read: NavMenuFields_links_Read
-  update: NavMenuFields_links_Update
-  delete: NavMenuFields_links_Delete
-  fields: NavMenuFields_links_Fields
+type NavigationFields_links {
+  create: NavigationFields_links_Create
+  read: NavigationFields_links_Read
+  update: NavigationFields_links_Update
+  delete: NavigationFields_links_Delete
+  fields: NavigationFields_links_Fields
 }
 
-type NavMenuFields_links_Create {
+type NavigationFields_links_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Read {
+type NavigationFields_links_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Update {
+type NavigationFields_links_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Delete {
+type NavigationFields_links_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_Fields {
-  link: NavMenuFields_links_link
-  id: NavMenuFields_links_id
+type NavigationFields_links_Fields {
+  text: NavigationFields_links_text
+  icon: NavigationFields_links_icon
+  type: NavigationFields_links_type
+  relationship: NavigationFields_links_relationship
+  url: NavigationFields_links_url
+  anchor: NavigationFields_links_anchor
+  rel: NavigationFields_links_rel
+  newTab: NavigationFields_links_newTab
+  id: NavigationFields_links_id
 }
 
-type NavMenuFields_links_link {
-  create: NavMenuFields_links_link_Create
-  read: NavMenuFields_links_link_Read
-  update: NavMenuFields_links_link_Update
-  delete: NavMenuFields_links_link_Delete
-  fields: NavMenuFields_links_link_Fields
+type NavigationFields_links_text {
+  create: NavigationFields_links_text_Create
+  read: NavigationFields_links_text_Read
+  update: NavigationFields_links_text_Update
+  delete: NavigationFields_links_text_Delete
 }
 
-type NavMenuFields_links_link_Create {
+type NavigationFields_links_text_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_Read {
+type NavigationFields_links_text_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_Update {
+type NavigationFields_links_text_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_Delete {
+type NavigationFields_links_text_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_Fields {
-  type: NavMenuFields_links_link_type
-  newTab: NavMenuFields_links_link_newTab
-  text: NavMenuFields_links_link_text
-  reference: NavMenuFields_links_link_reference
-  url: NavMenuFields_links_link_url
-  icon: NavMenuFields_links_link_icon
+type NavigationFields_links_icon {
+  create: NavigationFields_links_icon_Create
+  read: NavigationFields_links_icon_Read
+  update: NavigationFields_links_icon_Update
+  delete: NavigationFields_links_icon_Delete
 }
 
-type NavMenuFields_links_link_type {
-  create: NavMenuFields_links_link_type_Create
-  read: NavMenuFields_links_link_type_Read
-  update: NavMenuFields_links_link_type_Update
-  delete: NavMenuFields_links_link_type_Delete
-}
-
-type NavMenuFields_links_link_type_Create {
+type NavigationFields_links_icon_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_type_Read {
+type NavigationFields_links_icon_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_type_Update {
+type NavigationFields_links_icon_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_type_Delete {
+type NavigationFields_links_icon_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_newTab {
-  create: NavMenuFields_links_link_newTab_Create
-  read: NavMenuFields_links_link_newTab_Read
-  update: NavMenuFields_links_link_newTab_Update
-  delete: NavMenuFields_links_link_newTab_Delete
+type NavigationFields_links_type {
+  create: NavigationFields_links_type_Create
+  read: NavigationFields_links_type_Read
+  update: NavigationFields_links_type_Update
+  delete: NavigationFields_links_type_Delete
 }
 
-type NavMenuFields_links_link_newTab_Create {
+type NavigationFields_links_type_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_newTab_Read {
+type NavigationFields_links_type_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_newTab_Update {
+type NavigationFields_links_type_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_newTab_Delete {
+type NavigationFields_links_type_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_text {
-  create: NavMenuFields_links_link_text_Create
-  read: NavMenuFields_links_link_text_Read
-  update: NavMenuFields_links_link_text_Update
-  delete: NavMenuFields_links_link_text_Delete
+type NavigationFields_links_relationship {
+  create: NavigationFields_links_relationship_Create
+  read: NavigationFields_links_relationship_Read
+  update: NavigationFields_links_relationship_Update
+  delete: NavigationFields_links_relationship_Delete
 }
 
-type NavMenuFields_links_link_text_Create {
+type NavigationFields_links_relationship_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_text_Read {
+type NavigationFields_links_relationship_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_text_Update {
+type NavigationFields_links_relationship_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_text_Delete {
+type NavigationFields_links_relationship_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_reference {
-  create: NavMenuFields_links_link_reference_Create
-  read: NavMenuFields_links_link_reference_Read
-  update: NavMenuFields_links_link_reference_Update
-  delete: NavMenuFields_links_link_reference_Delete
+type NavigationFields_links_url {
+  create: NavigationFields_links_url_Create
+  read: NavigationFields_links_url_Read
+  update: NavigationFields_links_url_Update
+  delete: NavigationFields_links_url_Delete
 }
 
-type NavMenuFields_links_link_reference_Create {
+type NavigationFields_links_url_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_reference_Read {
+type NavigationFields_links_url_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_reference_Update {
+type NavigationFields_links_url_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_reference_Delete {
+type NavigationFields_links_url_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_url {
-  create: NavMenuFields_links_link_url_Create
-  read: NavMenuFields_links_link_url_Read
-  update: NavMenuFields_links_link_url_Update
-  delete: NavMenuFields_links_link_url_Delete
+type NavigationFields_links_anchor {
+  create: NavigationFields_links_anchor_Create
+  read: NavigationFields_links_anchor_Read
+  update: NavigationFields_links_anchor_Update
+  delete: NavigationFields_links_anchor_Delete
 }
 
-type NavMenuFields_links_link_url_Create {
+type NavigationFields_links_anchor_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_url_Read {
+type NavigationFields_links_anchor_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_url_Update {
+type NavigationFields_links_anchor_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_url_Delete {
+type NavigationFields_links_anchor_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_icon {
-  create: NavMenuFields_links_link_icon_Create
-  read: NavMenuFields_links_link_icon_Read
-  update: NavMenuFields_links_link_icon_Update
-  delete: NavMenuFields_links_link_icon_Delete
+type NavigationFields_links_rel {
+  create: NavigationFields_links_rel_Create
+  read: NavigationFields_links_rel_Read
+  update: NavigationFields_links_rel_Update
+  delete: NavigationFields_links_rel_Delete
 }
 
-type NavMenuFields_links_link_icon_Create {
+type NavigationFields_links_rel_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_icon_Read {
+type NavigationFields_links_rel_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_icon_Update {
+type NavigationFields_links_rel_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_link_icon_Delete {
+type NavigationFields_links_rel_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id {
-  create: NavMenuFields_links_id_Create
-  read: NavMenuFields_links_id_Read
-  update: NavMenuFields_links_id_Update
-  delete: NavMenuFields_links_id_Delete
+type NavigationFields_links_newTab {
+  create: NavigationFields_links_newTab_Create
+  read: NavigationFields_links_newTab_Read
+  update: NavigationFields_links_newTab_Update
+  delete: NavigationFields_links_newTab_Delete
 }
 
-type NavMenuFields_links_id_Create {
+type NavigationFields_links_newTab_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Read {
+type NavigationFields_links_newTab_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Update {
+type NavigationFields_links_newTab_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_links_id_Delete {
+type NavigationFields_links_newTab_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt {
-  create: NavMenuFields_updatedAt_Create
-  read: NavMenuFields_updatedAt_Read
-  update: NavMenuFields_updatedAt_Update
-  delete: NavMenuFields_updatedAt_Delete
+type NavigationFields_links_id {
+  create: NavigationFields_links_id_Create
+  read: NavigationFields_links_id_Read
+  update: NavigationFields_links_id_Update
+  delete: NavigationFields_links_id_Delete
 }
 
-type NavMenuFields_updatedAt_Create {
+type NavigationFields_links_id_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Read {
+type NavigationFields_links_id_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Update {
+type NavigationFields_links_id_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_updatedAt_Delete {
+type NavigationFields_links_id_Delete {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt {
-  create: NavMenuFields_createdAt_Create
-  read: NavMenuFields_createdAt_Read
-  update: NavMenuFields_createdAt_Update
-  delete: NavMenuFields_createdAt_Delete
+type NavigationFields_updatedAt {
+  create: NavigationFields_updatedAt_Create
+  read: NavigationFields_updatedAt_Read
+  update: NavigationFields_updatedAt_Update
+  delete: NavigationFields_updatedAt_Delete
 }
 
-type NavMenuFields_createdAt_Create {
+type NavigationFields_updatedAt_Create {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Read {
+type NavigationFields_updatedAt_Read {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Update {
+type NavigationFields_updatedAt_Update {
   permission: Boolean!
 }
 
-type NavMenuFields_createdAt_Delete {
+type NavigationFields_updatedAt_Delete {
   permission: Boolean!
 }
 
-type NavMenuReadAccess {
+type NavigationFields_createdAt {
+  create: NavigationFields_createdAt_Create
+  read: NavigationFields_createdAt_Read
+  update: NavigationFields_createdAt_Update
+  delete: NavigationFields_createdAt_Delete
+}
+
+type NavigationFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type NavigationReadAccess {
   permission: Boolean!
   where: JSONObject
 }
 
-type NavMenuUpdateAccess {
+type NavigationUpdateAccess {
   permission: Boolean!
   where: JSONObject
 }
@@ -5320,7 +4693,6 @@ type Mutation {
   createGuest(data: mutationGuestInput!, draft: Boolean): Guest
   updateGuest(id: String!, data: mutationGuestUpdateInput!, draft: Boolean, autosave: Boolean): Guest
   deleteGuest(id: String!): Guest
-  restoreVersionGuest(id: String): Guest
   refreshTokenGuest(token: String): guestsRefreshedGuest
   logoutGuest: String
   unlockGuest(email: String!): Boolean!
@@ -5335,7 +4707,6 @@ type Mutation {
   createParty(data: mutationPartyInput!, draft: Boolean): Party
   updateParty(id: String!, data: mutationPartyUpdateInput!, draft: Boolean, autosave: Boolean): Party
   deleteParty(id: String!): Party
-  restoreVersionParty(id: String): Party
   createRelation(data: mutationRelationInput!, draft: Boolean): Relation
   updateRelation(id: String!, data: mutationRelationUpdateInput!, draft: Boolean, autosave: Boolean): Relation
   deleteRelation(id: String!): Relation
@@ -5352,7 +4723,7 @@ type Mutation {
   forgotPasswordUser(email: String!, disableEmail: Boolean, expiration: Int): Boolean!
   resetPasswordUser(token: String, password: String): usersResetPassword
   verifyEmailUser(token: String): Boolean
-  updateNavMenu(data: mutationNavMenuInput!, draft: Boolean): NavMenu
+  updateNavigation(data: mutationNavigationInput!, draft: Boolean): Navigation
   updatePreference(key: String!, value: JSON): Preference
   deletePreference(key: String!): Preference
 }
@@ -5697,22 +5068,24 @@ type usersResetPassword {
   user: User
 }
 
-input mutationNavMenuInput {
-  links: [mutationNavMenu_LinksInput]
+input mutationNavigationInput {
+  links: [mutationNavigation_LinksInput]
   updatedAt: String
   createdAt: String
 }
 
-input mutationNavMenu_LinksInput {
-  link: mutationNavMenu_Links_LinkInput!
+input mutationNavigation_LinksInput {
+  text: String!
+  icon: String
+  type: String!
+  relationship: String
+  url: String
+  anchor: String
+  rel: [Navigation_Links_rel_MutationInput]
+  newTab: Boolean
   id: String
 }
 
-input mutationNavMenu_Links_LinkInput {
-  type: String!
-  newTab: Boolean
-  text: String!
-  reference: String
-  url: String
-  icon: String
+enum Navigation_Links_rel_MutationInput {
+  noreferrer
 }

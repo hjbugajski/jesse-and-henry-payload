@@ -197,11 +197,7 @@ const GuestList: React.FC = (props: any) => {
 
       try {
         const field: keyof Guest = params.colDef.field as keyof Guest;
-        const value = params.newValue?.id
-          ? params.newValue.id
-          : params.newValue?.value
-          ? params.newValue.value
-          : params.newValue ?? null;
+        const value = params.newValue?.id ?? params.newValue?.value ?? params.newValue ?? null;
 
         const res = await fetch(`${serverURL}${api}/${slug}/${params.data.id}`, {
           method: 'PATCH',

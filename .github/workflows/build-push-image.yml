@@ -8,7 +8,7 @@ on:
       - v*
 
 env:
-  IMAGE_NAME: jesse-and-henry-payload-cms
+  IMAGE_NAME: jesse-and-henry-payload
 
 jobs:
   push:

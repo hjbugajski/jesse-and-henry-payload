@@ -7,10 +7,12 @@ import {
   PayloadRequest,
 } from 'payload/types';
 
-import { isAdmin, isAdminField, isAdminSelfOrParty } from '../access';
+import { hasRole, hasRoleField, hasRoleSelfOrParty, Role } from '../access';
 import GuestList from '../custom/components/GuestList';
 import { Guest, Party } from '../payload-types';
+import { deepMerge } from '../utils/deepMerge';
 
+// eslint-disable-next-line import/no-named-as-default-member
 dotenv.config();
 
 const cleanString = (str: string) => str.toLowerCase().replace(/[^a-zA-Z]/g, '');
@@ -24,113 +26,77 @@ const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
   let newEmail = '';
 
   do {
-    let result = '';
-
-    for (let i = 0; i < 10; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-
-    newEmail = result + process.env.EMAIL;
+    newEmail =
+      Array.from({ length: 10 }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('') +
+      process.env.EMAIL;
   } while (existingEmails.includes(newEmail));
 
   return newEmail;
 };
 
-const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, operation, originalDoc, req }) => {
+const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, operation, req }) => {
+  if (operation !== 'create' && operation !== 'update') {
+    return data;
+  }
+
+  const { email, first, middle, last, sort } = data;
   const limit = await req.payload.find({ collection: 'guests' }).then((data) => data.totalDocs);
+  const newSort = (!sort && sort !== 0) || sort === -1 ? limit : sort;
 
-  if (operation === 'create') {
-    const { email, first, middle, last, sort } = data;
-    let newEmail = email;
-    let newSort = data.sort;
+  let newEmail = email;
 
-    if (first && last) {
-      const middleName = middle ? `.${cleanString(middle)}` : '';
+  if (first && last) {
+    const middleName = middle ? `.${cleanString(middle)}` : '';
 
-      newEmail = `${cleanString(first)}${middleName}.${cleanString(last)}${process.env.EMAIL}`;
-    } else {
-      newEmail = await generateRandomEmail(req, limit);
-    }
-
-    if ((!sort && sort !== 0) || sort === -1) {
-      const guests = await req.payload.find({ collection: 'guests', limit }).then((data) => data.docs as Guest[]);
-
-      newSort = guests.length ?? 0;
-    }
-
-    return { ...data, email: newEmail, sort: newSort };
+    newEmail = `${cleanString(first)}${middleName}.${cleanString(last)}${process.env.EMAIL}`;
+  } else {
+    newEmail = await generateRandomEmail(req, limit);
   }
 
-  if (operation === 'update') {
-    let newData = data;
-
-    if (data.first || data.last || data.middle || data.middle === '' || data.email === '') {
-      const first = data.first ?? originalDoc.first ?? '';
-      const last = data.last ?? originalDoc.last ?? '';
-
-      if (first && last) {
-        const middleName = data.middle
-          ? `.${cleanString(data.middle)}`
-          : data.middle !== '' && originalDoc.middle
-          ? `.${cleanString(originalDoc.middle)}`
-          : '';
-        const email = `${cleanString(first)}${middleName}.${cleanString(last)}${process.env.EMAIL}`;
-
-        newData = { ...newData, email };
-      } else {
-        const email = await generateRandomEmail(req, limit);
-
-        newData = { ...newData, email };
-      }
-    }
-
-    if (data.first === '' || data.last === '') {
-      const email = await generateRandomEmail(req, limit);
-
-      newData = { ...newData, email };
-    }
-
-    return newData;
-  }
+  return { ...data, email: newEmail, sort: newSort };
 };
 
 const afterChangeHook: CollectionAfterChangeHook<Guest> = async ({ doc, previousDoc, req }) => {
   const party = doc.party as Party;
 
-  if (party && party.id !== previousDoc.party) {
-    const code = await req.payload
-      .findByID({
-        collection: 'parties',
-        id: party.id,
-      })
-      .then((data) => data.code);
-
-    const token = await req.payload.forgotPassword({
-      collection: 'guests',
-      data: {
-        email: doc.email,
-      },
-      disableEmail: true,
-      req,
-    });
-
-    await req.payload.resetPassword({
-      collection: 'guests',
-      data: {
-        password: `${process.env.GUEST_PASSWORD}-${code}`,
-        token,
-      },
-      overrideAccess: true,
-      req,
-    });
+  if (!party || party.id === previousDoc.party) {
+    return doc;
   }
+
+  const codePromise = req.payload
+    .findByID({
+      collection: 'parties',
+      id: party.id,
+    })
+    .then((data) => data.code);
+  const tokenPromise = req.payload.forgotPassword({
+    collection: 'guests',
+    data: {
+      email: doc.email,
+    },
+    disableEmail: true,
+    req,
+  });
+  const [code, token] = await Promise.all([codePromise, tokenPromise]);
+
+  await req.payload.resetPassword({
+    collection: 'guests',
+    data: {
+      password: `${process.env.GUEST_PASSWORD}-${code}`,
+      token,
+    },
+    overrideAccess: true,
+    req,
+  });
 
   return doc;
 };
 
-const rsvpOptionField: Field = {
-  name: 'rsvpOption',
+const rsvpOptionField: Partial<Field> = {
   type: 'select',
+  admin: {
+    isClearable: true,
+  },
   options: [
     {
       label: 'Accepted',
@@ -141,17 +107,11 @@ const rsvpOptionField: Field = {
       value: 'decline',
     },
   ],
-  admin: {
-    isClearable: true,
-  },
 };
 
 const Guests: CollectionConfig = {
   slug: 'guests',
   auth: true,
-  versions: {
-    drafts: false,
-  },
   admin: {
     useAsTitle: 'first',
     group: 'Guests Collections',
@@ -186,17 +146,17 @@ const Guests: CollectionConfig = {
   },
   defaultSort: 'sort',
   access: {
-    create: isAdmin,
-    read: isAdminSelfOrParty,
-    update: isAdminSelfOrParty,
-    delete: isAdmin,
+    create: hasRole(Role.Admin),
+    read: hasRoleSelfOrParty(Role.Admin),
+    update: hasRoleSelfOrParty(Role.Admin),
+    delete: hasRole(Role.Admin),
   },
   endpoints: [
     {
       path: '/',
       method: 'post',
       handler: async (req, res) => {
-        if (!isAdmin({ req })) {
+        if (!hasRole(Role.Admin)({ req })) {
           return res.status(401).json({
             message: 'Unauthorized',
           });
@@ -214,7 +174,7 @@ const Guests: CollectionConfig = {
             res.status(200).json({
               message: 'Guest successfully created.',
               doc,
-            }),
+            })
           )
           .catch((err) => res.status(500).json(err));
       },
@@ -223,7 +183,7 @@ const Guests: CollectionConfig = {
       path: '/reorder',
       method: 'patch',
       handler: async (req, res) => {
-        if (!isAdmin({ req })) {
+        if (!hasRole(Role.Admin)({ req })) {
           return res.status(401).json({
             message: 'Unauthorized',
           });
@@ -239,14 +199,14 @@ const Guests: CollectionConfig = {
               data: {
                 sort: index,
               },
-            }),
-          ),
+            })
+          )
         )
           .then((results) =>
             res.status(200).json({
               message: 'Guests reordered.',
               results,
-            }),
+            })
           )
           .catch((err) => res.status(500).json(err));
       },
@@ -255,12 +215,10 @@ const Guests: CollectionConfig = {
   fields: [
     {
       name: 'email',
-      label: 'Email',
       type: 'email',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
@@ -280,85 +238,70 @@ const Guests: CollectionConfig = {
     },
     {
       name: 'party',
-      label: 'Party',
       type: 'relationship',
       relationTo: 'parties',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
       name: 'side',
-      label: 'Side',
       type: 'relationship',
       relationTo: 'sides',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
       name: 'relation',
-      label: 'Relation',
       type: 'relationship',
       relationTo: 'relations',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
       name: 'phone',
-      label: 'Phone',
       type: 'text',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
     {
       name: 'address',
-      label: 'Address',
       type: 'textarea',
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
     },
-    {
-      ...rsvpOptionField,
+    deepMerge<Field>(rsvpOptionField, {
       name: 'rsvpWelcomeParty',
       label: 'RSVP Welcome Party',
-    },
-    {
-      ...rsvpOptionField,
+    }),
+    deepMerge<Field>(rsvpOptionField, {
       name: 'rsvpWedding',
       label: 'RSVP Wedding',
-    },
-    {
-      ...rsvpOptionField,
+    }),
+    deepMerge<Field>(rsvpOptionField, {
       name: 'rsvpBrunch',
       label: 'RSVP Brunch',
-    },
+    }),
     {
       name: 'sort',
-      label: 'Sort',
       type: 'number',
-      defaultValue: 0,
       admin: {
         position: 'sidebar',
       },
       access: {
-        create: isAdminField,
-        read: isAdminField,
-        update: isAdminField,
+        read: hasRoleField(Role.Admin),
+        update: hasRoleField(Role.Admin),
       },
+      defaultValue: 0,
     },
   ],
 };

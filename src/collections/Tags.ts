@@ -1,14 +1,14 @@
 import { CollectionConfig } from 'payload/types';
 
-import { isAdmin } from '../access';
+import { hasRole, Role } from '../access';
 
 const Tags: CollectionConfig = {
   slug: 'tags',
   access: {
-    create: isAdmin,
-    read: isAdmin,
-    update: isAdmin,
-    delete: isAdmin,
+    create: hasRole(Role.Admin),
+    read: hasRole(Role.Admin),
+    update: hasRole(Role.Admin),
+    delete: hasRole(Role.Admin),
   },
   admin: {
     useAsTitle: 'value',
@@ -20,15 +20,16 @@ const Tags: CollectionConfig = {
   fields: [
     {
       name: 'value',
-      label: 'Value',
       type: 'text',
       required: true,
       unique: true,
     },
     {
       name: 'color',
-      label: 'Color',
       type: 'select',
+      admin: {
+        isClearable: true,
+      },
       options: [
         {
           label: 'Green',
@@ -71,13 +72,9 @@ const Tags: CollectionConfig = {
           value: 'orange',
         },
       ],
-      admin: {
-        isClearable: true,
-      },
     },
     {
       name: 'sort',
-      label: 'Sort',
       type: 'number',
       defaultValue: 0,
     },

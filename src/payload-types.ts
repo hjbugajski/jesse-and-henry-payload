@@ -6,6 +6,18 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+export type LinkArrayField = {
+  text: string;
+  icon?: string;
+  type: 'relationship' | 'external';
+  relationship: string | Page;
+  url: string;
+  anchor?: string;
+  rel?: 'noreferrer'[];
+  newTab?: boolean;
+  id?: string;
+}[];
+
 export interface Config {
   collections: {
     guests: Guest;
@@ -16,7 +28,7 @@ export interface Config {
     users: User;
   };
   globals: {
-    navMenu: NavMenu;
+    navigation: Navigation;
   };
 }
 export interface Guest {
@@ -79,107 +91,71 @@ export interface Page {
     description: string;
   };
   content: {
-    layout?: (
-      | {
-          title: string;
-          icon: string;
-          content: {
-            [k: string]: unknown;
-          }[];
-          color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-          action?: boolean;
-          link?: {
-            type: 'reference' | 'external';
-            newTab?: boolean;
-            text: string;
-            reference: string | Page;
-            url: string;
-            icon?: string;
-          };
-          width?: 'full' | 'max';
-          id?: string;
-          blockName?: string;
-          blockType: 'alert';
-        }
-      | {
-          width?: 'full' | 'max';
-          content: {
-            [k: string]: unknown;
-          }[];
-          id?: string;
-          blockName?: string;
-          blockType: 'content';
-        }
-      | {
-          titleOne: string;
-          titleTwo: string;
-          subtitle: string;
-          id?: string;
-          blockName?: string;
-          blockType: 'hero';
-        }
-      | {
-          anchorId: string;
-          title: string;
-          description?: {
-            [k: string]: unknown;
-          }[];
-          border: 'none' | 'left' | 'right';
-          layout?: (
-            | {
-                title: string;
-                icon: string;
-                content: {
-                  [k: string]: unknown;
-                }[];
-                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                action?: boolean;
-                link?: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
-                  text: string;
-                  reference: string | Page;
-                  url: string;
-                  icon?: string;
-                };
-                width?: 'full' | 'max';
-                id?: string;
-                blockName?: string;
-                blockType: 'alert';
-              }
-            | {
-                color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-                link: {
-                  type: 'reference' | 'external';
-                  newTab?: boolean;
-                  text: string;
-                  reference: string | Page;
-                  url: string;
-                  icon?: string;
-                };
-                id?: string;
-                blockName?: string;
-                blockType: 'buttonLink';
-              }
-            | {
-                width?: 'full' | 'max';
-                content: {
-                  [k: string]: unknown;
-                }[];
-                id?: string;
-                blockName?: string;
-                blockType: 'content';
-              }
-          )[];
-          id?: string;
-          blockName?: string;
-          blockType: 'section';
-        }
-    )[];
+    layout?: (AlertBlock | ContentBlock | HeroBlock | SectionBlock)[];
   };
   updatedAt: string;
   createdAt: string;
   _status?: 'draft' | 'published';
+}
+export interface AlertBlock {
+  title: string;
+  icon: string;
+  content: {
+    [k: string]: unknown;
+  }[];
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+  action?: boolean;
+  link?: LinkGroupField;
+  width?: 'full' | 'max';
+  id?: string;
+  blockName?: string;
+  blockType: 'alert';
+}
+export interface LinkGroupField {
+  text: string;
+  icon?: string;
+  type: 'relationship' | 'external';
+  relationship: string | Page;
+  url: string;
+  anchor?: string;
+  rel?: 'noreferrer'[];
+  newTab?: boolean;
+}
+export interface ContentBlock {
+  width?: 'full' | 'max';
+  content: {
+    [k: string]: unknown;
+  }[];
+  id?: string;
+  blockName?: string;
+  blockType: 'content';
+}
+export interface HeroBlock {
+  titleOne: string;
+  titleTwo: string;
+  subtitle: string;
+  id?: string;
+  blockName?: string;
+  blockType: 'hero';
+}
+export interface SectionBlock {
+  anchorId: string;
+  title: string;
+  description?: {
+    [k: string]: unknown;
+  }[];
+  border: 'none' | 'left' | 'right';
+  layout?: (AlertBlock | ButtonLinkBlock | ContentBlock)[];
+  id?: string;
+  blockName?: string;
+  blockType: 'section';
+}
+export interface ButtonLinkBlock {
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+  link: LinkGroupField;
+  id?: string;
+  blockName?: string;
+  blockType: 'buttonLink';
 }
 export interface User {
   id: string;
@@ -195,19 +171,9 @@ export interface User {
   lockUntil?: string;
   password?: string;
 }
-export interface NavMenu {
+export interface Navigation {
   id: string;
-  links?: {
-    link: {
-      type: 'reference' | 'external';
-      newTab?: boolean;
-      text: string;
-      reference: string | Page;
-      url: string;
-      icon?: string;
-    };
-    id?: string;
-  }[];
+  links?: LinkArrayField;
   updatedAt?: string;
   createdAt?: string;
 }
