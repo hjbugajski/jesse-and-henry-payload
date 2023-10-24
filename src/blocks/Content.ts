@@ -1,3 +1,4 @@
+import { slateEditor } from '@payloadcms/richtext-slate';
 import { Block } from 'payload/types';
 
 import venue from '../fields/richText/venue';
@@ -11,9 +12,11 @@ const Content: Block = {
     {
       name: 'content',
       type: 'richText',
-      admin: {
-        elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
-      },
+      editor: slateEditor({
+        admin: {
+          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
+        },
+      }),
       required: true,
     },
   ],

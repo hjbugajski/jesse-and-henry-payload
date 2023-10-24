@@ -1,5 +1,8 @@
 import path from 'path';
 
+import { webpackBundler } from '@payloadcms/bundler-webpack';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
+import { slateEditor } from '@payloadcms/richtext-slate';
 import { buildConfig } from 'payload/config';
 
 import Guests from './collections/Guests';
@@ -12,9 +15,19 @@ import Navigation from './globals/Navigation';
 
 export default buildConfig({
   admin: {
+    bundler: webpackBundler(),
     user: Users.slug,
     css: path.resolve(__dirname, 'custom/styles/index.scss'),
   },
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI,
+    connectOptions: {
+      user: process.env.MONGODB_USERNAME,
+      pass: process.env.MONGODB_PASSWORD,
+      dbName: process.env.MONGODB_DATABASE,
+    },
+  }),
+  editor: slateEditor({}),
   collections: [Guests, Pages, Parties, Relations, Sides, Users],
   globals: [Navigation],
   typescript: {

@@ -2,12 +2,16 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 46.16px);
 
   .component {
     display: flex;
     flex: 1;
     flex-direction: column;
+  }
+
+  @media (width >= 1024px) {
+    height: calc(100% - 75px);
   }
 }
 

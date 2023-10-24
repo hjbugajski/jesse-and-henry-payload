@@ -21,7 +21,7 @@ const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const existingEmails = await req.payload
     .find({ collection: 'guests', limit })
-    .then((data) => data.docs.map((doc: Guest) => doc.email));
+    .then((data) => data.docs.map((doc) => doc.email));
 
   let newEmail = '';
 

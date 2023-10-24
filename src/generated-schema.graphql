@@ -1,31 +1,39 @@
 type Query {
   Guest(id: String!, draft: Boolean): Guest
-  Guests(where: Guest_where, draft: Boolean, page: Int, limit: Int, sort: String): Guests
+  Guests(draft: Boolean, where: Guest_where, limit: Int, page: Int, sort: String): Guests
   docAccessGuest(id: String!): guestsDocAccess
   meGuest: guestsMe
   initializedGuest: Boolean
   Page(id: String!, draft: Boolean): Page
-  Pages(where: Page_where, draft: Boolean, page: Int, limit: Int, sort: String): Pages
+  Pages(draft: Boolean, where: Page_where, limit: Int, page: Int, sort: String): Pages
   docAccessPage(id: String!): pagesDocAccess
   versionPage(id: String): PageVersion
-  versionsPages(where: versionsPage_where, page: Int, limit: Int, sort: String): versionsPages
+  versionsPages(where: versionsPage_where, limit: Int, page: Int, sort: String): versionsPages
   Party(id: String!, draft: Boolean): Party
-  Parties(where: Party_where, draft: Boolean, page: Int, limit: Int, sort: String): Parties
+  Parties(draft: Boolean, where: Party_where, limit: Int, page: Int, sort: String): Parties
   docAccessParty(id: String!): partiesDocAccess
   Relation(id: String!, draft: Boolean): Relation
-  Relations(where: Relation_where, draft: Boolean, page: Int, limit: Int, sort: String): Relations
+  Relations(draft: Boolean, where: Relation_where, limit: Int, page: Int, sort: String): Relations
   docAccessRelation(id: String!): relationsDocAccess
   Side(id: String!, draft: Boolean): Side
-  Sides(where: Side_where, draft: Boolean, page: Int, limit: Int, sort: String): Sides
+  Sides(draft: Boolean, where: Side_where, limit: Int, page: Int, sort: String): Sides
   docAccessSide(id: String!): sidesDocAccess
   User(id: String!, draft: Boolean): User
-  Users(where: User_where, draft: Boolean, page: Int, limit: Int, sort: String): Users
+  Users(draft: Boolean, where: User_where, limit: Int, page: Int, sort: String): Users
   docAccessUser(id: String!): usersDocAccess
   meUser: usersMe
   initializedUser: Boolean
+  PayloadPreference(id: String!, draft: Boolean): PayloadPreference
+  PayloadPreferences(
+    draft: Boolean
+    where: PayloadPreference_where
+    limit: Int
+    page: Int
+    sort: String
+  ): PayloadPreferences
+  docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
   Navigation(draft: Boolean): Navigation
   docAccessNavigation: navigationDocAccess
-  Preference(key: String): Preference
   Access: Access
 }
 
@@ -149,16 +157,16 @@ scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/in
 
 type Guests {
   docs: [Guest]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input Guest_where {
@@ -178,8 +186,8 @@ input Guest_where {
   createdAt: Guest_createdAt_operator
   email: Guest_email_operator
   id: Guest_id_operator
-  OR: [Guest_where_or]
   AND: [Guest_where_and]
+  OR: [Guest_where_or]
 }
 
 input Guest_first_operator {
@@ -216,29 +224,34 @@ input Guest_last_operator {
 }
 
 input Guest_party_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
   exists: Boolean
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 input Guest_side_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
   exists: Boolean
 }
 
 input Guest_relation_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
   exists: Boolean
 }
 
@@ -356,7 +369,7 @@ input Guest_id_operator {
   exists: Boolean
 }
 
-input Guest_where_or {
+input Guest_where_and {
   first: Guest_first_operator
   middle: Guest_middle_operator
   last: Guest_last_operator
@@ -375,7 +388,7 @@ input Guest_where_or {
   id: Guest_id_operator
 }
 
-input Guest_where_and {
+input Guest_where_or {
   first: Guest_first_operator
   middle: Guest_middle_operator
   last: Guest_last_operator
@@ -821,10 +834,10 @@ type GuestsUnlockDocAccess {
 }
 
 type guestsMe {
+  collection: String
+  exp: Int
   token: String
   user: Guest
-  exp: Int
-  collection: String
 }
 
 type Page {
@@ -863,11 +876,6 @@ type AlertBlock {
   blockType: String
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
-
 enum AlertBlock_color {
   neutral
   neutral_variant
@@ -878,9 +886,9 @@ enum AlertBlock_color {
 }
 
 type LinkGroupField {
-  text: String!
+  text: String
   icon: String
-  type: LinkGroupField_type!
+  type: LinkGroupField_type
   relationship: Page
   url: String
   anchor: String
@@ -967,16 +975,16 @@ enum Page__status {
 
 type Pages {
   docs: [Page]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input Page_where {
@@ -989,8 +997,8 @@ input Page_where {
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
-  OR: [Page_where_or]
   AND: [Page_where_and]
+  OR: [Page_where_or]
 }
 
 input Page_slug_operator {
@@ -1084,7 +1092,7 @@ input Page_id_operator {
   exists: Boolean
 }
 
-input Page_where_or {
+input Page_where_and {
   slug: Page_slug_operator
   protected: Page_protected_operator
   name: Page_name_operator
@@ -1096,7 +1104,7 @@ input Page_where_or {
   id: Page_id_operator
 }
 
-input Page_where_and {
+input Page_where_or {
   slug: Page_slug_operator
   protected: Page_protected_operator
   name: Page_name_operator
@@ -1382,8 +1390,8 @@ type PageVersion_Version {
 }
 
 type PageVersion_Version_Meta {
-  title: String!
-  description: String!
+  title: String
+  description: String
 }
 
 type PageVersion_Version_Content {
@@ -1399,16 +1407,16 @@ enum PageVersion_Version__status {
 
 type versionsPages {
   docs: [PageVersion]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input versionsPage_where {
@@ -1425,16 +1433,16 @@ input versionsPage_where {
   updatedAt: versionsPage_updatedAt_operator
   latest: versionsPage_latest_operator
   id: versionsPage_id_operator
-  OR: [versionsPage_where_or]
   AND: [versionsPage_where_and]
+  OR: [versionsPage_where_or]
 }
 
 input versionsPage_parent_operator {
-  equals: String
-  not_equals: String
-  in: [String]
-  not_in: [String]
-  all: [String]
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
   exists: Boolean
 }
 
@@ -1557,7 +1565,7 @@ input versionsPage_id_operator {
   exists: Boolean
 }
 
-input versionsPage_where_or {
+input versionsPage_where_and {
   parent: versionsPage_parent_operator
   version__slug: versionsPage_version__slug_operator
   version__protected: versionsPage_version__protected_operator
@@ -1573,7 +1581,7 @@ input versionsPage_where_or {
   id: versionsPage_id_operator
 }
 
-input versionsPage_where_and {
+input versionsPage_where_or {
   parent: versionsPage_parent_operator
   version__slug: versionsPage_version__slug_operator
   version__protected: versionsPage_version__protected_operator
@@ -1591,16 +1599,16 @@ input versionsPage_where_and {
 
 type Parties {
   docs: [Party]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input Party_where {
@@ -1611,8 +1619,8 @@ input Party_where {
   updatedAt: Party_updatedAt_operator
   createdAt: Party_createdAt_operator
   id: Party_id_operator
-  OR: [Party_where_or]
   AND: [Party_where_and]
+  OR: [Party_where_or]
 }
 
 input Party_value_operator {
@@ -1701,7 +1709,7 @@ input Party_id_operator {
   exists: Boolean
 }
 
-input Party_where_or {
+input Party_where_and {
   value: Party_value_operator
   color: Party_color_operator
   sort: Party_sort_operator
@@ -1711,7 +1719,7 @@ input Party_where_or {
   id: Party_id_operator
 }
 
-input Party_where_and {
+input Party_where_or {
   value: Party_value_operator
   color: Party_color_operator
   sort: Party_sort_operator
@@ -1898,16 +1906,16 @@ type PartiesDeleteDocAccess {
 
 type Relations {
   docs: [Relation]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input Relation_where {
@@ -1917,8 +1925,8 @@ input Relation_where {
   updatedAt: Relation_updatedAt_operator
   createdAt: Relation_createdAt_operator
   id: Relation_id_operator
-  OR: [Relation_where_or]
   AND: [Relation_where_and]
+  OR: [Relation_where_or]
 }
 
 input Relation_value_operator {
@@ -1996,7 +2004,7 @@ input Relation_id_operator {
   exists: Boolean
 }
 
-input Relation_where_or {
+input Relation_where_and {
   value: Relation_value_operator
   color: Relation_color_operator
   sort: Relation_sort_operator
@@ -2005,7 +2013,7 @@ input Relation_where_or {
   id: Relation_id_operator
 }
 
-input Relation_where_and {
+input Relation_where_or {
   value: Relation_value_operator
   color: Relation_color_operator
   sort: Relation_sort_operator
@@ -2167,16 +2175,16 @@ type RelationsDeleteDocAccess {
 
 type Sides {
   docs: [Side]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input Side_where {
@@ -2186,8 +2194,8 @@ input Side_where {
   updatedAt: Side_updatedAt_operator
   createdAt: Side_createdAt_operator
   id: Side_id_operator
-  OR: [Side_where_or]
   AND: [Side_where_and]
+  OR: [Side_where_or]
 }
 
 input Side_value_operator {
@@ -2265,7 +2273,7 @@ input Side_id_operator {
   exists: Boolean
 }
 
-input Side_where_or {
+input Side_where_and {
   value: Side_value_operator
   color: Side_color_operator
   sort: Side_sort_operator
@@ -2274,7 +2282,7 @@ input Side_where_or {
   id: Side_id_operator
 }
 
-input Side_where_and {
+input Side_where_or {
   value: Side_value_operator
   color: Side_color_operator
   sort: Side_sort_operator
@@ -2456,16 +2464,16 @@ enum User_roles {
 
 type Users {
   docs: [User]
-  totalDocs: Int
-  offset: Int
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
   limit: Int
-  totalPages: Int
+  nextPage: Int
+  offset: Int
   page: Int
   pagingCounter: Int
-  hasPrevPage: Boolean
-  hasNextPage: Boolean
   prevPage: Int
-  nextPage: Int
+  totalDocs: Int
+  totalPages: Int
 }
 
 input User_where {
@@ -2474,8 +2482,8 @@ input User_where {
   createdAt: User_createdAt_operator
   email: User_email_operator
   id: User_id_operator
-  OR: [User_where_or]
   AND: [User_where_and]
+  OR: [User_where_or]
 }
 
 input User_roles_operator {
@@ -2534,7 +2542,7 @@ input User_id_operator {
   exists: Boolean
 }
 
-input User_where_or {
+input User_where_and {
   roles: User_roles_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
@@ -2542,7 +2550,7 @@ input User_where_or {
   id: User_id_operator
 }
 
-input User_where_and {
+input User_where_or {
   roles: User_roles_operator
   updatedAt: User_updatedAt_operator
   createdAt: User_createdAt_operator
@@ -2708,10 +2716,289 @@ type UsersUnlockDocAccess {
 }
 
 type usersMe {
+  collection: String
+  exp: Int
   token: String
   user: User
-  exp: Int
-  collection: String
+}
+
+type PayloadPreference {
+  id: String
+  user: PayloadPreference_User_Relationship!
+  key: String
+  value: JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type PayloadPreference_User_Relationship {
+  relationTo: PayloadPreference_User_RelationTo
+  value: PayloadPreference_User
+}
+
+enum PayloadPreference_User_RelationTo {
+  guests
+  users
+}
+
+union PayloadPreference_User = Guest | User
+
+type PayloadPreferences {
+  docs: [PayloadPreference]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input PayloadPreference_where {
+  user: PayloadPreference_user_Relation
+  key: PayloadPreference_key_operator
+  value: PayloadPreference_value_operator
+  updatedAt: PayloadPreference_updatedAt_operator
+  createdAt: PayloadPreference_createdAt_operator
+  id: PayloadPreference_id_operator
+  AND: [PayloadPreference_where_and]
+  OR: [PayloadPreference_where_or]
+}
+
+input PayloadPreference_user_Relation {
+  relationTo: PayloadPreference_user_Relation_RelationTo
+  value: JSON
+}
+
+enum PayloadPreference_user_Relation_RelationTo {
+  guests
+  users
+}
+
+input PayloadPreference_key_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input PayloadPreference_value_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  within: JSON
+  intersects: JSON
+  exists: Boolean
+}
+
+input PayloadPreference_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input PayloadPreference_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input PayloadPreference_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input PayloadPreference_where_and {
+  user: PayloadPreference_user_Relation
+  key: PayloadPreference_key_operator
+  value: PayloadPreference_value_operator
+  updatedAt: PayloadPreference_updatedAt_operator
+  createdAt: PayloadPreference_createdAt_operator
+  id: PayloadPreference_id_operator
+}
+
+input PayloadPreference_where_or {
+  user: PayloadPreference_user_Relation
+  key: PayloadPreference_key_operator
+  value: PayloadPreference_value_operator
+  updatedAt: PayloadPreference_updatedAt_operator
+  createdAt: PayloadPreference_createdAt_operator
+  id: PayloadPreference_id_operator
+}
+
+type payload_preferencesDocAccess {
+  fields: PayloadPreferencesDocAccessFields
+  create: PayloadPreferencesCreateDocAccess
+  read: PayloadPreferencesReadDocAccess
+  update: PayloadPreferencesUpdateDocAccess
+  delete: PayloadPreferencesDeleteDocAccess
+}
+
+type PayloadPreferencesDocAccessFields {
+  user: PayloadPreferencesDocAccessFields_user
+  key: PayloadPreferencesDocAccessFields_key
+  value: PayloadPreferencesDocAccessFields_value
+  updatedAt: PayloadPreferencesDocAccessFields_updatedAt
+  createdAt: PayloadPreferencesDocAccessFields_createdAt
+}
+
+type PayloadPreferencesDocAccessFields_user {
+  create: PayloadPreferencesDocAccessFields_user_Create
+  read: PayloadPreferencesDocAccessFields_user_Read
+  update: PayloadPreferencesDocAccessFields_user_Update
+  delete: PayloadPreferencesDocAccessFields_user_Delete
+}
+
+type PayloadPreferencesDocAccessFields_user_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_user_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_user_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_user_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_key {
+  create: PayloadPreferencesDocAccessFields_key_Create
+  read: PayloadPreferencesDocAccessFields_key_Read
+  update: PayloadPreferencesDocAccessFields_key_Update
+  delete: PayloadPreferencesDocAccessFields_key_Delete
+}
+
+type PayloadPreferencesDocAccessFields_key_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_key_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_key_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_key_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_value {
+  create: PayloadPreferencesDocAccessFields_value_Create
+  read: PayloadPreferencesDocAccessFields_value_Read
+  update: PayloadPreferencesDocAccessFields_value_Update
+  delete: PayloadPreferencesDocAccessFields_value_Delete
+}
+
+type PayloadPreferencesDocAccessFields_value_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_value_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_value_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_value_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_updatedAt {
+  create: PayloadPreferencesDocAccessFields_updatedAt_Create
+  read: PayloadPreferencesDocAccessFields_updatedAt_Read
+  update: PayloadPreferencesDocAccessFields_updatedAt_Update
+  delete: PayloadPreferencesDocAccessFields_updatedAt_Delete
+}
+
+type PayloadPreferencesDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_createdAt {
+  create: PayloadPreferencesDocAccessFields_createdAt_Create
+  read: PayloadPreferencesDocAccessFields_createdAt_Read
+  update: PayloadPreferencesDocAccessFields_createdAt_Update
+  delete: PayloadPreferencesDocAccessFields_createdAt_Delete
+}
+
+type PayloadPreferencesDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
 }
 
 type Navigation {
@@ -3052,13 +3339,6 @@ type NavigationUpdateDocAccess {
   where: JSONObject
 }
 
-type Preference {
-  key: String!
-  value: JSON
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
 type Access {
   canAccessAdmin: Boolean!
   guests: guestsAccess
@@ -3067,6 +3347,7 @@ type Access {
   relations: relationsAccess
   sides: sidesAccess
   users: usersAccess
+  payload_preferences: payload_preferencesAccess
   navigation: navigationAccess
 }
 
@@ -4378,6 +4659,157 @@ type UsersUnlockAccess {
   where: JSONObject
 }
 
+type payload_preferencesAccess {
+  fields: PayloadPreferencesFields
+  create: PayloadPreferencesCreateAccess
+  read: PayloadPreferencesReadAccess
+  update: PayloadPreferencesUpdateAccess
+  delete: PayloadPreferencesDeleteAccess
+}
+
+type PayloadPreferencesFields {
+  user: PayloadPreferencesFields_user
+  key: PayloadPreferencesFields_key
+  value: PayloadPreferencesFields_value
+  updatedAt: PayloadPreferencesFields_updatedAt
+  createdAt: PayloadPreferencesFields_createdAt
+}
+
+type PayloadPreferencesFields_user {
+  create: PayloadPreferencesFields_user_Create
+  read: PayloadPreferencesFields_user_Read
+  update: PayloadPreferencesFields_user_Update
+  delete: PayloadPreferencesFields_user_Delete
+}
+
+type PayloadPreferencesFields_user_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_user_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_user_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_user_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_key {
+  create: PayloadPreferencesFields_key_Create
+  read: PayloadPreferencesFields_key_Read
+  update: PayloadPreferencesFields_key_Update
+  delete: PayloadPreferencesFields_key_Delete
+}
+
+type PayloadPreferencesFields_key_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_key_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_key_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_key_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_value {
+  create: PayloadPreferencesFields_value_Create
+  read: PayloadPreferencesFields_value_Read
+  update: PayloadPreferencesFields_value_Update
+  delete: PayloadPreferencesFields_value_Delete
+}
+
+type PayloadPreferencesFields_value_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_value_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_value_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_value_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_updatedAt {
+  create: PayloadPreferencesFields_updatedAt_Create
+  read: PayloadPreferencesFields_updatedAt_Read
+  update: PayloadPreferencesFields_updatedAt_Update
+  delete: PayloadPreferencesFields_updatedAt_Delete
+}
+
+type PayloadPreferencesFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_createdAt {
+  create: PayloadPreferencesFields_createdAt_Create
+  read: PayloadPreferencesFields_createdAt_Read
+  update: PayloadPreferencesFields_createdAt_Update
+  delete: PayloadPreferencesFields_createdAt_Delete
+}
+
+type PayloadPreferencesFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type PayloadPreferencesFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type PayloadPreferencesCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type PayloadPreferencesDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type navigationAccess {
   fields: NavigationFields
   read: NavigationReadAccess
@@ -4691,41 +5123,47 @@ type NavigationUpdateAccess {
 
 type Mutation {
   createGuest(data: mutationGuestInput!, draft: Boolean): Guest
-  updateGuest(id: String!, data: mutationGuestUpdateInput!, draft: Boolean, autosave: Boolean): Guest
+  updateGuest(id: String!, autosave: Boolean, data: mutationGuestUpdateInput!, draft: Boolean): Guest
   deleteGuest(id: String!): Guest
   refreshTokenGuest(token: String): guestsRefreshedGuest
   logoutGuest: String
   unlockGuest(email: String!): Boolean!
   loginGuest(email: String, password: String): guestsLoginResult
-  forgotPasswordGuest(email: String!, disableEmail: Boolean, expiration: Int): Boolean!
-  resetPasswordGuest(token: String, password: String): guestsResetPassword
+  forgotPasswordGuest(disableEmail: Boolean, email: String!, expiration: Int): Boolean!
+  resetPasswordGuest(password: String, token: String): guestsResetPassword
   verifyEmailGuest(token: String): Boolean
   createPage(data: mutationPageInput!, draft: Boolean): Page
-  updatePage(id: String!, data: mutationPageUpdateInput!, draft: Boolean, autosave: Boolean): Page
+  updatePage(id: String!, autosave: Boolean, data: mutationPageUpdateInput!, draft: Boolean): Page
   deletePage(id: String!): Page
   restoreVersionPage(id: String): Page
   createParty(data: mutationPartyInput!, draft: Boolean): Party
-  updateParty(id: String!, data: mutationPartyUpdateInput!, draft: Boolean, autosave: Boolean): Party
+  updateParty(id: String!, autosave: Boolean, data: mutationPartyUpdateInput!, draft: Boolean): Party
   deleteParty(id: String!): Party
   createRelation(data: mutationRelationInput!, draft: Boolean): Relation
-  updateRelation(id: String!, data: mutationRelationUpdateInput!, draft: Boolean, autosave: Boolean): Relation
+  updateRelation(id: String!, autosave: Boolean, data: mutationRelationUpdateInput!, draft: Boolean): Relation
   deleteRelation(id: String!): Relation
   createSide(data: mutationSideInput!, draft: Boolean): Side
-  updateSide(id: String!, data: mutationSideUpdateInput!, draft: Boolean, autosave: Boolean): Side
+  updateSide(id: String!, autosave: Boolean, data: mutationSideUpdateInput!, draft: Boolean): Side
   deleteSide(id: String!): Side
   createUser(data: mutationUserInput!, draft: Boolean): User
-  updateUser(id: String!, data: mutationUserUpdateInput!, draft: Boolean, autosave: Boolean): User
+  updateUser(id: String!, autosave: Boolean, data: mutationUserUpdateInput!, draft: Boolean): User
   deleteUser(id: String!): User
   refreshTokenUser(token: String): usersRefreshedUser
   logoutUser: String
   unlockUser(email: String!): Boolean!
   loginUser(email: String, password: String): usersLoginResult
-  forgotPasswordUser(email: String!, disableEmail: Boolean, expiration: Int): Boolean!
-  resetPasswordUser(token: String, password: String): usersResetPassword
+  forgotPasswordUser(disableEmail: Boolean, email: String!, expiration: Int): Boolean!
+  resetPasswordUser(password: String, token: String): usersResetPassword
   verifyEmailUser(token: String): Boolean
+  createPayloadPreference(data: mutationPayloadPreferenceInput!, draft: Boolean): PayloadPreference
+  updatePayloadPreference(
+    id: String!
+    autosave: Boolean
+    data: mutationPayloadPreferenceUpdateInput!
+    draft: Boolean
+  ): PayloadPreference
+  deletePayloadPreference(id: String!): PayloadPreference
   updateNavigation(data: mutationNavigationInput!, draft: Boolean): Navigation
-  updatePreference(key: String!, value: JSON): Preference
-  deletePreference(key: String!): Preference
 }
 
 input mutationGuestInput {
@@ -4809,9 +5247,9 @@ enum GuestUpdate_rsvpBrunch_MutationInput {
 }
 
 type guestsRefreshedGuest {
-  user: guestsJWT
-  refreshedToken: String
   exp: Int
+  refreshedToken: String
+  user: guestsJWT
 }
 
 type guestsJWT {
@@ -4820,9 +5258,9 @@ type guestsJWT {
 }
 
 type guestsLoginResult {
+  exp: Int
   token: String
   user: Guest
-  exp: Int
 }
 
 type guestsResetPassword {
@@ -4834,16 +5272,10 @@ input mutationPageInput {
   slug: String
   protected: Boolean
   name: String
-  meta: mutationPage_MetaInput
   content: mutationPage_ContentInput
   updatedAt: String
   createdAt: String
   _status: Page__status_MutationInput
-}
-
-input mutationPage_MetaInput {
-  title: String!
-  description: String!
 }
 
 input mutationPage_ContentInput {
@@ -4859,16 +5291,10 @@ input mutationPageUpdateInput {
   slug: String
   protected: Boolean
   name: String
-  meta: mutationPageUpdate_MetaInput
   content: mutationPageUpdate_ContentInput
   updatedAt: String
   createdAt: String
   _status: PageUpdate__status_MutationInput
-}
-
-input mutationPageUpdate_MetaInput {
-  title: String!
-  description: String!
 }
 
 input mutationPageUpdate_ContentInput {
@@ -5047,9 +5473,9 @@ enum UserUpdate_roles_MutationInput {
 }
 
 type usersRefreshedUser {
-  user: usersJWT
-  refreshedToken: String
   exp: Int
+  refreshedToken: String
+  user: usersJWT
 }
 
 type usersJWT {
@@ -5058,14 +5484,50 @@ type usersJWT {
 }
 
 type usersLoginResult {
+  exp: Int
   token: String
   user: User
-  exp: Int
 }
 
 type usersResetPassword {
   token: String
   user: User
+}
+
+input mutationPayloadPreferenceInput {
+  user: PayloadPreference_UserRelationshipInput
+  key: String
+  value: JSON
+  updatedAt: String
+  createdAt: String
+}
+
+input PayloadPreference_UserRelationshipInput {
+  relationTo: PayloadPreference_UserRelationshipInputRelationTo
+  value: JSON
+}
+
+enum PayloadPreference_UserRelationshipInputRelationTo {
+  guests
+  users
+}
+
+input mutationPayloadPreferenceUpdateInput {
+  user: PayloadPreferenceUpdate_UserRelationshipInput
+  key: String
+  value: JSON
+  updatedAt: String
+  createdAt: String
+}
+
+input PayloadPreferenceUpdate_UserRelationshipInput {
+  relationTo: PayloadPreferenceUpdate_UserRelationshipInputRelationTo
+  value: JSON
+}
+
+enum PayloadPreferenceUpdate_UserRelationshipInputRelationTo {
+  guests
+  users
 }
 
 input mutationNavigationInput {

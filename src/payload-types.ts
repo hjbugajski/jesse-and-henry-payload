@@ -26,6 +26,8 @@ export interface Config {
     relations: Relation;
     sides: Side;
     users: User;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   globals: {
     navigation: Navigation;
@@ -54,7 +56,7 @@ export interface Guest {
   hash?: string;
   loginAttempts?: number;
   lockUntil?: string;
-  password?: string;
+  password: string;
 }
 export interface Party {
   id: string;
@@ -169,11 +171,46 @@ export interface User {
   hash?: string;
   loginAttempts?: number;
   lockUntil?: string;
-  password?: string;
+  password: string;
+}
+export interface PayloadPreference {
+  id: string;
+  user:
+    | {
+        relationTo: 'guests';
+        value: string | Guest;
+      }
+    | {
+        relationTo: 'users';
+        value: string | User;
+      };
+  key?: string;
+  value?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+export interface PayloadMigration {
+  id: string;
+  name?: string;
+  batch?: number;
+  updatedAt: string;
+  createdAt: string;
 }
 export interface Navigation {
   id: string;
   links?: LinkArrayField;
   updatedAt?: string;
   createdAt?: string;
+}
+
+declare module 'payload' {
+  export interface GeneratedTypes extends Config {}
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ElementButton } from 'payload/components/rich-text';
+import { ElementButton } from '@payloadcms/richtext-slate';
 
 const VenueButton: React.FC<{ path: string }> = () => {
   return (

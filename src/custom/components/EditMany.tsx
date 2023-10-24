@@ -9,7 +9,7 @@ import { X } from 'payload/components';
 import { useAuth, useConfig } from 'payload/components/utilities';
 import { Drawer, DrawerToggler } from 'payload/dist/admin/components/elements/Drawer';
 import { FieldSelect } from 'payload/dist/admin/components/elements/FieldSelect';
-import fieldTypes from 'payload/dist/admin/components/forms/field-types';
+import { fieldTypes } from 'payload/dist/admin/components/forms/field-types';
 import Form from 'payload/dist/admin/components/forms/Form';
 import { useForm } from 'payload/dist/admin/components/forms/Form/context';
 import RenderFields from 'payload/dist/admin/components/forms/RenderFields';

@@ -1,3 +1,4 @@
+import { slateEditor } from '@payloadcms/richtext-slate';
 import { Block } from 'payload/types';
 
 import { Alert } from './Alert';
@@ -23,9 +24,11 @@ export const Section: Block = {
     {
       name: 'description',
       type: 'richText',
-      admin: {
-        elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
-      },
+      editor: slateEditor({
+        admin: {
+          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
+        },
+      }),
     },
     {
       name: 'border',

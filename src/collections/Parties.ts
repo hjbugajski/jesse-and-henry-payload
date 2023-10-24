@@ -11,7 +11,7 @@ const beforeValidateHook: CollectionBeforeValidateHook<Party> = async ({ data, o
 
   const characters = 'abcdefghijklmnopqrstuvwxyz';
   const limit = await req.payload.find({ collection: 'parties' }).then((data) => data.totalDocs);
-  const existingCodes = (await req.payload.find({ collection: 'parties', limit })).docs.map((doc: Party) => doc.code);
+  const existingCodes = (await req.payload.find({ collection: 'parties', limit })).docs.map((doc) => doc.code);
 
   let code = '';
   do {
