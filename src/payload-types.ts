@@ -21,6 +21,7 @@ export type LinkArrayField = {
 export interface Config {
   collections: {
     guests: Guest;
+    media: Media;
     pages: Page;
     parties: Party;
     relations: Relation;
@@ -82,6 +83,37 @@ export interface Relation {
   sort?: number;
   updatedAt: string;
   createdAt: string;
+}
+export interface Media {
+  id: string;
+  alt: string;
+  dataUrl?: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string;
+  filename?: string;
+  mimeType?: string;
+  filesize?: number;
+  width?: number;
+  height?: number;
+  sizes?: {
+    preview?: {
+      url?: string;
+      width?: number;
+      height?: number;
+      mimeType?: string;
+      filesize?: number;
+      filename?: string;
+    };
+    thumbnail?: {
+      url?: string;
+      width?: number;
+      height?: number;
+      mimeType?: string;
+      filesize?: number;
+      filename?: string;
+    };
+  };
 }
 export interface Page {
   id: string;

@@ -6,6 +6,7 @@ import { slateEditor } from '@payloadcms/richtext-slate';
 import { buildConfig } from 'payload/config';
 
 import Guests from './collections/Guests';
+import Media from './collections/Media';
 import Pages from './collections/Pages';
 import Parties from './collections/Parties';
 import Relations from './collections/Relations';
@@ -13,9 +14,22 @@ import Sides from './collections/Sides';
 import Users from './collections/Users';
 import Navigation from './globals/Navigation';
 
+const useDataUrlPath = path.resolve(__dirname, 'hooks/useDataUrl');
+const mockModulePath = path.resolve(__dirname, 'mocks/emptyObject.ts');
+
 export default buildConfig({
   admin: {
     bundler: webpackBundler(),
+    webpack: (config) => ({
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve.alias,
+          [useDataUrlPath]: mockModulePath,
+        },
+      },
+    }),
     user: Users.slug,
     css: path.resolve(__dirname, 'custom/styles/index.scss'),
   },
@@ -28,7 +42,7 @@ export default buildConfig({
     },
   }),
   editor: slateEditor({}),
-  collections: [Guests, Pages, Parties, Relations, Sides, Users],
+  collections: [Guests, Media, Pages, Parties, Relations, Sides, Users],
   globals: [Navigation],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
