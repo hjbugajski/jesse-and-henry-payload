@@ -1,8 +1,12 @@
 import path from 'path';
 
+import { webpackBundler } from '@payloadcms/bundler-webpack';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
+import { slateEditor } from '@payloadcms/richtext-slate';
 import { buildConfig } from 'payload/config';
 
 import Guests from './collections/Guests';
+import Media from './collections/Media';
 import Pages from './collections/Pages';
 import Parties from './collections/Parties';
 import Relations from './collections/Relations';
@@ -10,12 +14,35 @@ import Sides from './collections/Sides';
 import Users from './collections/Users';
 import Navigation from './globals/Navigation';
 
+const useDataUrlPath = path.resolve(__dirname, 'hooks/useDataUrl');
+const mockModulePath = path.resolve(__dirname, 'mocks/emptyObject.ts');
+
 export default buildConfig({
   admin: {
+    bundler: webpackBundler(),
+    webpack: (config) => ({
+      ...config,
+      resolve: {
+        ...config.resolve,
+        alias: {
+          ...config.resolve.alias,
+          [useDataUrlPath]: mockModulePath,
+        },
+      },
+    }),
     user: Users.slug,
     css: path.resolve(__dirname, 'custom/styles/index.scss'),
   },
-  collections: [Guests, Pages, Parties, Relations, Sides, Users],
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI,
+    connectOptions: {
+      user: process.env.MONGODB_USERNAME,
+      pass: process.env.MONGODB_PASSWORD,
+      dbName: process.env.MONGODB_DATABASE,
+    },
+  }),
+  editor: slateEditor({}),
+  collections: [Guests, Media, Pages, Parties, Relations, Sides, Users],
   globals: [Navigation],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),

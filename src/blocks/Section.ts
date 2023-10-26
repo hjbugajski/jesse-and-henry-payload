@@ -1,8 +1,10 @@
+import { slateEditor } from '@payloadcms/richtext-slate';
 import { Block } from 'payload/types';
 
 import { Alert } from './Alert';
-import ButtonLink from './ButtonLink';
+import ButtonLinks from './ButtonLinks';
 import Content from './Content';
+import Photos from './Photos';
 import venue from '../fields/richText/venue';
 
 export const Section: Block = {
@@ -23,34 +25,22 @@ export const Section: Block = {
     {
       name: 'description',
       type: 'richText',
-      admin: {
-        elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
-      },
+      editor: slateEditor({
+        admin: {
+          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
+        },
+      }),
     },
     {
       name: 'border',
-      type: 'select',
+      type: 'checkbox',
       required: true,
-      defaultValue: 'none',
-      options: [
-        {
-          label: 'None',
-          value: 'none',
-        },
-        {
-          label: 'Left',
-          value: 'left',
-        },
-        {
-          label: 'Right',
-          value: 'right',
-        },
-      ],
+      defaultValue: false,
     },
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Alert, ButtonLink, Content],
+      blocks: [Alert, ButtonLinks, Content, Photos],
     },
   ],
 };

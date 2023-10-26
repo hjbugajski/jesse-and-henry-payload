@@ -12,7 +12,6 @@ import {
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { Pill } from 'payload/components';
-import { Eyebrow } from 'payload/components/elements';
 import { Meta, useConfig } from 'payload/components/utilities';
 import { getTranslation } from 'payload/dist/utilities/getTranslation';
 import { stringify } from 'qs';
@@ -458,7 +457,6 @@ const GuestList: React.FC = (props: any) => {
   return (
     <div className="default-page-template">
       <Meta title={getTranslation(collection.labels.plural, i18n)} />
-      <Eyebrow />
       <div className="gutter--left gutter--right collection-list__wrap component">
         <div className="row">
           <h1>{getTranslation(collection.labels.plural, i18n)}</h1>

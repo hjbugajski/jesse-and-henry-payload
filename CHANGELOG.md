@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v6.0.0...v7.0.0) (2023-10-26)
+
+### Features
+
+- add Media collection, switch to npm, update Docker ([97dacad](https://github.com/hjbugajski/jesse-and-henry-payload/commit/97dacad71f3e5054d425c119e457cbed37fdd4f7))
+- **blocks/ButtonLinks:** refactor ButtonLink to ButtonLinks with an array of links ([5bdd925](https://github.com/hjbugajski/jesse-and-henry-payload/commit/5bdd925a518156b1e1d2ee63d22ee3521ff26226))
+- **blocks/Hero:** add image field ([ba47398](https://github.com/hjbugajski/jesse-and-henry-payload/commit/ba473989062b2a03137e532e92dfaeb8f2bb5683))
+- **blocks:** add Photos ([6ca1f99](https://github.com/hjbugajski/jesse-and-henry-payload/commit/6ca1f998c61829ea45693d115dbd6a76a4023175))
+- migrate to payload v2 ([f6b1414](https://github.com/hjbugajski/jesse-and-henry-payload/commit/f6b1414ff0702a7b7dd6e32631d8938899bf813c))
+
+### Bug Fixes
+
+- **blocks/Section:** change border field to checkbox ([39b3d4b](https://github.com/hjbugajski/jesse-and-henry-payload/commit/39b3d4bc47de0e59fb3891f2fd33499829343720))
+
 ## [6.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v5.0.0...v6.0.0) (2023-10-19)
 
 ### ⚠ BREAKING CHANGES

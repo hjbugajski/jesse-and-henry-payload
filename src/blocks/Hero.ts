@@ -19,5 +19,11 @@ export const Hero: Block = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'image',
+      type: 'relationship',
+      relationTo: 'media',
+      required: true,
+    },
   ],
 };

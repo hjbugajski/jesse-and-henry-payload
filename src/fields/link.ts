@@ -4,13 +4,24 @@ import RowLabel from '../components/RowLabel';
 
 export const linkFields: Field[] = [
   {
-    name: 'text',
-    type: 'text',
-    required: true,
-  },
-  {
-    name: 'icon',
-    type: 'text',
+    type: 'row',
+    fields: [
+      {
+        name: 'text',
+        type: 'text',
+        required: true,
+        admin: {
+          width: '50%',
+        },
+      },
+      {
+        name: 'icon',
+        type: 'text',
+        admin: {
+          width: '50%',
+        },
+      },
+    ],
   },
   {
     name: 'type',
@@ -19,11 +30,11 @@ export const linkFields: Field[] = [
       layout: 'horizontal',
     },
     required: true,
-    defaultValue: 'relationship',
+    defaultValue: 'internal',
     options: [
       {
         label: 'Internal',
-        value: 'relationship',
+        value: 'internal',
       },
       {
         label: 'External',
@@ -32,38 +43,55 @@ export const linkFields: Field[] = [
     ],
   },
   {
-    name: 'relationship',
-    label: 'Page',
-    type: 'relationship',
-    relationTo: 'pages',
-    required: true,
-    maxDepth: 1,
-    admin: {
-      condition: (_, siblingData) => siblingData?.type === 'relationship',
-    },
+    type: 'row',
+    fields: [
+      {
+        name: 'relationship',
+        label: 'Page',
+        type: 'relationship',
+        relationTo: 'pages',
+        required: true,
+        maxDepth: 1,
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'internal',
+          width: '50%',
+        },
+      },
+      {
+        name: 'anchor',
+        type: 'text',
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'internal',
+          width: '50%',
+        },
+      },
+    ],
   },
   {
-    name: 'url',
-    label: 'External URL',
-    type: 'text',
-    required: true,
-    admin: {
-      condition: (_, siblingData) => siblingData?.type === 'external',
-    },
-  },
-  {
-    name: 'anchor',
-    type: 'text',
-  },
-  {
-    name: 'rel',
-    label: 'Rel Attribute',
-    type: 'select',
-    hasMany: true,
-    options: ['noreferrer'],
-    admin: {
-      condition: (_, siblingData) => siblingData?.type === 'external',
-    },
+    type: 'row',
+    fields: [
+      {
+        name: 'url',
+        label: 'External URL',
+        type: 'text',
+        required: true,
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'external',
+          width: '50%',
+        },
+      },
+      {
+        name: 'rel',
+        label: 'Rel Attribute',
+        type: 'select',
+        hasMany: true,
+        options: ['noreferrer'],
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'external',
+          width: '50%',
+        },
+      },
+    ],
   },
   {
     name: 'newTab',

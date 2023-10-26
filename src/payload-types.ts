@@ -7,12 +7,13 @@
  */
 
 export type LinkArrayField = {
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
   text: string;
   icon?: string;
-  type: 'relationship' | 'external';
+  type: 'internal' | 'external';
   relationship: string | Page;
-  url: string;
   anchor?: string;
+  url: string;
   rel?: 'noreferrer'[];
   newTab?: boolean;
   id?: string;
@@ -21,11 +22,14 @@ export type LinkArrayField = {
 export interface Config {
   collections: {
     guests: Guest;
+    media: Media;
     pages: Page;
     parties: Party;
     relations: Relation;
     sides: Side;
     users: User;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   globals: {
     navigation: Navigation;
@@ -54,7 +58,7 @@ export interface Guest {
   hash?: string;
   loginAttempts?: number;
   lockUntil?: string;
-  password?: string;
+  password: string;
 }
 export interface Party {
   id: string;
@@ -80,6 +84,37 @@ export interface Relation {
   sort?: number;
   updatedAt: string;
   createdAt: string;
+}
+export interface Media {
+  id: string;
+  alt: string;
+  dataUrl?: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string;
+  filename?: string;
+  mimeType?: string;
+  filesize?: number;
+  width?: number;
+  height?: number;
+  sizes?: {
+    preview?: {
+      url?: string;
+      width?: number;
+      height?: number;
+      mimeType?: string;
+      filesize?: number;
+      filename?: string;
+    };
+    thumbnail?: {
+      url?: string;
+      width?: number;
+      height?: number;
+      mimeType?: string;
+      filesize?: number;
+      filename?: string;
+    };
+  };
 }
 export interface Page {
   id: string;
@@ -114,10 +149,10 @@ export interface AlertBlock {
 export interface LinkGroupField {
   text: string;
   icon?: string;
-  type: 'relationship' | 'external';
+  type: 'internal' | 'external';
   relationship: string | Page;
-  url: string;
   anchor?: string;
+  url: string;
   rel?: 'noreferrer'[];
   newTab?: boolean;
 }
@@ -134,6 +169,7 @@ export interface HeroBlock {
   titleOne: string;
   titleTwo: string;
   subtitle: string;
+  image: string | Media;
   id?: string;
   blockName?: string;
   blockType: 'hero';
@@ -144,18 +180,23 @@ export interface SectionBlock {
   description?: {
     [k: string]: unknown;
   }[];
-  border: 'none' | 'left' | 'right';
-  layout?: (AlertBlock | ButtonLinkBlock | ContentBlock)[];
+  border: boolean;
+  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[];
   id?: string;
   blockName?: string;
   blockType: 'section';
 }
-export interface ButtonLinkBlock {
-  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-  link: LinkGroupField;
+export interface ButtonLinksBlock {
+  links?: LinkArrayField;
   id?: string;
   blockName?: string;
-  blockType: 'buttonLink';
+  blockType: 'buttonLinks';
+}
+export interface PhotosBlock {
+  photos: string[] | Media[];
+  id?: string;
+  blockName?: string;
+  blockType: 'photos';
 }
 export interface User {
   id: string;
@@ -169,11 +210,46 @@ export interface User {
   hash?: string;
   loginAttempts?: number;
   lockUntil?: string;
-  password?: string;
+  password: string;
+}
+export interface PayloadPreference {
+  id: string;
+  user:
+    | {
+        relationTo: 'guests';
+        value: string | Guest;
+      }
+    | {
+        relationTo: 'users';
+        value: string | User;
+      };
+  key?: string;
+  value?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+export interface PayloadMigration {
+  id: string;
+  name?: string;
+  batch?: number;
+  updatedAt: string;
+  createdAt: string;
 }
 export interface Navigation {
   id: string;
   links?: LinkArrayField;
   updatedAt?: string;
   createdAt?: string;
+}
+
+declare module 'payload' {
+  export interface GeneratedTypes extends Config {}
 }
