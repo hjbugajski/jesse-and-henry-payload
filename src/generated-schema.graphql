@@ -1948,6 +1948,7 @@ type HeroBlock {
   titleOne: String
   titleTwo: String
   subtitle: String
+  image: Media
   id: String
   blockName: String
   blockType: String

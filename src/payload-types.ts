@@ -168,6 +168,7 @@ export interface HeroBlock {
   titleOne: string;
   titleTwo: string;
   subtitle: string;
+  image: string | Media;
   id?: string;
   blockName?: string;
   blockType: 'hero';
