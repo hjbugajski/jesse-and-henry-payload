@@ -181,7 +181,7 @@ export interface SectionBlock {
     [k: string]: unknown;
   }[];
   border: 'none' | 'left' | 'right';
-  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock)[];
+  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[];
   id?: string;
   blockName?: string;
   blockType: 'section';
@@ -191,6 +191,12 @@ export interface ButtonLinksBlock {
   id?: string;
   blockName?: string;
   blockType: 'buttonLinks';
+}
+export interface PhotosBlock {
+  photos: string[] | Media[];
+  id?: string;
+  blockName?: string;
+  blockType: 'photos';
 }
 export interface User {
   id: string;

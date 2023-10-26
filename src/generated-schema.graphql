@@ -1971,7 +1971,7 @@ enum SectionBlock_border {
   right
 }
 
-union SectionBlock_Layout = AlertBlock | ButtonLinksBlock | ContentBlock
+union SectionBlock_Layout = AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock
 
 type ButtonLinksBlock {
   links: [LinkArrayField!]
@@ -2009,6 +2009,13 @@ enum LinkArrayField_type {
 
 enum LinkArrayField_rel {
   noreferrer
+}
+
+type PhotosBlock {
+  photos: [Media!]
+  id: String
+  blockName: String
+  blockType: String
 }
 
 enum Page__status {
