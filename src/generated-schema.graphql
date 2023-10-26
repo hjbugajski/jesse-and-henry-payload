@@ -1958,17 +1958,11 @@ type SectionBlock {
   anchorId: String
   title: String
   description(depth: Int): JSON
-  border: SectionBlock_border
+  border: Boolean
   layout: [SectionBlock_Layout!]
   id: String
   blockName: String
   blockType: String
-}
-
-enum SectionBlock_border {
-  none
-  left
-  right
 }
 
 union SectionBlock_Layout = AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock

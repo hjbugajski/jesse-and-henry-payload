@@ -180,7 +180,7 @@ export interface SectionBlock {
   description?: {
     [k: string]: unknown;
   }[];
-  border: 'none' | 'left' | 'right';
+  border: boolean;
   layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[];
   id?: string;
   blockName?: string;

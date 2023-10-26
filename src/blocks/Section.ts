@@ -33,23 +33,9 @@ export const Section: Block = {
     },
     {
       name: 'border',
-      type: 'select',
+      type: 'checkbox',
       required: true,
-      defaultValue: 'none',
-      options: [
-        {
-          label: 'None',
-          value: 'none',
-        },
-        {
-          label: 'Left',
-          value: 'left',
-        },
-        {
-          label: 'Right',
-          value: 'right',
-        },
-      ],
+      defaultValue: false,
     },
     {
       name: 'layout',
