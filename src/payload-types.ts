@@ -7,12 +7,13 @@
  */
 
 export type LinkArrayField = {
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
   text: string;
   icon?: string;
-  type: 'relationship' | 'external';
+  type: 'internal' | 'external';
   relationship: string | Page;
-  url: string;
   anchor?: string;
+  url: string;
   rel?: 'noreferrer'[];
   newTab?: boolean;
   id?: string;
@@ -148,10 +149,10 @@ export interface AlertBlock {
 export interface LinkGroupField {
   text: string;
   icon?: string;
-  type: 'relationship' | 'external';
+  type: 'internal' | 'external';
   relationship: string | Page;
-  url: string;
   anchor?: string;
+  url: string;
   rel?: 'noreferrer'[];
   newTab?: boolean;
 }
@@ -180,17 +181,16 @@ export interface SectionBlock {
     [k: string]: unknown;
   }[];
   border: 'none' | 'left' | 'right';
-  layout?: (AlertBlock | ButtonLinkBlock | ContentBlock)[];
+  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock)[];
   id?: string;
   blockName?: string;
   blockType: 'section';
 }
-export interface ButtonLinkBlock {
-  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-  link: LinkGroupField;
+export interface ButtonLinksBlock {
+  links?: LinkArrayField;
   id?: string;
   blockName?: string;
-  blockType: 'buttonLink';
+  blockType: 'buttonLinks';
 }
 export interface User {
   id: string;

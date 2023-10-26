@@ -2,7 +2,7 @@ import { slateEditor } from '@payloadcms/richtext-slate';
 import { Block } from 'payload/types';
 
 import { Alert } from './Alert';
-import ButtonLink from './ButtonLink';
+import ButtonLinks from './ButtonLinks';
 import Content from './Content';
 import venue from '../fields/richText/venue';
 
@@ -53,7 +53,7 @@ export const Section: Block = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [Alert, ButtonLink, Content],
+      blocks: [Alert, ButtonLinks, Content],
     },
   ],
 };
