@@ -1,6 +1,7 @@
 import { CollectionBeforeValidateHook, CollectionConfig } from 'payload/types';
 
 import Tags from './Tags';
+import CodeCell from '../components/CodeCell';
 import { Party } from '../payload-types';
 import { deepMerge } from '../utils/deepMerge';
 
@@ -9,11 +10,12 @@ const beforeValidateHook: CollectionBeforeValidateHook<Party> = async ({ data, o
     return data;
   }
 
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  const characters = '1234567890';
   const limit = await req.payload.find({ collection: 'parties' }).then((data) => data.totalDocs);
   const existingCodes = (await req.payload.find({ collection: 'parties', limit })).docs.map((doc) => doc.code);
 
   let code = '';
+
   do {
     code = Array.from({ length: 6 }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
   } while (existingCodes.includes(code));
@@ -23,6 +25,9 @@ const beforeValidateHook: CollectionBeforeValidateHook<Party> = async ({ data, o
 
 const Parties: CollectionConfig = deepMerge<CollectionConfig>(Tags, {
   slug: 'parties',
+  admin: {
+    defaultColumns: ['value', 'code', 'color', 'sort'],
+  },
   hooks: {
     beforeValidate: [beforeValidateHook],
   },
@@ -34,6 +39,9 @@ const Parties: CollectionConfig = deepMerge<CollectionConfig>(Tags, {
       admin: {
         position: 'sidebar',
         readOnly: true,
+        components: {
+          Cell: CodeCell,
+        },
       },
     },
   ],
