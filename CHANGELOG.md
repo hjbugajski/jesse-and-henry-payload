@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.0.1](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.0...v7.0.1) (2023-11-22)
+
+### Bug Fixes
+
+- **collections/Parties:** change code from letters to numbers ([f6666d3](https://github.com/hjbugajski/jesse-and-henry-payload/commit/f6666d3755706042aba7de8ad7983f2f2c0dd39c))
+- **components/CodeCell:** remove code formatting ([3057a07](https://github.com/hjbugajski/jesse-and-henry-payload/commit/3057a077c2dc6ce145bc64cbe47dea9620e64ec8))
+- **custom/GuestList:** reorder columns ([848206c](https://github.com/hjbugajski/jesse-and-henry-payload/commit/848206c71ccddb8ba2f8acf78a45e931f3fb9d22))
+
 ## [7.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v6.0.0...v7.0.0) (2023-10-26)
 
 ### Features
