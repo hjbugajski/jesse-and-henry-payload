@@ -13,7 +13,7 @@ const Tags: CollectionConfig = {
   admin: {
     useAsTitle: 'value',
     group: 'Guests Collections',
-    defaultColumns: ['id', 'value', 'sort'],
+    defaultColumns: ['value', 'sort', 'id'],
     disableDuplicate: true,
   },
   defaultSort: 'sort',

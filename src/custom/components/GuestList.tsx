@@ -350,8 +350,9 @@ const GuestList: React.FC = (props: any) => {
         initialWidth: 120,
       },
       {
-        field: 'phone',
-        initialWidth: 150,
+        field: 'party',
+        initialWidth: 175,
+        ...getTagsColumnDefs('parties'),
       },
       {
         field: 'address',
@@ -360,11 +361,6 @@ const GuestList: React.FC = (props: any) => {
         cellEditorPopupPosition: 'over',
         initialWidth: 175,
         suppressKeyboardEvent: ({ editing, event }) => editing && event.shiftKey && event.key === 'Enter',
-      },
-      {
-        field: 'party',
-        initialWidth: 175,
-        ...getTagsColumnDefs('parties'),
       },
       {
         field: 'side',
@@ -393,6 +389,10 @@ const GuestList: React.FC = (props: any) => {
         cellClass: 'ag-cell--last',
         headerClass: 'ag-header-cell--last',
         ...getRsvpColumnDefs('rsvpBrunch'),
+      },
+      {
+        field: 'phone',
+        initialWidth: 150,
       },
       {
         field: 'email',
