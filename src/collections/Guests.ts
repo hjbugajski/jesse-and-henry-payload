@@ -284,12 +284,16 @@ const Guests: CollectionConfig = {
       label: 'RSVP Welcome Party',
     }),
     deepMerge<Field>(rsvpOptionField, {
-      name: 'rsvpWedding',
-      label: 'RSVP Wedding',
+      name: 'rsvpRehearsalDinner',
+      label: 'RSVP Rehearsal Dinner',
     }),
     deepMerge<Field>(rsvpOptionField, {
-      name: 'rsvpBrunch',
-      label: 'RSVP Brunch',
+      name: 'rsvpWeddingDay',
+      label: 'RSVP Wedding Day',
+    }),
+    deepMerge<Field>(rsvpOptionField, {
+      name: 'rsvpPoolDay',
+      label: 'RSVP Pool Day',
     }),
     {
       name: 'sort',
