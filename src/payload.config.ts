@@ -16,6 +16,7 @@ import Navigation from './globals/Navigation';
 
 const useDataUrlPath = path.resolve(__dirname, 'hooks/useDataUrl');
 const mockModulePath = path.resolve(__dirname, 'mocks/emptyObject.ts');
+const whitelist = [process.env.SERVER_URL, process.env.DOMAIN, process.env.PAYLOAD_DOMAIN];
 
 export default buildConfig({
   admin: {
@@ -50,7 +51,7 @@ export default buildConfig({
   graphQL: {
     schemaOutputFile: path.resolve(__dirname, 'generated-schema.graphql'),
   },
-  cors: [process.env.MONGODB_IP].filter(Boolean),
-  csrf: [process.env.SERVER_URL, process.env.DOMAIN, process.env.PAYLOAD_DOMAIN].filter(Boolean),
+  cors: [process.env.MONGODB_IP, ...whitelist].filter(Boolean),
+  csrf: whitelist.filter(Boolean),
   serverURL: process.env.SERVER_URL,
 });
