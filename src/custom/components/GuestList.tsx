@@ -355,6 +355,13 @@ const GuestList: React.FC = (props: any) => {
         ...getTagsColumnDefs('parties'),
       },
       {
+        field: 'party',
+        headerName: 'Party Code',
+        initialWidth: 105,
+        editable: false,
+        cellRenderer: (params: ICellRendererParams<Guest, Party>) => <code>{params.value?.code}</code> ?? null,
+      },
+      {
         field: 'address',
         cellEditor: TextareaEditor,
         cellEditorPopup: true,
