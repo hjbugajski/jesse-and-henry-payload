@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import * as Tooltip from '@radix-ui/react-tooltip';
 import {
@@ -87,46 +87,45 @@ const GuestList: React.FC = (props: any) => {
   } = useConfig();
   const { t, i18n } = useTranslation('general');
 
-  // Callbacks
-  const addGuest = useCallback(
-    async (addIndex = -1) => {
-      try {
-        const res = await fetch(`${serverURL}${api}/${slug}`, {
-          method: 'POST',
-          credentials: 'include',
-          body: JSON.stringify({
-            sort: addIndex,
-          }),
-        });
+  // functions
+  async function addGuest(addIndex = -1) {
+    try {
+      const res = await fetch(`${serverURL}${api}/${slug}`, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify({
+          sort: addIndex,
+        }),
+      });
 
-        if (res.status !== 200) {
-          setError(res.statusText);
+      if (res.status !== 200) {
+        setError(res.statusText);
 
-          return;
-        }
-
-        const data: PayloadPostApi<Guest> = await res.json();
-
-        gridRef.current.api.applyTransaction({
-          add: [data.doc],
-          addIndex,
-        });
-
-        await reorderDocs(gridRef.current.api);
-
-        gridRef.current.api.ensureIndexVisible(gridRef.current.api.getRowNode(data.doc.id).rowIndex);
-      } catch (error) {
-        console.error(error);
-        setError(error.message);
+        return;
       }
-    },
-    [api, gridRef, serverURL, slug]
-  );
 
-  const getRowId = useCallback((params: GetRowIdParams<Guest>) => params.data.id, []);
+      const data: PayloadPostApi<Guest> = await res.json();
 
-  const getRsvpColumnDefs = useCallback(
-    (fieldName: string): Partial<ColDef<Guest>> => ({
+      gridRef.current.api.applyTransaction({
+        add: [data.doc],
+        addIndex,
+      });
+
+      await reorderDocs(gridRef.current.api);
+
+      gridRef.current.api.ensureIndexVisible(gridRef.current.api.getRowNode(data.doc.id).rowIndex);
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    }
+  }
+
+  function getRowId(params: GetRowIdParams<Guest>) {
+    return params.data.id;
+  }
+
+  function getRsvpColumnDefs(fieldName: string): Partial<ColDef<Guest>> {
+    return {
       cellRenderer: (params: ICellRendererParams<Guest, any>) =>
         params.value ? (
           <Tag
@@ -134,7 +133,7 @@ const GuestList: React.FC = (props: any) => {
             color={params.value === 'accept' ? 'green' : 'red'}
           />
         ) : null,
-      cellEditor: SelectEditor,
+      cellEditor: (props) => <SelectEditor {...props} />,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'over',
       cellEditorParams: {
@@ -143,15 +142,14 @@ const GuestList: React.FC = (props: any) => {
         isClearable: fields.find((f: any) => f.name === fieldName)?.admin.isClearable ?? false,
         options: fields.find((f: any) => f.name === fieldName)?.options ?? [],
       },
-    }),
-    [fields]
-  );
+    };
+  }
 
-  const getTagsColumnDefs = useCallback(
-    (collection: string): Partial<ColDef<Guest>> => ({
+  function getTagsColumnDefs(collection: string): Partial<ColDef<Guest>> {
+    return {
       cellRenderer: (params: ICellRendererParams<Guest, Party>) =>
         params.value?.value ? <Tag value={params.value?.value} color={params.value?.color} /> : null,
-      cellEditor: SelectEditor,
+      cellEditor: (props) => <SelectEditor {...props} />,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'over',
       cellEditorParams: {
@@ -160,271 +158,248 @@ const GuestList: React.FC = (props: any) => {
         getValue: (v: Party) => v.id,
         isClearable: true,
       },
-    }),
-    []
-  );
+    };
+  }
 
-  const onCellEditingStopped = useCallback(
-    async (params: CellEditingStoppedEvent<Guest>) => {
-      if (!params.valueChanged) {
-        return;
-      }
+  async function onCellEditingStopped(params: CellEditingStoppedEvent<Guest>) {
+    if (!params.valueChanged) {
+      return;
+    }
 
-      try {
-        const field: keyof Guest = params.colDef.field as keyof Guest;
-        const value = params.newValue?.id ?? params.newValue?.value ?? params.newValue ?? null;
+    try {
+      const field: keyof Guest = params.colDef.field as keyof Guest;
+      const value = params.newValue?.id ?? params.newValue?.value ?? params.newValue ?? null;
 
-        const res = await fetch(`${serverURL}${api}/${slug}/${params.data.id}`, {
-          method: 'PATCH',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            [field]: value,
-          }),
+      const res = await fetch(`${serverURL}${api}/${slug}/${params.data.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          [field]: value,
+        }),
+      });
+
+      if (res.status === 200) {
+        const data = await res.json();
+
+        gridRef.current.api.applyTransaction({
+          update: [data.doc],
         });
+      } else {
+        const json = await res.json();
 
-        if (res.status === 200) {
-          const data = await res.json();
-
-          gridRef.current.api.applyTransaction({
-            update: [data.doc],
-          });
-        } else {
-          const json = await res.json();
-
-          console.error(json);
-          setError(json.errors[0].message);
-        }
-      } catch (error) {
-        console.error(error);
-        setError(error.message);
+        console.error(json);
+        setError(json.errors[0].message);
       }
-    },
-    [api, serverURL, slug]
-  );
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    }
+  }
 
-  const onDeleteMany = useCallback(() => {
+  function onDeleteMany() {
     gridRef.current.api.applyTransaction({
       remove: selectedRows,
     });
-  }, [gridRef, selectedRows]);
+  }
 
-  const onEditMany = useCallback(
-    (json: PayloadFormOnSuccess<Guest>) => {
-      gridRef.current.api.deselectAll();
-      gridRef.current.api.applyTransaction({
-        update: json.docs,
-      });
-    },
-    [gridRef]
-  );
+  function onEditMany(json: PayloadFormOnSuccess<Guest>) {
+    gridRef.current.api.deselectAll();
+    gridRef.current.api.applyTransaction({
+      update: json.docs,
+    });
+  }
 
-  const onRowDragEnd = useCallback(async (e: RowDragEndEvent<Guest>) => await reorderDocs(e.api), []);
+  async function onRowDragEnd(e: RowDragEndEvent<Guest>) {
+    await reorderDocs(e.api);
+  }
 
-  const onSelectionChanged = useCallback(() => {
+  function onSelectionChanged() {
     const rows = gridRef.current.api.getSelectedRows() ?? [];
 
     setSelectedRows([...rows]);
-  }, [gridRef]);
+  }
 
-  const reorderDocs = useCallback(
-    async (gridApi: GridApi<Guest>) => {
-      const docs: Guest[] = [];
+  async function reorderDocs(gridApi: GridApi<Guest>) {
+    const docs: Guest[] = [];
 
-      gridApi.forEachNode((node) => {
-        docs.push(node.data);
+    gridApi.forEachNode((node) => {
+      docs.push(node.data);
+    });
+
+    try {
+      const res = await fetch(`${serverURL}${api}/${slug}/reorder`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          docs,
+        }),
       });
 
-      try {
-        const res = await fetch(`${serverURL}${api}/${slug}/reorder`, {
-          method: 'PATCH',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            docs,
-          }),
-        });
-
-        if (res.status !== 200) {
-          console.error(res);
-          setError(res.statusText);
-        }
-      } catch (error) {
-        console.error(error);
-        setError(error.message);
+      if (res.status !== 200) {
+        console.error(res);
+        setError(res.statusText);
       }
-    },
-    [api, serverURL, slug]
-  );
+    } catch (error) {
+      console.error(error);
+      setError(error.message);
+    }
+  }
 
-  const stringifySelectedDocsQuery = useCallback(
-    () =>
-      stringify({
-        where: {
-          id: {
-            in: selectedRows.map((g) => g.id),
-          },
+  function stringifySelectedDocsQuery() {
+    return stringify({
+      where: {
+        id: {
+          in: selectedRows.map((g) => g.id),
         },
-      }),
-    [selectedRows]
-  );
+      },
+    });
+  }
 
-  // Memoized
-  const columnDefs: ColDef<Guest>[] = useMemo(
-    () => [
-      {
-        cellClass: 'ag-cell--no-hover',
-        editable: false,
-        minWidth: 31,
-        pinned: 'left',
-        resizable: false,
-        rowDrag: true,
-        singleClickEdit: false,
-        width: 31,
-      },
-      {
-        cellClass: 'ag-cell--no-padding ag-cell--no-hover',
-        editable: false,
-        minWidth: 26,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 26,
-        cellRenderer: (params: ICellRendererParams<Guest, any>) => <AddRowRenderer {...params} onClick={addGuest} />,
-      },
-      {
-        cellClass: 'ag-cell--checkbox ag-cell--no-hover',
-        checkboxSelection: true,
-        editable: false,
-        headerCheckboxSelection: true,
-        headerClass: 'ag-header-cell--checkbox',
-        minWidth: 32,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 32,
-      },
-      {
-        field: 'first',
-        initialWidth: 125,
-        pinned: 'left',
-        singleClickEdit: false,
-        cellRenderer: (params: ICellRendererParams<Guest, string>) => (
-          <Link to={`/admin/collections/guests/${params.data.id}`}>{params.value ?? '<No First Name>'}</Link>
-        ),
-      },
-      {
-        field: 'last',
-        initialWidth: 150,
-      },
-      {
-        field: 'middle',
-        initialWidth: 120,
-      },
-      {
-        field: 'party',
-        initialWidth: 175,
-        ...getTagsColumnDefs('parties'),
-      },
-      {
-        field: 'address',
-        cellEditor: TextareaEditor,
-        cellEditorPopup: true,
-        cellEditorPopupPosition: 'over',
-        initialWidth: 175,
-        suppressKeyboardEvent: ({ editing, event }) => editing && event.shiftKey && event.key === 'Enter',
-      },
-      {
-        field: 'side',
-        initialWidth: 75,
-        minWidth: 75,
-        ...getTagsColumnDefs('sides'),
-      },
-      {
-        field: 'relation',
-        initialWidth: 150,
-        ...getTagsColumnDefs('relations'),
-      },
-      {
-        field: 'rsvpWelcomeParty',
-        headerName: 'RSVP Welcome Party',
-        ...getRsvpColumnDefs('rsvpWelcomeParty'),
-      },
-      {
-        field: 'rsvpRehearsalDinner',
-        headerName: 'RSVP Rehearsal Dinner',
-        ...getRsvpColumnDefs('rsvpRehearsalDinner'),
-      },
-      {
-        field: 'rsvpWeddingDay',
-        headerName: 'RSVP Wedding Day',
-        ...getRsvpColumnDefs('rsvpWeddingDay'),
-      },
-      {
-        field: 'rsvpPoolDay',
-        headerName: 'RSVP Pool Day',
-        ...getRsvpColumnDefs('rsvpPoolDay'),
-      },
-      {
-        field: 'phone',
-        initialWidth: 150,
-      },
-      {
-        field: 'email',
-      },
-    ],
-    [addGuest, getRsvpColumnDefs, getTagsColumnDefs]
-  );
+  const defaultColDef: ColDef<Guest> = {
+    editable: true,
+    minWidth: 120,
+    resizable: true,
+    singleClickEdit: true,
+  };
 
-  const defaultColDef: ColDef<Guest> = useMemo(
-    () => ({
-      editable: true,
-      minWidth: 120,
-      resizable: true,
-      singleClickEdit: true,
-    }),
-    []
-  );
+  const columnDefs: ColDef<Guest>[] = [
+    {
+      cellClass: 'ag-cell--no-hover',
+      editable: false,
+      minWidth: 31,
+      pinned: 'left',
+      resizable: false,
+      rowDrag: true,
+      singleClickEdit: false,
+      width: 31,
+    },
+    {
+      cellClass: 'ag-cell--no-padding ag-cell--no-hover',
+      editable: false,
+      minWidth: 26,
+      pinned: 'left',
+      resizable: false,
+      singleClickEdit: false,
+      width: 26,
+      cellRenderer: (params: ICellRendererParams<Guest, any>) => <AddRowRenderer {...params} onClick={addGuest} />,
+    },
+    {
+      cellClass: 'ag-cell--checkbox ag-cell--no-hover',
+      checkboxSelection: true,
+      editable: false,
+      headerCheckboxSelection: true,
+      headerClass: 'ag-header-cell--checkbox',
+      minWidth: 32,
+      pinned: 'left',
+      resizable: false,
+      singleClickEdit: false,
+      width: 32,
+    },
+    {
+      field: 'first',
+      initialWidth: 125,
+      pinned: 'left',
+      singleClickEdit: false,
+      cellRenderer: (params: ICellRendererParams<Guest, string>) => (
+        <Link to={`/admin/collections/guests/${params.data.id}`}>{params.value ?? '<No First Name>'}</Link>
+      ),
+    },
+    {
+      field: 'last',
+      initialWidth: 150,
+    },
+    {
+      field: 'middle',
+      initialWidth: 120,
+    },
+    {
+      field: 'party',
+      initialWidth: 175,
+      ...getTagsColumnDefs('parties'),
+    },
+    {
+      field: 'address',
+      cellEditor: (props) => <TextareaEditor {...props} />,
+      cellEditorPopup: true,
+      cellEditorPopupPosition: 'over',
+      initialWidth: 175,
+      suppressKeyboardEvent: ({ editing, event }) => editing && event.shiftKey && event.key === 'Enter',
+    },
+    {
+      field: 'side',
+      initialWidth: 75,
+      minWidth: 75,
+      ...getTagsColumnDefs('sides'),
+    },
+    {
+      field: 'relation',
+      initialWidth: 150,
+      ...getTagsColumnDefs('relations'),
+    },
+    {
+      field: 'rsvpWelcomeParty',
+      headerName: 'RSVP Welcome Party',
+      ...getRsvpColumnDefs('rsvpWelcomeParty'),
+    },
+    {
+      field: 'rsvpRehearsalDinner',
+      headerName: 'RSVP Rehearsal Dinner',
+      ...getRsvpColumnDefs('rsvpRehearsalDinner'),
+    },
+    {
+      field: 'rsvpWeddingDay',
+      headerName: 'RSVP Wedding Day',
+      ...getRsvpColumnDefs('rsvpWeddingDay'),
+    },
+    {
+      field: 'rsvpPoolDay',
+      headerName: 'RSVP Pool Day',
+      ...getRsvpColumnDefs('rsvpPoolDay'),
+    },
+    {
+      field: 'phone',
+      initialWidth: 150,
+    },
+    {
+      field: 'email',
+    },
+  ];
 
-  const icons = useMemo(
-    () => ({
-      columnMoveMove:
-        '<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="currentColor" class="text--low-contrast"><path d="M480-81.413 304.348-257.065 363-315.717l75.5 75.499V-438.5H240.218l75.499 75.5-58.652 58.652L81.413-480l175.652-175.652L315.717-597l-75.499 75.5H438.5v-198.282L363-644.283l-58.652-58.652L480-878.587l175.652 175.652L597-644.283l-75.5-75.499V-521.5h198.282L644.283-597l58.652-58.652L878.587-480 702.935-304.348 644.283-363l75.499-75.5H521.5v198.282l75.5-75.499 58.652 58.652L480-81.413Z"/></svg>',
-      rowDrag:
-        '<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="currentColor" class="text--low-contrast"><path d="M349.911-160Q321-160 300.5-180.589q-20.5-20.588-20.5-49.5Q280-259 300.589-279.5q20.588-20.5 49.5-20.5Q379-300 399.5-279.411q20.5 20.588 20.5 49.5Q420-201 399.411-180.5q-20.588 20.5-49.5 20.5Zm260 0Q581-160 560.5-180.589q-20.5-20.588-20.5-49.5Q540-259 560.589-279.5q20.588-20.5 49.5-20.5Q639-300 659.5-279.411q20.5 20.588 20.5 49.5Q680-201 659.411-180.5q-20.588 20.5-49.5 20.5Zm-260-250Q321-410 300.5-430.589q-20.5-20.588-20.5-49.5Q280-509 300.589-529.5q20.588-20.5 49.5-20.5Q379-550 399.5-529.411q20.5 20.588 20.5 49.5Q420-451 399.411-430.5q-20.588 20.5-49.5 20.5Zm260 0Q581-410 560.5-430.589q-20.5-20.588-20.5-49.5Q540-509 560.589-529.5q20.588-20.5 49.5-20.5Q639-550 659.5-529.411q20.5 20.588 20.5 49.5Q680-451 659.411-430.5q-20.588 20.5-49.5 20.5Zm-260-250Q321-660 300.5-680.589q-20.5-20.588-20.5-49.5Q280-759 300.589-779.5q20.588-20.5 49.5-20.5Q379-800 399.5-779.411q20.5 20.588 20.5 49.5Q420-701 399.411-680.5q-20.588 20.5-49.5 20.5Zm260 0Q581-660 560.5-680.589q-20.5-20.588-20.5-49.5Q540-759 560.589-779.5q20.588-20.5 49.5-20.5Q639-800 659.5-779.411q20.5 20.588 20.5 49.5Q680-701 659.411-680.5q-20.588 20.5-49.5 20.5Z"/></svg>',
-    }),
-    []
-  );
+  const icons = {
+    columnMoveMove:
+      '<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="currentColor" class="text--low-contrast"><path d="M480-81.413 304.348-257.065 363-315.717l75.5 75.499V-438.5H240.218l75.499 75.5-58.652 58.652L81.413-480l175.652-175.652L315.717-597l-75.499 75.5H438.5v-198.282L363-644.283l-58.652-58.652L480-878.587l175.652 175.652L597-644.283l-75.5-75.499V-521.5h198.282L644.283-597l58.652-58.652L878.587-480 702.935-304.348 644.283-363l75.499-75.5H521.5v198.282l75.5-75.499 58.652 58.652L480-81.413Z"/></svg>',
+    rowDrag:
+      '<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="currentColor" class="text--low-contrast"><path d="M349.911-160Q321-160 300.5-180.589q-20.5-20.588-20.5-49.5Q280-259 300.589-279.5q20.588-20.5 49.5-20.5Q379-300 399.5-279.411q20.5 20.588 20.5 49.5Q420-201 399.411-180.5q-20.588 20.5-49.5 20.5Zm260 0Q581-160 560.5-180.589q-20.5-20.588-20.5-49.5Q540-259 560.589-279.5q20.588-20.5 49.5-20.5Q639-300 659.5-279.411q20.5 20.588 20.5 49.5Q680-201 659.411-180.5q-20.588 20.5-49.5 20.5Zm-260-250Q321-410 300.5-430.589q-20.5-20.588-20.5-49.5Q280-509 300.589-529.5q20.588-20.5 49.5-20.5Q379-550 399.5-529.411q20.5 20.588 20.5 49.5Q420-451 399.411-430.5q-20.588 20.5-49.5 20.5Zm260 0Q581-410 560.5-430.589q-20.5-20.588-20.5-49.5Q540-509 560.589-529.5q20.588-20.5 49.5-20.5Q639-550 659.5-529.411q20.5 20.588 20.5 49.5Q680-451 659.411-430.5q-20.588 20.5-49.5 20.5Zm-260-250Q321-660 300.5-680.589q-20.5-20.588-20.5-49.5Q280-759 300.589-779.5q20.588-20.5 49.5-20.5Q379-800 399.5-779.411q20.5 20.588 20.5 49.5Q420-701 399.411-680.5q-20.588 20.5-49.5 20.5Zm260 0Q581-660 560.5-680.589q-20.5-20.588-20.5-49.5Q540-759 560.589-779.5q20.588-20.5 49.5-20.5Q639-800 659.5-779.411q20.5 20.588 20.5 49.5Q680-701 659.411-680.5q-20.588 20.5-49.5 20.5Z"/></svg>',
+  };
 
-  const rowClassRules = useMemo(
-    () => ({
-      'green--background': (params: RowClassParams) => params.data.party?.color === 'green',
-      'teal--background': (params: RowClassParams) => params.data.party?.color === 'teal',
-      'cyan--background': (params: RowClassParams) => params.data.party?.color === 'cyan',
-      'blue--background': (params: RowClassParams) => params.data.party?.color === 'blue',
-      'violet--background': (params: RowClassParams) => params.data.party?.color === 'violet',
-      'purple--background': (params: RowClassParams) => params.data.party?.color === 'purple',
-      'plum--background': (params: RowClassParams) => params.data.party?.color === 'plum',
-      'pink--background': (params: RowClassParams) => params.data.party?.color === 'pink',
-      'red--background': (params: RowClassParams) => params.data.party?.color === 'red',
-      'orange--background': (params: RowClassParams) => params.data.party?.color === 'orange',
-      'border-bottom--none': (params: RowClassParams) => {
-        const rowParty = params.data.party?.id ?? null;
-        const rows = [];
+  const rowClassRules = {
+    'green--background': (params: RowClassParams) => params.data.party?.color === 'green',
+    'teal--background': (params: RowClassParams) => params.data.party?.color === 'teal',
+    'cyan--background': (params: RowClassParams) => params.data.party?.color === 'cyan',
+    'blue--background': (params: RowClassParams) => params.data.party?.color === 'blue',
+    'violet--background': (params: RowClassParams) => params.data.party?.color === 'violet',
+    'purple--background': (params: RowClassParams) => params.data.party?.color === 'purple',
+    'plum--background': (params: RowClassParams) => params.data.party?.color === 'plum',
+    'pink--background': (params: RowClassParams) => params.data.party?.color === 'pink',
+    'red--background': (params: RowClassParams) => params.data.party?.color === 'red',
+    'orange--background': (params: RowClassParams) => params.data.party?.color === 'orange',
+    'border-bottom--none': (params: RowClassParams) => {
+      const rowParty = params.data.party?.id ?? null;
+      const rows = [];
 
-        params.api.forEachNode((node) => rows.push(node));
+      params.api.forEachNode((node) => rows.push(node));
 
-        const nextRowParty = rows[(params?.node?.rowIndex ?? 0) + 1]?.data.party?.id ?? null;
+      const nextRowParty = rows[(params?.node?.rowIndex ?? 0) + 1]?.data.party?.id ?? null;
 
-        return rowParty && nextRowParty && rowParty === nextRowParty;
-      },
-    }),
-    []
-  );
+      return rowParty && nextRowParty && rowParty === nextRowParty;
+    },
+  };
 
   // Effects
   useEffect(() => {
@@ -434,15 +409,13 @@ const GuestList: React.FC = (props: any) => {
           credentials: 'include',
         });
 
-        if (res.status !== 200) {
+        if (res.status == 200) {
+          const data: PayloadGetApi<Guest> = await res.json();
+
+          setRowData([...data.docs]);
+        } else {
           setError(res.statusText);
-
-          return;
         }
-
-        const data: PayloadGetApi<Guest> = await res.json();
-
-        setRowData([...data.docs]);
       } catch (error) {
         console.error(error);
         setError(error.message);
@@ -460,7 +433,7 @@ const GuestList: React.FC = (props: any) => {
       <div className="gutter--left gutter--right collection-list__wrap component">
         <div className="row">
           <h1>{getTranslation(collection.labels.plural, i18n)}</h1>
-          <Pill onClick={async () => await addGuest()} className="pill margin--bottom">
+          <Pill onClick={addGuest} className="pill margin--bottom">
             {t('createNew')}
           </Pill>
           <div className="flex--grow" />

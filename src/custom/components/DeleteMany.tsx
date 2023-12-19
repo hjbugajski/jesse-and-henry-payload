@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 
 import { Modal, useModal } from '@faceless-ui/modal';
 import { Button, MinimalTemplate, Pill } from 'payload/components';
-import { useAuth, useConfig } from 'payload/components/utilities';
+import { useConfig } from 'payload/components/utilities';
 import { getTranslation } from 'payload/dist/utilities/getTranslation';
 import { SanitizedCollectionConfig } from 'payload/types';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,6 @@ type Props = {
 const DeleteMany: React.FC<Props> = (props) => {
   const { count, queryParams, onDelete, collection: { slug, labels: { plural } } = {} } = props;
 
-  const { permissions } = useAuth();
   const {
     serverURL,
     routes: { api },
@@ -31,9 +30,6 @@ const DeleteMany: React.FC<Props> = (props) => {
   const { toggleModal } = useModal();
   const { t, i18n } = useTranslation('general');
   const [deleting, setDeleting] = useState(false);
-
-  const collectionPermissions = permissions?.collections?.[slug];
-  const hasDeletePermission = collectionPermissions?.delete?.permission;
 
   const modalSlug = `delete-${slug}`;
 
@@ -62,10 +58,6 @@ const DeleteMany: React.FC<Props> = (props) => {
       toggleModal(modalSlug);
     }
   }, [api, onDelete, queryParams, serverURL, slug, toggleModal]);
-
-  if (!hasDeletePermission) {
-    return null;
-  }
 
   return (
     <React.Fragment>

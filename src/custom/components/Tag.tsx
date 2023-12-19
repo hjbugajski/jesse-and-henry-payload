@@ -9,8 +9,8 @@ type Props = {
   value: any;
 };
 
-const Tag: React.FC<Props> = ({ color, value }: Props) => {
-  return <span className={classes('tag', color && `tag--${color}`)}>{value}</span>;
-};
+const Tag: React.FC<Props> = ({ color, value }: Props) => (
+  <span className={classes('tag', color && `tag--${color}`)}>{value}</span>
+);
 
 export default Tag;

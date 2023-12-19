@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 
 import { useModal } from '@faceless-ui/modal';
 import { X } from 'payload/components';
-import { useAuth, useConfig } from 'payload/components/utilities';
+import { useConfig } from 'payload/components/utilities';
 import { Drawer, DrawerToggler } from 'payload/dist/admin/components/elements/Drawer';
 import { FieldSelect } from 'payload/dist/admin/components/elements/FieldSelect';
 import { fieldTypes } from 'payload/dist/admin/components/forms/field-types';
@@ -98,16 +98,12 @@ const EditMany: React.FC<Props> = (props) => {
 
   const [selected, setSelected] = useState([]);
 
-  const { permissions } = useAuth();
   const { closeModal } = useModal();
   const {
     serverURL,
     routes: { api },
   } = useConfig();
   const { t, i18n } = useTranslation('general');
-
-  const collectionPermissions = permissions?.collections?.[slug];
-  const hasUpdatePermission = collectionPermissions?.update?.permission;
 
   const drawerSlug = `edit-${slug}`;
 
@@ -118,10 +114,6 @@ const EditMany: React.FC<Props> = (props) => {
     },
     [onSuccess, closeModal, drawerSlug]
   );
-
-  if (!hasUpdatePermission) {
-    return null;
-  }
 
   return (
     <div className={baseClass}>

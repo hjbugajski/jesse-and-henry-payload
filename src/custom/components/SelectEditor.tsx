@@ -1,13 +1,4 @@
-import React, {
-  CSSProperties,
-  forwardRef,
-  memo,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { CSSProperties, forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { ICellEditorParams } from 'ag-grid-community';
 import { useConfig } from 'payload/components/utilities';
@@ -71,94 +62,88 @@ const Option = (props: OptionProps<any>) => (
   </components.Option>
 );
 
-const SelectEditor = memo(
-  forwardRef((props: SelectEditorProps, ref) => {
-    const {
-      collection,
-      getLabel,
-      getValue,
-      isClearable,
-      options: initialOptions = [],
-      stopEditing,
-      value: initialValue,
-    } = props;
+const SelectEditor = forwardRef((props: SelectEditorProps, ref) => {
+  const {
+    collection,
+    getLabel,
+    getValue,
+    isClearable,
+    options: initialOptions = [],
+    stopEditing,
+    value: initialValue,
+  } = props;
 
-    const refContainer = useRef(null);
-    const { serverURL } = useConfig();
+  const refContainer = useRef(null);
+  const { serverURL } = useConfig();
 
-    const [value, setValue] = useState(
-      collection ? initialValue : initialOptions.find((option) => getValue(option) === initialValue)
-    );
+  const [value, setValue] = useState(
+    collection ? initialValue : initialOptions.find((option) => getValue(option) === initialValue)
+  );
 
-    const loadOptions = useCallback(async () => {
-      const response = await fetch(`${serverURL}/api/${collection}?limit=250`, { credentials: 'include' });
+  async function loadOptions() {
+    const response = await fetch(`${serverURL}/api/${collection}?limit=250`, { credentials: 'include' });
 
-      if (response.ok) {
-        const { docs } = await response.json();
+    if (response.ok) {
+      const { docs } = await response.json();
 
-        return docs;
-      }
-
-      return [];
-    }, [collection, serverURL]);
-
-    const onChange = useCallback(
-      async (option: any) => {
-        setValue(option);
-        await timeout(50);
-        stopEditing();
-      },
-      [setValue, stopEditing]
-    );
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        getValue: () => (value ? (collection ? value : getValue(value)) : null),
-      }),
-      [collection, getValue, value]
-    );
-
-    const defaultSelectProps = useMemo(
-      () => ({
-        ref: refContainer,
-        className: 'relation-editor',
-        classNamePrefix: 'relation-editor',
-        closeMenuOnSelect: true,
-        components: {
-          ClearIndicator,
-          DropdownIndicator,
-        },
-        defaultMenuIsOpen: true,
-        defaultValue: value,
-        getOptionLabel: (option: any) => getLabel(option),
-        getOptionValue: (option: any) => getValue(option),
-        isClearable: isClearable ?? false,
-        isSearchable: false,
-        onChange,
-        unstyled: true,
-      }),
-      [collection, getLabel, getValue, initialOptions, isClearable, onChange, value]
-    );
-
-    if (collection) {
-      return (
-        <AsyncSelect
-          {...defaultSelectProps}
-          components={{
-            ...defaultSelectProps.components,
-            SingleValue,
-            Option,
-          }}
-          cacheOptions
-          defaultOptions
-          loadOptions={loadOptions}
-        />
-      );
+      return docs;
     }
 
-    return <Select {...defaultSelectProps} options={initialOptions} />;
-  })
-);
+    return [];
+  }
+
+  async function onChange(option: any) {
+    setValue(option);
+
+    await timeout(50);
+
+    stopEditing();
+  }
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getValue: () => (value ? (collection ? value : getValue(value)) : null),
+    }),
+    [collection, getValue, value]
+  );
+
+  const defaultSelectProps = {
+    ref: refContainer,
+    className: 'relation-editor',
+    classNamePrefix: 'relation-editor',
+    closeMenuOnSelect: true,
+    components: {
+      ClearIndicator: (props) => <ClearIndicator {...props} />,
+      DropdownIndicator: (props) => <DropdownIndicator {...props} />,
+    },
+    defaultMenuIsOpen: true,
+    defaultValue: value,
+    getOptionLabel: (option: any) => getLabel(option),
+    getOptionValue: (option: any) => getValue(option),
+    isClearable: isClearable ?? false,
+    isSearchable: false,
+    onChange,
+    unstyled: true,
+  };
+
+  const RenderAsyncSelect = (
+    <AsyncSelect
+      {...defaultSelectProps}
+      components={{
+        ...defaultSelectProps.components,
+        SingleValue: (props) => <SingleValue {...props} />,
+        Option: (props) => <Option {...props} />,
+      }}
+      cacheOptions
+      defaultOptions
+      loadOptions={loadOptions}
+    />
+  );
+
+  const RenderSelect = <Select {...defaultSelectProps} options={initialOptions} />;
+
+  return collection ? RenderAsyncSelect : RenderSelect;
+});
 
 export default SelectEditor;
