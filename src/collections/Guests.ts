@@ -8,7 +8,7 @@ import {
 } from 'payload/types';
 
 import { hasRole, hasRoleField, hasRoleSelfOrParty, Role } from '../access';
-import GuestList from '../custom/components/GuestList';
+// import GuestList from '../custom/components/GuestList';
 import { Guest, Party } from '../payload-types';
 import { deepMerge } from '../utils/deepMerge';
 
@@ -133,11 +133,11 @@ const Guests: CollectionConfig = {
       'rsvpBrunch',
       'sort',
     ],
-    components: {
-      views: {
-        List: GuestList,
-      },
-    },
+    // components: {
+    //   views: {
+    //     List: GuestList,
+    //   },
+    // },
     disableDuplicate: true,
   },
   hooks: {
