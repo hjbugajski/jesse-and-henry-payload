@@ -51,8 +51,9 @@ type Guest {
   phone: String
   address: String
   rsvpWelcomeParty: Guest_rsvpWelcomeParty
-  rsvpWedding: Guest_rsvpWedding
-  rsvpBrunch: Guest_rsvpBrunch
+  rsvpRehearsalDinner: Guest_rsvpRehearsalDinner
+  rsvpWeddingDay: Guest_rsvpWeddingDay
+  rsvpPoolDay: Guest_rsvpPoolDay
   sort: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -143,12 +144,17 @@ enum Guest_rsvpWelcomeParty {
   decline
 }
 
-enum Guest_rsvpWedding {
+enum Guest_rsvpRehearsalDinner {
   accept
   decline
 }
 
-enum Guest_rsvpBrunch {
+enum Guest_rsvpWeddingDay {
+  accept
+  decline
+}
+
+enum Guest_rsvpPoolDay {
   accept
   decline
 }
@@ -182,8 +188,9 @@ input Guest_where {
   phone: Guest_phone_operator
   address: Guest_address_operator
   rsvpWelcomeParty: Guest_rsvpWelcomeParty_operator
-  rsvpWedding: Guest_rsvpWedding_operator
-  rsvpBrunch: Guest_rsvpBrunch_operator
+  rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
+  rsvpWeddingDay: Guest_rsvpWeddingDay_operator
+  rsvpPoolDay: Guest_rsvpPoolDay_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -291,30 +298,44 @@ enum Guest_rsvpWelcomeParty_Input {
   decline
 }
 
-input Guest_rsvpWedding_operator {
-  equals: Guest_rsvpWedding_Input
-  not_equals: Guest_rsvpWedding_Input
-  in: [Guest_rsvpWedding_Input]
-  not_in: [Guest_rsvpWedding_Input]
-  all: [Guest_rsvpWedding_Input]
+input Guest_rsvpRehearsalDinner_operator {
+  equals: Guest_rsvpRehearsalDinner_Input
+  not_equals: Guest_rsvpRehearsalDinner_Input
+  in: [Guest_rsvpRehearsalDinner_Input]
+  not_in: [Guest_rsvpRehearsalDinner_Input]
+  all: [Guest_rsvpRehearsalDinner_Input]
   exists: Boolean
 }
 
-enum Guest_rsvpWedding_Input {
+enum Guest_rsvpRehearsalDinner_Input {
   accept
   decline
 }
 
-input Guest_rsvpBrunch_operator {
-  equals: Guest_rsvpBrunch_Input
-  not_equals: Guest_rsvpBrunch_Input
-  in: [Guest_rsvpBrunch_Input]
-  not_in: [Guest_rsvpBrunch_Input]
-  all: [Guest_rsvpBrunch_Input]
+input Guest_rsvpWeddingDay_operator {
+  equals: Guest_rsvpWeddingDay_Input
+  not_equals: Guest_rsvpWeddingDay_Input
+  in: [Guest_rsvpWeddingDay_Input]
+  not_in: [Guest_rsvpWeddingDay_Input]
+  all: [Guest_rsvpWeddingDay_Input]
   exists: Boolean
 }
 
-enum Guest_rsvpBrunch_Input {
+enum Guest_rsvpWeddingDay_Input {
+  accept
+  decline
+}
+
+input Guest_rsvpPoolDay_operator {
+  equals: Guest_rsvpPoolDay_Input
+  not_equals: Guest_rsvpPoolDay_Input
+  in: [Guest_rsvpPoolDay_Input]
+  not_in: [Guest_rsvpPoolDay_Input]
+  all: [Guest_rsvpPoolDay_Input]
+  exists: Boolean
+}
+
+enum Guest_rsvpPoolDay_Input {
   accept
   decline
 }
@@ -382,13 +403,16 @@ input Guest_where_and {
   phone: Guest_phone_operator
   address: Guest_address_operator
   rsvpWelcomeParty: Guest_rsvpWelcomeParty_operator
-  rsvpWedding: Guest_rsvpWedding_operator
-  rsvpBrunch: Guest_rsvpBrunch_operator
+  rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
+  rsvpWeddingDay: Guest_rsvpWeddingDay_operator
+  rsvpPoolDay: Guest_rsvpPoolDay_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
   email: Guest_email_operator
   id: Guest_id_operator
+  AND: [Guest_where_and]
+  OR: [Guest_where_or]
 }
 
 input Guest_where_or {
@@ -401,13 +425,16 @@ input Guest_where_or {
   phone: Guest_phone_operator
   address: Guest_address_operator
   rsvpWelcomeParty: Guest_rsvpWelcomeParty_operator
-  rsvpWedding: Guest_rsvpWedding_operator
-  rsvpBrunch: Guest_rsvpBrunch_operator
+  rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
+  rsvpWeddingDay: Guest_rsvpWeddingDay_operator
+  rsvpPoolDay: Guest_rsvpPoolDay_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
   email: Guest_email_operator
   id: Guest_id_operator
+  AND: [Guest_where_and]
+  OR: [Guest_where_or]
 }
 
 type guestsDocAccess {
@@ -429,8 +456,9 @@ type GuestsDocAccessFields {
   phone: GuestsDocAccessFields_phone
   address: GuestsDocAccessFields_address
   rsvpWelcomeParty: GuestsDocAccessFields_rsvpWelcomeParty
-  rsvpWedding: GuestsDocAccessFields_rsvpWedding
-  rsvpBrunch: GuestsDocAccessFields_rsvpBrunch
+  rsvpRehearsalDinner: GuestsDocAccessFields_rsvpRehearsalDinner
+  rsvpWeddingDay: GuestsDocAccessFields_rsvpWeddingDay
+  rsvpPoolDay: GuestsDocAccessFields_rsvpPoolDay
   sort: GuestsDocAccessFields_sort
   updatedAt: GuestsDocAccessFields_updatedAt
   createdAt: GuestsDocAccessFields_createdAt
@@ -645,49 +673,72 @@ type GuestsDocAccessFields_rsvpWelcomeParty_Delete {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpWedding {
-  create: GuestsDocAccessFields_rsvpWedding_Create
-  read: GuestsDocAccessFields_rsvpWedding_Read
-  update: GuestsDocAccessFields_rsvpWedding_Update
-  delete: GuestsDocAccessFields_rsvpWedding_Delete
+type GuestsDocAccessFields_rsvpRehearsalDinner {
+  create: GuestsDocAccessFields_rsvpRehearsalDinner_Create
+  read: GuestsDocAccessFields_rsvpRehearsalDinner_Read
+  update: GuestsDocAccessFields_rsvpRehearsalDinner_Update
+  delete: GuestsDocAccessFields_rsvpRehearsalDinner_Delete
 }
 
-type GuestsDocAccessFields_rsvpWedding_Create {
+type GuestsDocAccessFields_rsvpRehearsalDinner_Create {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpWedding_Read {
+type GuestsDocAccessFields_rsvpRehearsalDinner_Read {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpWedding_Update {
+type GuestsDocAccessFields_rsvpRehearsalDinner_Update {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpWedding_Delete {
+type GuestsDocAccessFields_rsvpRehearsalDinner_Delete {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpBrunch {
-  create: GuestsDocAccessFields_rsvpBrunch_Create
-  read: GuestsDocAccessFields_rsvpBrunch_Read
-  update: GuestsDocAccessFields_rsvpBrunch_Update
-  delete: GuestsDocAccessFields_rsvpBrunch_Delete
+type GuestsDocAccessFields_rsvpWeddingDay {
+  create: GuestsDocAccessFields_rsvpWeddingDay_Create
+  read: GuestsDocAccessFields_rsvpWeddingDay_Read
+  update: GuestsDocAccessFields_rsvpWeddingDay_Update
+  delete: GuestsDocAccessFields_rsvpWeddingDay_Delete
 }
 
-type GuestsDocAccessFields_rsvpBrunch_Create {
+type GuestsDocAccessFields_rsvpWeddingDay_Create {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpBrunch_Read {
+type GuestsDocAccessFields_rsvpWeddingDay_Read {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpBrunch_Update {
+type GuestsDocAccessFields_rsvpWeddingDay_Update {
   permission: Boolean!
 }
 
-type GuestsDocAccessFields_rsvpBrunch_Delete {
+type GuestsDocAccessFields_rsvpWeddingDay_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_rsvpPoolDay {
+  create: GuestsDocAccessFields_rsvpPoolDay_Create
+  read: GuestsDocAccessFields_rsvpPoolDay_Read
+  update: GuestsDocAccessFields_rsvpPoolDay_Update
+  delete: GuestsDocAccessFields_rsvpPoolDay_Delete
+}
+
+type GuestsDocAccessFields_rsvpPoolDay_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_rsvpPoolDay_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_rsvpPoolDay_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_rsvpPoolDay_Delete {
   permission: Boolean!
 }
 
@@ -1190,6 +1241,8 @@ input Media_where_and {
   sizes__thumbnail__filesize: Media_sizes__thumbnail__filesize_operator
   sizes__thumbnail__filename: Media_sizes__thumbnail__filename_operator
   id: Media_id_operator
+  AND: [Media_where_and]
+  OR: [Media_where_or]
 }
 
 input Media_where_or {
@@ -1216,6 +1269,8 @@ input Media_where_or {
   sizes__thumbnail__filesize: Media_sizes__thumbnail__filesize_operator
   sizes__thumbnail__filename: Media_sizes__thumbnail__filename_operator
   id: Media_id_operator
+  AND: [Media_where_and]
+  OR: [Media_where_or]
 }
 
 type mediaDocAccess {
@@ -2146,6 +2201,8 @@ input Page_where_and {
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
+  AND: [Page_where_and]
+  OR: [Page_where_or]
 }
 
 input Page_where_or {
@@ -2158,6 +2215,8 @@ input Page_where_or {
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
+  AND: [Page_where_and]
+  OR: [Page_where_or]
 }
 
 type pagesDocAccess {
@@ -2623,6 +2682,8 @@ input versionsPage_where_and {
   updatedAt: versionsPage_updatedAt_operator
   latest: versionsPage_latest_operator
   id: versionsPage_id_operator
+  AND: [versionsPage_where_and]
+  OR: [versionsPage_where_or]
 }
 
 input versionsPage_where_or {
@@ -2639,6 +2700,8 @@ input versionsPage_where_or {
   updatedAt: versionsPage_updatedAt_operator
   latest: versionsPage_latest_operator
   id: versionsPage_id_operator
+  AND: [versionsPage_where_and]
+  OR: [versionsPage_where_or]
 }
 
 type Parties {
@@ -2761,6 +2824,8 @@ input Party_where_and {
   updatedAt: Party_updatedAt_operator
   createdAt: Party_createdAt_operator
   id: Party_id_operator
+  AND: [Party_where_and]
+  OR: [Party_where_or]
 }
 
 input Party_where_or {
@@ -2771,6 +2836,8 @@ input Party_where_or {
   updatedAt: Party_updatedAt_operator
   createdAt: Party_createdAt_operator
   id: Party_id_operator
+  AND: [Party_where_and]
+  OR: [Party_where_or]
 }
 
 type partiesDocAccess {
@@ -3055,6 +3122,8 @@ input Relation_where_and {
   updatedAt: Relation_updatedAt_operator
   createdAt: Relation_createdAt_operator
   id: Relation_id_operator
+  AND: [Relation_where_and]
+  OR: [Relation_where_or]
 }
 
 input Relation_where_or {
@@ -3064,6 +3133,8 @@ input Relation_where_or {
   updatedAt: Relation_updatedAt_operator
   createdAt: Relation_createdAt_operator
   id: Relation_id_operator
+  AND: [Relation_where_and]
+  OR: [Relation_where_or]
 }
 
 type relationsDocAccess {
@@ -3324,6 +3395,8 @@ input Side_where_and {
   updatedAt: Side_updatedAt_operator
   createdAt: Side_createdAt_operator
   id: Side_id_operator
+  AND: [Side_where_and]
+  OR: [Side_where_or]
 }
 
 input Side_where_or {
@@ -3333,6 +3406,8 @@ input Side_where_or {
   updatedAt: Side_updatedAt_operator
   createdAt: Side_createdAt_operator
   id: Side_id_operator
+  AND: [Side_where_and]
+  OR: [Side_where_or]
 }
 
 type sidesDocAccess {
@@ -3592,6 +3667,8 @@ input User_where_and {
   createdAt: User_createdAt_operator
   email: User_email_operator
   id: User_id_operator
+  AND: [User_where_and]
+  OR: [User_where_or]
 }
 
 input User_where_or {
@@ -3600,6 +3677,8 @@ input User_where_or {
   createdAt: User_createdAt_operator
   email: User_email_operator
   id: User_id_operator
+  AND: [User_where_and]
+  OR: [User_where_or]
 }
 
 type usersDocAccess {
@@ -3883,6 +3962,8 @@ input PayloadPreference_where_and {
   updatedAt: PayloadPreference_updatedAt_operator
   createdAt: PayloadPreference_createdAt_operator
   id: PayloadPreference_id_operator
+  AND: [PayloadPreference_where_and]
+  OR: [PayloadPreference_where_or]
 }
 
 input PayloadPreference_where_or {
@@ -3892,6 +3973,8 @@ input PayloadPreference_where_or {
   updatedAt: PayloadPreference_updatedAt_operator
   createdAt: PayloadPreference_createdAt_operator
   id: PayloadPreference_id_operator
+  AND: [PayloadPreference_where_and]
+  OR: [PayloadPreference_where_or]
 }
 
 type payload_preferencesDocAccess {
@@ -4394,8 +4477,9 @@ type GuestsFields {
   phone: GuestsFields_phone
   address: GuestsFields_address
   rsvpWelcomeParty: GuestsFields_rsvpWelcomeParty
-  rsvpWedding: GuestsFields_rsvpWedding
-  rsvpBrunch: GuestsFields_rsvpBrunch
+  rsvpRehearsalDinner: GuestsFields_rsvpRehearsalDinner
+  rsvpWeddingDay: GuestsFields_rsvpWeddingDay
+  rsvpPoolDay: GuestsFields_rsvpPoolDay
   sort: GuestsFields_sort
   updatedAt: GuestsFields_updatedAt
   createdAt: GuestsFields_createdAt
@@ -4610,49 +4694,72 @@ type GuestsFields_rsvpWelcomeParty_Delete {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpWedding {
-  create: GuestsFields_rsvpWedding_Create
-  read: GuestsFields_rsvpWedding_Read
-  update: GuestsFields_rsvpWedding_Update
-  delete: GuestsFields_rsvpWedding_Delete
+type GuestsFields_rsvpRehearsalDinner {
+  create: GuestsFields_rsvpRehearsalDinner_Create
+  read: GuestsFields_rsvpRehearsalDinner_Read
+  update: GuestsFields_rsvpRehearsalDinner_Update
+  delete: GuestsFields_rsvpRehearsalDinner_Delete
 }
 
-type GuestsFields_rsvpWedding_Create {
+type GuestsFields_rsvpRehearsalDinner_Create {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpWedding_Read {
+type GuestsFields_rsvpRehearsalDinner_Read {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpWedding_Update {
+type GuestsFields_rsvpRehearsalDinner_Update {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpWedding_Delete {
+type GuestsFields_rsvpRehearsalDinner_Delete {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpBrunch {
-  create: GuestsFields_rsvpBrunch_Create
-  read: GuestsFields_rsvpBrunch_Read
-  update: GuestsFields_rsvpBrunch_Update
-  delete: GuestsFields_rsvpBrunch_Delete
+type GuestsFields_rsvpWeddingDay {
+  create: GuestsFields_rsvpWeddingDay_Create
+  read: GuestsFields_rsvpWeddingDay_Read
+  update: GuestsFields_rsvpWeddingDay_Update
+  delete: GuestsFields_rsvpWeddingDay_Delete
 }
 
-type GuestsFields_rsvpBrunch_Create {
+type GuestsFields_rsvpWeddingDay_Create {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpBrunch_Read {
+type GuestsFields_rsvpWeddingDay_Read {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpBrunch_Update {
+type GuestsFields_rsvpWeddingDay_Update {
   permission: Boolean!
 }
 
-type GuestsFields_rsvpBrunch_Delete {
+type GuestsFields_rsvpWeddingDay_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_rsvpPoolDay {
+  create: GuestsFields_rsvpPoolDay_Create
+  read: GuestsFields_rsvpPoolDay_Read
+  update: GuestsFields_rsvpPoolDay_Update
+  delete: GuestsFields_rsvpPoolDay_Delete
+}
+
+type GuestsFields_rsvpPoolDay_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_rsvpPoolDay_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_rsvpPoolDay_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_rsvpPoolDay_Delete {
   permission: Boolean!
 }
 
@@ -6846,8 +6953,9 @@ input mutationGuestInput {
   phone: String
   address: String
   rsvpWelcomeParty: Guest_rsvpWelcomeParty_MutationInput
-  rsvpWedding: Guest_rsvpWedding_MutationInput
-  rsvpBrunch: Guest_rsvpBrunch_MutationInput
+  rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_MutationInput
+  rsvpWeddingDay: Guest_rsvpWeddingDay_MutationInput
+  rsvpPoolDay: Guest_rsvpPoolDay_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -6866,12 +6974,17 @@ enum Guest_rsvpWelcomeParty_MutationInput {
   decline
 }
 
-enum Guest_rsvpWedding_MutationInput {
+enum Guest_rsvpRehearsalDinner_MutationInput {
   accept
   decline
 }
 
-enum Guest_rsvpBrunch_MutationInput {
+enum Guest_rsvpWeddingDay_MutationInput {
+  accept
+  decline
+}
+
+enum Guest_rsvpPoolDay_MutationInput {
   accept
   decline
 }
@@ -6886,8 +6999,9 @@ input mutationGuestUpdateInput {
   phone: String
   address: String
   rsvpWelcomeParty: GuestUpdate_rsvpWelcomeParty_MutationInput
-  rsvpWedding: GuestUpdate_rsvpWedding_MutationInput
-  rsvpBrunch: GuestUpdate_rsvpBrunch_MutationInput
+  rsvpRehearsalDinner: GuestUpdate_rsvpRehearsalDinner_MutationInput
+  rsvpWeddingDay: GuestUpdate_rsvpWeddingDay_MutationInput
+  rsvpPoolDay: GuestUpdate_rsvpPoolDay_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -6906,12 +7020,17 @@ enum GuestUpdate_rsvpWelcomeParty_MutationInput {
   decline
 }
 
-enum GuestUpdate_rsvpWedding_MutationInput {
+enum GuestUpdate_rsvpRehearsalDinner_MutationInput {
   accept
   decline
 }
 
-enum GuestUpdate_rsvpBrunch_MutationInput {
+enum GuestUpdate_rsvpWeddingDay_MutationInput {
+  accept
+  decline
+}
+
+enum GuestUpdate_rsvpPoolDay_MutationInput {
   accept
   decline
 }
