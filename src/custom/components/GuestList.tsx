@@ -69,7 +69,7 @@ const GuestList: React.FC = (props: any) => {
   const {
     collection,
     collection: { fields, slug },
-    data: { docs, totalDocs },
+    data: { totalDocs },
   } = props;
 
   // Refs
@@ -121,30 +121,6 @@ const GuestList: React.FC = (props: any) => {
       }
     },
     [api, gridRef, serverURL, slug]
-  );
-
-  const fetchDocs = useCallback(
-    async (limit = 10) => {
-      try {
-        const res = await fetch(`${serverURL}${api}/${slug}?limit=${limit}`, {
-          credentials: 'include',
-        });
-
-        if (res.status !== 200) {
-          setError(res.statusText);
-
-          return;
-        }
-
-        const data: PayloadGetApi<Guest> = await res.json();
-
-        setRowData([...data.docs]);
-      } catch (error) {
-        console.error(error);
-        setError(error.message);
-      }
-    },
-    [api, serverURL, slug]
   );
 
   const getRowId = useCallback((params: GetRowIdParams<Guest>) => params.data.id, []);
@@ -452,10 +428,31 @@ const GuestList: React.FC = (props: any) => {
 
   // Effects
   useEffect(() => {
-    if (docs) {
+    const fetchDocs = async (limit = 250) => {
+      try {
+        const res = await fetch(`${serverURL}${api}/${slug}?limit=${limit}`, {
+          credentials: 'include',
+        });
+
+        if (res.status !== 200) {
+          setError(res.statusText);
+
+          return;
+        }
+
+        const data: PayloadGetApi<Guest> = await res.json();
+
+        setRowData([...data.docs]);
+      } catch (error) {
+        console.error(error);
+        setError(error.message);
+      }
+    };
+
+    if (totalDocs) {
       fetchDocs(totalDocs);
     }
-  }, [docs, totalDocs, fetchDocs]);
+  }, [api, serverURL, slug, totalDocs]);
 
   return (
     <div className="default-page-template">
