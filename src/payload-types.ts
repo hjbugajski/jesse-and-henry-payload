@@ -6,18 +6,20 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
-export type LinkArrayField = {
-  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-  text: string;
-  icon?: string;
-  type: 'internal' | 'external';
-  relationship: string | Page;
-  anchor?: string;
-  url: string;
-  rel?: 'noreferrer'[];
-  newTab?: boolean;
-  id?: string;
-}[];
+export type LinkArrayField =
+  | {
+      color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+      text: string;
+      icon?: string | null;
+      type: 'internal' | 'external';
+      relationship?: (string | null) | Page;
+      anchor?: string | null;
+      url?: string | null;
+      rel?: 'noreferrer'[] | null;
+      newTab?: boolean | null;
+      id?: string | null;
+    }[]
+  | null;
 
 export interface Config {
   collections: {
@@ -37,100 +39,101 @@ export interface Config {
 }
 export interface Guest {
   id: string;
-  first?: string;
-  middle?: string;
-  last?: string;
-  party?: string | Party;
-  side?: string | Side;
-  relation?: string | Relation;
-  phone?: string;
-  address?: string;
-  rsvpWelcomeParty?: 'accept' | 'decline';
-  rsvpWedding?: 'accept' | 'decline';
-  rsvpBrunch?: 'accept' | 'decline';
-  sort?: number;
+  first?: string | null;
+  middle?: string | null;
+  last?: string | null;
+  party?: (string | null) | Party;
+  side?: (string | null) | Side;
+  relation?: (string | null) | Relation;
+  phone?: string | null;
+  address?: string | null;
+  rsvpWelcomeParty?: ('accept' | 'decline') | null;
+  rsvpRehearsalDinner?: ('accept' | 'decline') | null;
+  rsvpWeddingDay?: ('accept' | 'decline') | null;
+  rsvpPoolDay?: ('accept' | 'decline') | null;
+  sort?: number | null;
   updatedAt: string;
   createdAt: string;
   email: string;
-  resetPasswordToken?: string;
-  resetPasswordExpiration?: string;
-  salt?: string;
-  hash?: string;
-  loginAttempts?: number;
-  lockUntil?: string;
-  password: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
 }
 export interface Party {
   id: string;
   value: string;
-  color?: 'green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange';
-  sort?: number;
-  code?: string;
+  color?: ('green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange') | null;
+  sort?: number | null;
+  code?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 export interface Side {
   id: string;
   value: string;
-  color?: 'green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange';
-  sort?: number;
+  color?: ('green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange') | null;
+  sort?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 export interface Relation {
   id: string;
   value: string;
-  color?: 'green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange';
-  sort?: number;
+  color?: ('green' | 'teal' | 'cyan' | 'blue' | 'violet' | 'purple' | 'plum' | 'pink' | 'red' | 'orange') | null;
+  sort?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 export interface Media {
   id: string;
   alt: string;
-  dataUrl?: string;
+  dataUrl?: string | null;
   updatedAt: string;
   createdAt: string;
-  url?: string;
-  filename?: string;
-  mimeType?: string;
-  filesize?: number;
-  width?: number;
-  height?: number;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
   sizes?: {
     preview?: {
-      url?: string;
-      width?: number;
-      height?: number;
-      mimeType?: string;
-      filesize?: number;
-      filename?: string;
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
     };
     thumbnail?: {
-      url?: string;
-      width?: number;
-      height?: number;
-      mimeType?: string;
-      filesize?: number;
-      filename?: string;
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
     };
   };
 }
 export interface Page {
   id: string;
-  slug?: string;
-  protected?: boolean;
+  slug?: string | null;
+  protected?: boolean | null;
   name: string;
   meta: {
     title: string;
     description: string;
   };
   content: {
-    layout?: (AlertBlock | ContentBlock | HeroBlock | SectionBlock)[];
+    layout?: (AlertBlock | ContentBlock | HeroBlock | SectionBlock)[] | null;
   };
   updatedAt: string;
   createdAt: string;
-  _status?: 'draft' | 'published';
+  _status?: ('draft' | 'published') | null;
 }
 export interface AlertBlock {
   title: string;
@@ -139,30 +142,30 @@ export interface AlertBlock {
     [k: string]: unknown;
   }[];
   color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-  action?: boolean;
+  action?: boolean | null;
   link?: LinkGroupField;
-  width?: 'full' | 'max';
-  id?: string;
-  blockName?: string;
+  width?: ('full' | 'max') | null;
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'alert';
 }
 export interface LinkGroupField {
   text: string;
-  icon?: string;
+  icon?: string | null;
   type: 'internal' | 'external';
-  relationship: string | Page;
-  anchor?: string;
-  url: string;
-  rel?: 'noreferrer'[];
-  newTab?: boolean;
+  relationship?: (string | null) | Page;
+  anchor?: string | null;
+  url?: string | null;
+  rel?: 'noreferrer'[] | null;
+  newTab?: boolean | null;
 }
 export interface ContentBlock {
-  width?: 'full' | 'max';
+  width?: ('full' | 'max') | null;
   content: {
     [k: string]: unknown;
   }[];
-  id?: string;
-  blockName?: string;
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'content';
 }
 export interface HeroBlock {
@@ -170,32 +173,34 @@ export interface HeroBlock {
   titleTwo: string;
   subtitle: string;
   image: string | Media;
-  id?: string;
-  blockName?: string;
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'hero';
 }
 export interface SectionBlock {
   anchorId: string;
   title: string;
-  description?: {
-    [k: string]: unknown;
-  }[];
+  description?:
+    | {
+        [k: string]: unknown;
+      }[]
+    | null;
   border: boolean;
-  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[];
-  id?: string;
-  blockName?: string;
+  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[] | null;
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'section';
 }
 export interface ButtonLinksBlock {
   links?: LinkArrayField;
-  id?: string;
-  blockName?: string;
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'buttonLinks';
 }
 export interface PhotosBlock {
-  photos: string[] | Media[];
-  id?: string;
-  blockName?: string;
+  photos: (string | Media)[];
+  id?: string | null;
+  blockName?: string | null;
   blockType: 'photos';
 }
 export interface User {
@@ -204,13 +209,13 @@ export interface User {
   updatedAt: string;
   createdAt: string;
   email: string;
-  resetPasswordToken?: string;
-  resetPasswordExpiration?: string;
-  salt?: string;
-  hash?: string;
-  loginAttempts?: number;
-  lockUntil?: string;
-  password: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password: string | null;
 }
 export interface PayloadPreference {
   id: string;
@@ -223,7 +228,7 @@ export interface PayloadPreference {
         relationTo: 'users';
         value: string | User;
       };
-  key?: string;
+  key?: string | null;
   value?:
     | {
         [k: string]: unknown;
@@ -238,16 +243,16 @@ export interface PayloadPreference {
 }
 export interface PayloadMigration {
   id: string;
-  name?: string;
-  batch?: number;
+  name?: string | null;
+  batch?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 export interface Navigation {
   id: string;
   links?: LinkArrayField;
-  updatedAt?: string;
-  createdAt?: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 
 declare module 'payload' {

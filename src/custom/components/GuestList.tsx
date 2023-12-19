@@ -379,16 +379,19 @@ const GuestList: React.FC = (props: any) => {
         ...getRsvpColumnDefs('rsvpWelcomeParty'),
       },
       {
-        field: 'rsvpWedding',
-        headerName: 'RSVP Wedding',
-        ...getRsvpColumnDefs('rsvpWedding'),
+        field: 'rsvpRehearsalDinner',
+        headerName: 'RSVP Rehearsal Dinner',
+        ...getRsvpColumnDefs('rsvpRehearsalDinner'),
       },
       {
-        field: 'rsvpBrunch',
-        headerName: 'RSVP Brunch',
-        cellClass: 'ag-cell--last',
-        headerClass: 'ag-header-cell--last',
-        ...getRsvpColumnDefs('rsvpBrunch'),
+        field: 'rsvpWeddingDay',
+        headerName: 'RSVP Wedding Day',
+        ...getRsvpColumnDefs('rsvpWeddingDay'),
+      },
+      {
+        field: 'rsvpPoolDay',
+        headerName: 'RSVP Pool Day',
+        ...getRsvpColumnDefs('rsvpPoolDay'),
       },
       {
         field: 'phone',

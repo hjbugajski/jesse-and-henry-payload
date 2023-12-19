@@ -9,7 +9,7 @@ import {
 
 import { hasRole, hasRoleField, hasRoleSelfOrParty, Role } from '../access';
 import GuestList from '../custom/components/GuestList';
-import { Guest, Party } from '../payload-types';
+import { Guest } from '../payload-types';
 import { deepMerge } from '../utils/deepMerge';
 
 // eslint-disable-next-line import/no-named-as-default-member
@@ -57,16 +57,21 @@ const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, o
 };
 
 const afterChangeHook: CollectionAfterChangeHook<Guest> = async ({ doc, previousDoc, req }) => {
-  const party = doc.party as Party;
+  const prevParty = previousDoc.party
+    ? typeof previousDoc.party === 'string'
+      ? previousDoc.party
+      : previousDoc.party.id
+    : null;
+  const party = doc.party ? (typeof doc.party === 'string' ? doc.party : doc.party.id) : null;
 
-  if (!party || party.id === previousDoc.party) {
+  if (!party || party === prevParty) {
     return doc;
   }
 
   const codePromise = req.payload
     .findByID({
       collection: 'parties',
-      id: party.id,
+      id: party,
     })
     .then((data) => data.code);
   const tokenPromise = req.payload.forgotPassword({
@@ -284,12 +289,16 @@ const Guests: CollectionConfig = {
       label: 'RSVP Welcome Party',
     }),
     deepMerge<Field>(rsvpOptionField, {
-      name: 'rsvpWedding',
-      label: 'RSVP Wedding',
+      name: 'rsvpRehearsalDinner',
+      label: 'RSVP Rehearsal Dinner',
     }),
     deepMerge<Field>(rsvpOptionField, {
-      name: 'rsvpBrunch',
-      label: 'RSVP Brunch',
+      name: 'rsvpWeddingDay',
+      label: 'RSVP Wedding Day',
+    }),
+    deepMerge<Field>(rsvpOptionField, {
+      name: 'rsvpPoolDay',
+      label: 'RSVP Pool Day',
     }),
     {
       name: 'sort',
