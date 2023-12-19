@@ -18,7 +18,7 @@ const Media: CollectionConfig = {
     delete: hasRole(Role.Admin),
   },
   hooks: {
-    beforeChange: [useDataUrl],
+    afterChange: [useDataUrl],
   },
   upload: {
     adminThumbnail: 'thumbnail',
