@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.1...v8.0.0) (2023-12-19)
+
+### ⚠ BREAKING CHANGES
+
+- **collections/Guests:** update rsvp fields
+
+### Bug Fixes
+
+- **collection/media:** refactor useDataUrl to afterChange hook ([296e6a4](https://github.com/hjbugajski/jesse-and-henry-payload/commit/296e6a405521a23917ebc73b290037f1ea1a1854))
+- **collections/Guests:** update party logic in afterChangeHook ([e19cd6f](https://github.com/hjbugajski/jesse-and-henry-payload/commit/e19cd6f9be36665521d52b04d784a147d6a1daa2))
+- **collections/Guests:** update rsvp fields ([b7f4a39](https://github.com/hjbugajski/jesse-and-henry-payload/commit/b7f4a391eb8cd05d5a62fd30ba64923b3adbc83e))
+- **custom/component/GuestList:** move docs fetch into useEffect ([db3c31a](https://github.com/hjbugajski/jesse-and-henry-payload/commit/db3c31add61db029d0539256824d56cef30f5389))
+- working ([e4d9c2b](https://github.com/hjbugajski/jesse-and-henry-payload/commit/e4d9c2be13727838de31bb622e3223bb0ba22db2))
+
+### Build
+
+- add preview build ([57bb9b9](https://github.com/hjbugajski/jesse-and-henry-payload/commit/57bb9b905f639960bdcba232f255298017f09296))
+
 ## [7.0.1](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.0...v7.0.1) (2023-11-22)
 
 ### Bug Fixes
