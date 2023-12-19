@@ -19,6 +19,7 @@
     "prettier": "prettier --write . --ignore-unknown --ignore-path .gitignore",
     "stylelint": "npx stylelint '**/*.scss' --ignore-path .gitignore --fix",
     "release": "commit-and-tag-version -s",
+    "release:patch": "commit-and-tag-version -s --release-as patch",
     "release:minor": "commit-and-tag-version -s --release-as minor",
     "release:major": "commit-and-tag-version -s --release-as major",
     "release:custom": "commit-and-tag-version -s --release-as"
