@@ -5,6 +5,7 @@ import { Alert } from './Alert';
 import ButtonLinks from './ButtonLinks';
 import Content from './Content';
 import Photos from './Photos';
+import registry from '../fields/richText/registry';
 import venue from '../fields/richText/venue';
 
 export const Section: Block = {
@@ -27,7 +28,7 @@ export const Section: Block = {
       type: 'richText',
       editor: slateEditor({
         admin: {
-          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue],
+          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue, registry],
         },
       }),
     },
