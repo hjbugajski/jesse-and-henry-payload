@@ -355,6 +355,13 @@ const GuestList: React.FC = (props: any) => {
         ...getTagsColumnDefs('parties'),
       },
       {
+        field: 'party',
+        headerName: 'Party Code',
+        initialWidth: 105,
+        editable: false,
+        cellRenderer: (params: ICellRendererParams<Guest, Party>) => <code>{params.value?.code}</code> ?? null,
+      },
+      {
         field: 'address',
         cellEditor: TextareaEditor,
         cellEditorPopup: true,
@@ -379,16 +386,19 @@ const GuestList: React.FC = (props: any) => {
         ...getRsvpColumnDefs('rsvpWelcomeParty'),
       },
       {
-        field: 'rsvpWedding',
-        headerName: 'RSVP Wedding',
-        ...getRsvpColumnDefs('rsvpWedding'),
+        field: 'rsvpRehearsalDinner',
+        headerName: 'RSVP Rehearsal Dinner',
+        ...getRsvpColumnDefs('rsvpRehearsalDinner'),
       },
       {
-        field: 'rsvpBrunch',
-        headerName: 'RSVP Brunch',
-        cellClass: 'ag-cell--last',
-        headerClass: 'ag-header-cell--last',
-        ...getRsvpColumnDefs('rsvpBrunch'),
+        field: 'rsvpWeddingDay',
+        headerName: 'RSVP Wedding Day',
+        ...getRsvpColumnDefs('rsvpWeddingDay'),
+      },
+      {
+        field: 'rsvpPoolDay',
+        headerName: 'RSVP Pool Day',
+        ...getRsvpColumnDefs('rsvpPoolDay'),
       },
       {
         field: 'phone',

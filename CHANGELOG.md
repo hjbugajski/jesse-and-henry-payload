@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.1...v8.0.0) (2023-12-24)
+
+### ⚠ BREAKING CHANGES
+
+- **collection/Guests:** update rsvp fields, update afterChange party logic
+
+### Features
+
+- **custom/GuestList:** add party code to data grid ([232c53f](https://github.com/hjbugajski/jesse-and-henry-payload/commit/232c53fb67cbf67dcbf260d62deac3589c5e11bc))
+- **fields:** add registry ([8498ebe](https://github.com/hjbugajski/jesse-and-henry-payload/commit/8498ebe3427cc711966dbf7fff02e7ea6adaa393))
+
+### Bug Fixes
+
+- **collection/Guests:** update rsvp fields, update afterChange party logic ([f5aabd4](https://github.com/hjbugajski/jesse-and-henry-payload/commit/f5aabd4532f365907b26f4a4dee401cb70c413ab))
+- **collection/Media:** refactor usDataUrl to afterChange hook ([14e3655](https://github.com/hjbugajski/jesse-and-henry-payload/commit/14e36552e6e9d8a267f453efa94259abd134d810))
+
 ## [7.0.1](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.0...v7.0.1) (2023-11-22)
 
 ### Bug Fixes
