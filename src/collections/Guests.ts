@@ -18,7 +18,7 @@ dotenv.config();
 const cleanString = (str: string) => str.toLowerCase().replace(/[^a-zA-Z]/g, '');
 
 const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const existingEmails = await req.payload
     .find({ collection: 'guests', limit })
     .then((data) => data.docs.map((doc) => doc.email));
@@ -34,11 +34,7 @@ const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
   return newEmail;
 };
 
-const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, operation, req }) => {
-  if (operation !== 'create' && operation !== 'update') {
-    return data;
-  }
-
+const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, req }) => {
   const { email, first, middle, last, sort } = data;
   const limit = await req.payload.find({ collection: 'guests' }).then((data) => data.totalDocs);
   const newSort = (!sort && sort !== 0) || sort === -1 ? limit : sort;
