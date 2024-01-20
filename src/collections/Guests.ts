@@ -297,6 +297,60 @@ const Guests: CollectionConfig = {
       label: 'RSVP Pool Day',
     }),
     {
+      name: 'transportationToVenue',
+      label: 'Transportation to Venue',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Yes',
+          value: 'yes',
+        },
+        {
+          label: 'No',
+          value: 'no',
+        },
+      ],
+    },
+    {
+      name: 'transportationFromVenue',
+      label: 'Transportation from Venue',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Yes',
+          value: 'yes',
+        },
+        {
+          label: 'No',
+          value: 'no',
+        },
+      ],
+    },
+    {
+      name: 'legalName',
+      type: 'text',
+    },
+    {
+      name: 'dateOfBirth',
+      label: 'Date of Birth',
+      type: 'text',
+    },
+    {
+      name: 'countryOfBirth',
+      label: 'Country of Birth',
+      type: 'text',
+    },
+    {
+      name: 'allergies',
+      type: 'textarea',
+    },
+    {
       name: 'sort',
       type: 'number',
       admin: {

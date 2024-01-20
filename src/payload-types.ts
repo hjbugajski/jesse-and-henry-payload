@@ -51,6 +51,12 @@ export interface Guest {
   rsvpRehearsalDinner?: ('accept' | 'decline') | null;
   rsvpWeddingDay?: ('accept' | 'decline') | null;
   rsvpPoolDay?: ('accept' | 'decline') | null;
+  legalName?: string | null;
+  dateOfBirth?: string | null;
+  countryOfBirth?: string | null;
+  allergies?: string | null;
+  transportationToVenue?: ('yes' | 'no') | null;
+  transportationFromVenue?: ('yes' | 'no') | null;
   sort?: number | null;
   updatedAt: string;
   createdAt: string;
