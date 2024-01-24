@@ -18,7 +18,7 @@ dotenv.config();
 const cleanString = (str: string) => str.toLowerCase().replace(/[^a-zA-Z]/g, '');
 
 const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const existingEmails = await req.payload
     .find({ collection: 'guests', limit })
     .then((data) => data.docs.map((doc) => doc.email));
@@ -34,11 +34,7 @@ const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
   return newEmail;
 };
 
-const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, operation, req }) => {
-  if (operation !== 'create' && operation !== 'update') {
-    return data;
-  }
-
+const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, req }) => {
   const { email, first, middle, last, sort } = data;
   const limit = await req.payload.find({ collection: 'guests' }).then((data) => data.totalDocs);
   const newSort = (!sort && sort !== 0) || sort === -1 ? limit : sort;
@@ -300,6 +296,60 @@ const Guests: CollectionConfig = {
       name: 'rsvpPoolDay',
       label: 'RSVP Pool Day',
     }),
+    {
+      name: 'transportationToVenue',
+      label: 'Transportation to Venue',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Yes',
+          value: 'yes',
+        },
+        {
+          label: 'No',
+          value: 'no',
+        },
+      ],
+    },
+    {
+      name: 'transportationFromVenue',
+      label: 'Transportation from Venue',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Yes',
+          value: 'yes',
+        },
+        {
+          label: 'No',
+          value: 'no',
+        },
+      ],
+    },
+    {
+      name: 'legalName',
+      type: 'text',
+    },
+    {
+      name: 'dateOfBirth',
+      label: 'Date of Birth',
+      type: 'text',
+    },
+    {
+      name: 'countryOfBirth',
+      label: 'Country of Birth',
+      type: 'text',
+    },
+    {
+      name: 'allergies',
+      type: 'textarea',
+    },
     {
       name: 'sort',
       type: 'number',

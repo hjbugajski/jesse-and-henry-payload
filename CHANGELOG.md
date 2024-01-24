@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.1.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v8.0.0...v8.1.0) (2024-01-23)
+
+### Features
+
+- **collections/Guests:** add fields for rsvp ([8369ecb](https://github.com/hjbugajski/jesse-and-henry-payload/commit/8369ecbae05cc4fb83dcf01b0acc39b670384fe2))
+
+### Bug Fixes
+
+- **collections/Guests:** fix small issues ([a0d6975](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a0d6975e00efff9179b22f46dbb14433ca6a34ef))
+- **hooks/useDataUrl:** prevent infinite loop ([4364ed1](https://github.com/hjbugajski/jesse-and-henry-payload/commit/4364ed1ef81b0df3be2838b11f7678bb80e27dfc))
+
 ## [8.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v7.0.1...v8.0.0) (2023-12-24)
 
 ### ⚠ BREAKING CHANGES

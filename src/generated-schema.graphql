@@ -54,6 +54,12 @@ type Guest {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner
   rsvpWeddingDay: Guest_rsvpWeddingDay
   rsvpPoolDay: Guest_rsvpPoolDay
+  legalName: String
+  dateOfBirth: String
+  countryOfBirth: String
+  allergies: String
+  transportationToVenue: Guest_transportationToVenue
+  transportationFromVenue: Guest_transportationFromVenue
   sort: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -159,6 +165,16 @@ enum Guest_rsvpPoolDay {
   decline
 }
 
+enum Guest_transportationToVenue {
+  yes
+  no
+}
+
+enum Guest_transportationFromVenue {
+  yes
+  no
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
 """
@@ -191,6 +207,12 @@ input Guest_where {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  legalName: Guest_legalName_operator
+  dateOfBirth: Guest_dateOfBirth_operator
+  countryOfBirth: Guest_countryOfBirth_operator
+  allergies: Guest_allergies_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -340,6 +362,75 @@ enum Guest_rsvpPoolDay_Input {
   decline
 }
 
+input Guest_legalName_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Guest_dateOfBirth_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Guest_countryOfBirth_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Guest_allergies_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  exists: Boolean
+}
+
+input Guest_transportationToVenue_operator {
+  equals: Guest_transportationToVenue_Input
+  not_equals: Guest_transportationToVenue_Input
+  in: [Guest_transportationToVenue_Input]
+  not_in: [Guest_transportationToVenue_Input]
+  all: [Guest_transportationToVenue_Input]
+  exists: Boolean
+}
+
+enum Guest_transportationToVenue_Input {
+  yes
+  no
+}
+
+input Guest_transportationFromVenue_operator {
+  equals: Guest_transportationFromVenue_Input
+  not_equals: Guest_transportationFromVenue_Input
+  in: [Guest_transportationFromVenue_Input]
+  not_in: [Guest_transportationFromVenue_Input]
+  all: [Guest_transportationFromVenue_Input]
+  exists: Boolean
+}
+
+enum Guest_transportationFromVenue_Input {
+  yes
+  no
+}
+
 input Guest_sort_operator {
   equals: Float
   not_equals: Float
@@ -406,6 +497,12 @@ input Guest_where_and {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  legalName: Guest_legalName_operator
+  dateOfBirth: Guest_dateOfBirth_operator
+  countryOfBirth: Guest_countryOfBirth_operator
+  allergies: Guest_allergies_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -428,6 +525,12 @@ input Guest_where_or {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  legalName: Guest_legalName_operator
+  dateOfBirth: Guest_dateOfBirth_operator
+  countryOfBirth: Guest_countryOfBirth_operator
+  allergies: Guest_allergies_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -459,6 +562,12 @@ type GuestsDocAccessFields {
   rsvpRehearsalDinner: GuestsDocAccessFields_rsvpRehearsalDinner
   rsvpWeddingDay: GuestsDocAccessFields_rsvpWeddingDay
   rsvpPoolDay: GuestsDocAccessFields_rsvpPoolDay
+  legalName: GuestsDocAccessFields_legalName
+  dateOfBirth: GuestsDocAccessFields_dateOfBirth
+  countryOfBirth: GuestsDocAccessFields_countryOfBirth
+  allergies: GuestsDocAccessFields_allergies
+  transportationToVenue: GuestsDocAccessFields_transportationToVenue
+  transportationFromVenue: GuestsDocAccessFields_transportationFromVenue
   sort: GuestsDocAccessFields_sort
   updatedAt: GuestsDocAccessFields_updatedAt
   createdAt: GuestsDocAccessFields_createdAt
@@ -739,6 +848,144 @@ type GuestsDocAccessFields_rsvpPoolDay_Update {
 }
 
 type GuestsDocAccessFields_rsvpPoolDay_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_legalName {
+  create: GuestsDocAccessFields_legalName_Create
+  read: GuestsDocAccessFields_legalName_Read
+  update: GuestsDocAccessFields_legalName_Update
+  delete: GuestsDocAccessFields_legalName_Delete
+}
+
+type GuestsDocAccessFields_legalName_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_legalName_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_legalName_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_legalName_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_dateOfBirth {
+  create: GuestsDocAccessFields_dateOfBirth_Create
+  read: GuestsDocAccessFields_dateOfBirth_Read
+  update: GuestsDocAccessFields_dateOfBirth_Update
+  delete: GuestsDocAccessFields_dateOfBirth_Delete
+}
+
+type GuestsDocAccessFields_dateOfBirth_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_dateOfBirth_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_dateOfBirth_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_dateOfBirth_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_countryOfBirth {
+  create: GuestsDocAccessFields_countryOfBirth_Create
+  read: GuestsDocAccessFields_countryOfBirth_Read
+  update: GuestsDocAccessFields_countryOfBirth_Update
+  delete: GuestsDocAccessFields_countryOfBirth_Delete
+}
+
+type GuestsDocAccessFields_countryOfBirth_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_countryOfBirth_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_countryOfBirth_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_countryOfBirth_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_allergies {
+  create: GuestsDocAccessFields_allergies_Create
+  read: GuestsDocAccessFields_allergies_Read
+  update: GuestsDocAccessFields_allergies_Update
+  delete: GuestsDocAccessFields_allergies_Delete
+}
+
+type GuestsDocAccessFields_allergies_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_allergies_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_allergies_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue {
+  create: GuestsDocAccessFields_transportationToVenue_Create
+  read: GuestsDocAccessFields_transportationToVenue_Read
+  update: GuestsDocAccessFields_transportationToVenue_Update
+  delete: GuestsDocAccessFields_transportationToVenue_Delete
+}
+
+type GuestsDocAccessFields_transportationToVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue {
+  create: GuestsDocAccessFields_transportationFromVenue_Create
+  read: GuestsDocAccessFields_transportationFromVenue_Read
+  update: GuestsDocAccessFields_transportationFromVenue_Update
+  delete: GuestsDocAccessFields_transportationFromVenue_Delete
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Delete {
   permission: Boolean!
 }
 
@@ -4480,6 +4727,12 @@ type GuestsFields {
   rsvpRehearsalDinner: GuestsFields_rsvpRehearsalDinner
   rsvpWeddingDay: GuestsFields_rsvpWeddingDay
   rsvpPoolDay: GuestsFields_rsvpPoolDay
+  legalName: GuestsFields_legalName
+  dateOfBirth: GuestsFields_dateOfBirth
+  countryOfBirth: GuestsFields_countryOfBirth
+  allergies: GuestsFields_allergies
+  transportationToVenue: GuestsFields_transportationToVenue
+  transportationFromVenue: GuestsFields_transportationFromVenue
   sort: GuestsFields_sort
   updatedAt: GuestsFields_updatedAt
   createdAt: GuestsFields_createdAt
@@ -4760,6 +5013,144 @@ type GuestsFields_rsvpPoolDay_Update {
 }
 
 type GuestsFields_rsvpPoolDay_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_legalName {
+  create: GuestsFields_legalName_Create
+  read: GuestsFields_legalName_Read
+  update: GuestsFields_legalName_Update
+  delete: GuestsFields_legalName_Delete
+}
+
+type GuestsFields_legalName_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_legalName_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_legalName_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_legalName_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_dateOfBirth {
+  create: GuestsFields_dateOfBirth_Create
+  read: GuestsFields_dateOfBirth_Read
+  update: GuestsFields_dateOfBirth_Update
+  delete: GuestsFields_dateOfBirth_Delete
+}
+
+type GuestsFields_dateOfBirth_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_dateOfBirth_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_dateOfBirth_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_dateOfBirth_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_countryOfBirth {
+  create: GuestsFields_countryOfBirth_Create
+  read: GuestsFields_countryOfBirth_Read
+  update: GuestsFields_countryOfBirth_Update
+  delete: GuestsFields_countryOfBirth_Delete
+}
+
+type GuestsFields_countryOfBirth_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_countryOfBirth_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_countryOfBirth_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_countryOfBirth_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_allergies {
+  create: GuestsFields_allergies_Create
+  read: GuestsFields_allergies_Read
+  update: GuestsFields_allergies_Update
+  delete: GuestsFields_allergies_Delete
+}
+
+type GuestsFields_allergies_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_allergies_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_allergies_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue {
+  create: GuestsFields_transportationToVenue_Create
+  read: GuestsFields_transportationToVenue_Read
+  update: GuestsFields_transportationToVenue_Update
+  delete: GuestsFields_transportationToVenue_Delete
+}
+
+type GuestsFields_transportationToVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue {
+  create: GuestsFields_transportationFromVenue_Create
+  read: GuestsFields_transportationFromVenue_Read
+  update: GuestsFields_transportationFromVenue_Update
+  delete: GuestsFields_transportationFromVenue_Delete
+}
+
+type GuestsFields_transportationFromVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Delete {
   permission: Boolean!
 }
 
@@ -6956,6 +7347,12 @@ input mutationGuestInput {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_MutationInput
   rsvpWeddingDay: Guest_rsvpWeddingDay_MutationInput
   rsvpPoolDay: Guest_rsvpPoolDay_MutationInput
+  legalName: String
+  dateOfBirth: String
+  countryOfBirth: String
+  allergies: String
+  transportationToVenue: Guest_transportationToVenue_MutationInput
+  transportationFromVenue: Guest_transportationFromVenue_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -6989,6 +7386,16 @@ enum Guest_rsvpPoolDay_MutationInput {
   decline
 }
 
+enum Guest_transportationToVenue_MutationInput {
+  yes
+  no
+}
+
+enum Guest_transportationFromVenue_MutationInput {
+  yes
+  no
+}
+
 input mutationGuestUpdateInput {
   first: String
   middle: String
@@ -7002,6 +7409,12 @@ input mutationGuestUpdateInput {
   rsvpRehearsalDinner: GuestUpdate_rsvpRehearsalDinner_MutationInput
   rsvpWeddingDay: GuestUpdate_rsvpWeddingDay_MutationInput
   rsvpPoolDay: GuestUpdate_rsvpPoolDay_MutationInput
+  legalName: String
+  dateOfBirth: String
+  countryOfBirth: String
+  allergies: String
+  transportationToVenue: GuestUpdate_transportationToVenue_MutationInput
+  transportationFromVenue: GuestUpdate_transportationFromVenue_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -7033,6 +7446,16 @@ enum GuestUpdate_rsvpWeddingDay_MutationInput {
 enum GuestUpdate_rsvpPoolDay_MutationInput {
   accept
   decline
+}
+
+enum GuestUpdate_transportationToVenue_MutationInput {
+  yes
+  no
+}
+
+enum GuestUpdate_transportationFromVenue_MutationInput {
+  yes
+  no
 }
 
 type guestsRefreshedGuest {

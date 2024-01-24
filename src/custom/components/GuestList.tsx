@@ -171,6 +171,25 @@ const GuestList: React.FC = (props: any) => {
     [fields]
   );
 
+  const getSelectColumnDefs = useCallback(
+    (fieldName: string): Partial<ColDef<Guest>> => ({
+      cellRenderer: (params: ICellRendererParams<Guest, any>) =>
+        params.value ? (
+          <Tag value={params.value === 'yes' ? 'Yes' : 'No'} color={params.value === 'yes' ? 'green' : 'red'} />
+        ) : null,
+      cellEditor: SelectEditor,
+      cellEditorPopup: true,
+      cellEditorPopupPosition: 'over',
+      cellEditorParams: {
+        getLabel: (v: any) => v.label,
+        getValue: (v: any) => v.value,
+        isClearable: fields.find((f: any) => f.name === fieldName)?.admin.isClearable ?? false,
+        options: fields.find((f: any) => f.name === fieldName)?.options ?? [],
+      },
+    }),
+    [fields]
+  );
+
   const getTagsColumnDefs = useCallback(
     (collection: string): Partial<ColDef<Guest>> => ({
       cellRenderer: (params: ICellRendererParams<Guest, Party>) =>
@@ -399,6 +418,38 @@ const GuestList: React.FC = (props: any) => {
         field: 'rsvpPoolDay',
         headerName: 'RSVP Pool Day',
         ...getRsvpColumnDefs('rsvpPoolDay'),
+      },
+      {
+        field: 'transportationToVenue',
+        headerName: 'Transportation to Venue',
+        ...getSelectColumnDefs('transportationToVenue'),
+      },
+      {
+        field: 'transportationFromVenue',
+        headerName: 'Transportation from Venue',
+        ...getSelectColumnDefs('transportationFromVenue'),
+      },
+      {
+        field: 'legalName',
+        initialWidth: 150,
+      },
+      {
+        field: 'dateOfBirth',
+        headerName: 'Date of Birth',
+        initialWidth: 150,
+      },
+      {
+        field: 'countryOfBirth',
+        headerName: 'Country of Birth',
+        initialWidth: 150,
+      },
+      {
+        field: 'allergies',
+        cellEditor: TextareaEditor,
+        cellEditorPopup: true,
+        cellEditorPopupPosition: 'over',
+        initialWidth: 175,
+        suppressKeyboardEvent: ({ editing, event }) => editing && event.shiftKey && event.key === 'Enter',
       },
       {
         field: 'phone',
