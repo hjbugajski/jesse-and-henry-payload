@@ -1,37 +1,35 @@
-import { slateEditor } from '@payloadcms/richtext-slate';
-import { Block } from 'payload/types';
+import {
+  AlignFeature,
+  BlocksFeature,
+  BoldTextFeature,
+  HeadingFeature,
+  ItalicTextFeature,
+  lexicalEditor,
+  LinkFeature,
+  OrderedListFeature,
+  ParagraphFeature,
+  StrikethroughTextFeature,
+  SubscriptTextFeature,
+  SuperscriptTextFeature,
+  UnderlineTextFeature,
+  UnorderedListFeature,
+} from '@payloadcms/richtext-lexical';
+import { Block, Field } from 'payload/types';
 
-import { Alert } from './Alert';
-import ButtonLinks from './ButtonLinks';
-import Content from './Content';
-import Photos from './Photos';
-import registry from '../fields/richText/registry';
-import venue from '../fields/richText/venue';
+import Alert from './Alert';
+import ButtonLink from './ButtonLink';
+import Gallery from './Gallery';
+import ImageLink from './ImageLink';
+import { heading } from '../fields/heading';
+import { richTextLinkFields } from '../fields/link';
+import useAppendEmptyParagraph from '../hooks/useAppendEmptyParagraph';
+import { deepMerge } from '../utils/deepMerge';
 
 export const Section: Block = {
   slug: 'section',
-  interfaceName: 'SectionBlock',
+  interfaceName: 'BlockSection',
   fields: [
-    {
-      name: 'anchorId',
-      label: 'Anchor ID',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'description',
-      type: 'richText',
-      editor: slateEditor({
-        admin: {
-          elements: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'ul', venue, registry],
-        },
-      }),
-    },
+    deepMerge<Field>(heading, { required: false }),
     {
       name: 'border',
       type: 'checkbox',
@@ -39,9 +37,30 @@ export const Section: Block = {
       defaultValue: false,
     },
     {
-      name: 'layout',
-      type: 'blocks',
-      blocks: [Alert, ButtonLinks, Content, Photos],
+      name: 'content',
+      type: 'richText',
+      hooks: {
+        beforeValidate: [useAppendEmptyParagraph],
+      },
+      editor: lexicalEditor({
+        features: () => [
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3'] }),
+          ParagraphFeature(),
+          BoldTextFeature(),
+          ItalicTextFeature(),
+          UnderlineTextFeature(),
+          StrikethroughTextFeature(),
+          UnorderedListFeature(),
+          OrderedListFeature(),
+          SuperscriptTextFeature(),
+          SubscriptTextFeature(),
+          AlignFeature(),
+          LinkFeature({ fields: richTextLinkFields }),
+          BlocksFeature({
+            blocks: [Alert, ButtonLink, Gallery, ImageLink, { slug: 'registry', fields: [] }],
+          }),
+        ],
+      }),
     },
   ],
 };

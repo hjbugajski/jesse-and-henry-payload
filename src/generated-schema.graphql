@@ -54,12 +54,12 @@ type Guest {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner
   rsvpWeddingDay: Guest_rsvpWeddingDay
   rsvpPoolDay: Guest_rsvpPoolDay
+  transportationToVenue: Guest_transportationToVenue
+  transportationFromVenue: Guest_transportationFromVenue
   legalName: String
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
-  transportationToVenue: Guest_transportationToVenue
-  transportationFromVenue: Guest_transportationFromVenue
   sort: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -207,12 +207,12 @@ input Guest_where {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   legalName: Guest_legalName_operator
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
-  transportationToVenue: Guest_transportationToVenue_operator
-  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -362,6 +362,34 @@ enum Guest_rsvpPoolDay_Input {
   decline
 }
 
+input Guest_transportationToVenue_operator {
+  equals: Guest_transportationToVenue_Input
+  not_equals: Guest_transportationToVenue_Input
+  in: [Guest_transportationToVenue_Input]
+  not_in: [Guest_transportationToVenue_Input]
+  all: [Guest_transportationToVenue_Input]
+  exists: Boolean
+}
+
+enum Guest_transportationToVenue_Input {
+  yes
+  no
+}
+
+input Guest_transportationFromVenue_operator {
+  equals: Guest_transportationFromVenue_Input
+  not_equals: Guest_transportationFromVenue_Input
+  in: [Guest_transportationFromVenue_Input]
+  not_in: [Guest_transportationFromVenue_Input]
+  all: [Guest_transportationFromVenue_Input]
+  exists: Boolean
+}
+
+enum Guest_transportationFromVenue_Input {
+  yes
+  no
+}
+
 input Guest_legalName_operator {
   equals: String
   not_equals: String
@@ -401,34 +429,6 @@ input Guest_allergies_operator {
   like: String
   contains: String
   exists: Boolean
-}
-
-input Guest_transportationToVenue_operator {
-  equals: Guest_transportationToVenue_Input
-  not_equals: Guest_transportationToVenue_Input
-  in: [Guest_transportationToVenue_Input]
-  not_in: [Guest_transportationToVenue_Input]
-  all: [Guest_transportationToVenue_Input]
-  exists: Boolean
-}
-
-enum Guest_transportationToVenue_Input {
-  yes
-  no
-}
-
-input Guest_transportationFromVenue_operator {
-  equals: Guest_transportationFromVenue_Input
-  not_equals: Guest_transportationFromVenue_Input
-  in: [Guest_transportationFromVenue_Input]
-  not_in: [Guest_transportationFromVenue_Input]
-  all: [Guest_transportationFromVenue_Input]
-  exists: Boolean
-}
-
-enum Guest_transportationFromVenue_Input {
-  yes
-  no
 }
 
 input Guest_sort_operator {
@@ -497,12 +497,12 @@ input Guest_where_and {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   legalName: Guest_legalName_operator
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
-  transportationToVenue: Guest_transportationToVenue_operator
-  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -525,12 +525,12 @@ input Guest_where_or {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_operator
   rsvpWeddingDay: Guest_rsvpWeddingDay_operator
   rsvpPoolDay: Guest_rsvpPoolDay_operator
+  transportationToVenue: Guest_transportationToVenue_operator
+  transportationFromVenue: Guest_transportationFromVenue_operator
   legalName: Guest_legalName_operator
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
-  transportationToVenue: Guest_transportationToVenue_operator
-  transportationFromVenue: Guest_transportationFromVenue_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -562,12 +562,12 @@ type GuestsDocAccessFields {
   rsvpRehearsalDinner: GuestsDocAccessFields_rsvpRehearsalDinner
   rsvpWeddingDay: GuestsDocAccessFields_rsvpWeddingDay
   rsvpPoolDay: GuestsDocAccessFields_rsvpPoolDay
+  transportationToVenue: GuestsDocAccessFields_transportationToVenue
+  transportationFromVenue: GuestsDocAccessFields_transportationFromVenue
   legalName: GuestsDocAccessFields_legalName
   dateOfBirth: GuestsDocAccessFields_dateOfBirth
   countryOfBirth: GuestsDocAccessFields_countryOfBirth
   allergies: GuestsDocAccessFields_allergies
-  transportationToVenue: GuestsDocAccessFields_transportationToVenue
-  transportationFromVenue: GuestsDocAccessFields_transportationFromVenue
   sort: GuestsDocAccessFields_sort
   updatedAt: GuestsDocAccessFields_updatedAt
   createdAt: GuestsDocAccessFields_createdAt
@@ -851,6 +851,52 @@ type GuestsDocAccessFields_rsvpPoolDay_Delete {
   permission: Boolean!
 }
 
+type GuestsDocAccessFields_transportationToVenue {
+  create: GuestsDocAccessFields_transportationToVenue_Create
+  read: GuestsDocAccessFields_transportationToVenue_Read
+  update: GuestsDocAccessFields_transportationToVenue_Update
+  delete: GuestsDocAccessFields_transportationToVenue_Delete
+}
+
+type GuestsDocAccessFields_transportationToVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationToVenue_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue {
+  create: GuestsDocAccessFields_transportationFromVenue_Create
+  read: GuestsDocAccessFields_transportationFromVenue_Read
+  update: GuestsDocAccessFields_transportationFromVenue_Update
+  delete: GuestsDocAccessFields_transportationFromVenue_Delete
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_transportationFromVenue_Delete {
+  permission: Boolean!
+}
+
 type GuestsDocAccessFields_legalName {
   create: GuestsDocAccessFields_legalName_Create
   read: GuestsDocAccessFields_legalName_Read
@@ -940,52 +986,6 @@ type GuestsDocAccessFields_allergies_Update {
 }
 
 type GuestsDocAccessFields_allergies_Delete {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationToVenue {
-  create: GuestsDocAccessFields_transportationToVenue_Create
-  read: GuestsDocAccessFields_transportationToVenue_Read
-  update: GuestsDocAccessFields_transportationToVenue_Update
-  delete: GuestsDocAccessFields_transportationToVenue_Delete
-}
-
-type GuestsDocAccessFields_transportationToVenue_Create {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationToVenue_Read {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationToVenue_Update {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationToVenue_Delete {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationFromVenue {
-  create: GuestsDocAccessFields_transportationFromVenue_Create
-  read: GuestsDocAccessFields_transportationFromVenue_Read
-  update: GuestsDocAccessFields_transportationFromVenue_Update
-  delete: GuestsDocAccessFields_transportationFromVenue_Delete
-}
-
-type GuestsDocAccessFields_transportationFromVenue_Create {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationFromVenue_Read {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationFromVenue_Update {
-  permission: Boolean!
-}
-
-type GuestsDocAccessFields_transportationFromVenue_Delete {
   permission: Boolean!
 }
 
@@ -2165,153 +2165,14 @@ type MediaDeleteDocAccess {
 
 type Page {
   id: String
+  title: String
+  description: String
+  content(depth: Int): JSON
   slug: String
   protected: Boolean
-  name: String
-  meta: Page_Meta
-  content: Page_Content
   updatedAt: DateTime
   createdAt: DateTime
   _status: Page__status
-}
-
-type Page_Meta {
-  title: String
-  description: String
-}
-
-type Page_Content {
-  layout: [Page_Content_Layout!]
-}
-
-union Page_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
-
-type AlertBlock {
-  title: String
-  icon: String
-  content(depth: Int): JSON
-  color: AlertBlock_color
-  action: Boolean
-  link: LinkGroupField
-  width: AlertBlock_width
-  id: String
-  blockName: String
-  blockType: String
-}
-
-enum AlertBlock_color {
-  neutral
-  neutral_variant
-  primary
-  secondary
-  tertiary
-  danger
-}
-
-type LinkGroupField {
-  text: String
-  icon: String
-  type: LinkGroupField_type
-  relationship: Page
-  anchor: String
-  url: String
-  rel: [LinkGroupField_rel!]
-  newTab: Boolean
-}
-
-enum LinkGroupField_type {
-  internal
-  external
-}
-
-enum LinkGroupField_rel {
-  noreferrer
-}
-
-enum AlertBlock_width {
-  full
-  max
-}
-
-type ContentBlock {
-  width: ContentBlock_width
-  content(depth: Int): JSON
-  id: String
-  blockName: String
-  blockType: String
-}
-
-enum ContentBlock_width {
-  full
-  max
-}
-
-type HeroBlock {
-  titleOne: String
-  titleTwo: String
-  subtitle: String
-  image: Media
-  id: String
-  blockName: String
-  blockType: String
-}
-
-type SectionBlock {
-  anchorId: String
-  title: String
-  description(depth: Int): JSON
-  border: Boolean
-  layout: [SectionBlock_Layout!]
-  id: String
-  blockName: String
-  blockType: String
-}
-
-union SectionBlock_Layout = AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock
-
-type ButtonLinksBlock {
-  links: [LinkArrayField!]
-  id: String
-  blockName: String
-  blockType: String
-}
-
-type LinkArrayField {
-  color: LinkArrayField_color
-  text: String
-  icon: String
-  type: LinkArrayField_type
-  relationship: Page
-  anchor: String
-  url: String
-  rel: [LinkArrayField_rel!]
-  newTab: Boolean
-  id: String
-}
-
-enum LinkArrayField_color {
-  neutral
-  neutral_variant
-  primary
-  secondary
-  tertiary
-  danger
-}
-
-enum LinkArrayField_type {
-  internal
-  external
-}
-
-enum LinkArrayField_rel {
-  noreferrer
-}
-
-type PhotosBlock {
-  photos: [Media!]
-  id: String
-  blockName: String
-  blockType: String
 }
 
 enum Page__status {
@@ -2334,17 +2195,42 @@ type Pages {
 }
 
 input Page_where {
+  title: Page_title_operator
+  description: Page_description_operator
+  content: Page_content_operator
   slug: Page_slug_operator
   protected: Page_protected_operator
-  name: Page_name_operator
-  meta__title: Page_meta__title_operator
-  meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
   id: Page_id_operator
   AND: [Page_where_and]
   OR: [Page_where_or]
+}
+
+input Page_title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input Page_description_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input Page_content_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
 }
 
 input Page_slug_operator {
@@ -2362,33 +2248,6 @@ input Page_protected_operator {
   equals: Boolean
   not_equals: Boolean
   exists: Boolean
-}
-
-input Page_name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input Page_meta__title_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input Page_meta__description_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
 }
 
 input Page_updatedAt_operator {
@@ -2439,11 +2298,11 @@ input Page_id_operator {
 }
 
 input Page_where_and {
+  title: Page_title_operator
+  description: Page_description_operator
+  content: Page_content_operator
   slug: Page_slug_operator
   protected: Page_protected_operator
-  name: Page_name_operator
-  meta__title: Page_meta__title_operator
-  meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
@@ -2453,11 +2312,11 @@ input Page_where_and {
 }
 
 input Page_where_or {
+  title: Page_title_operator
+  description: Page_description_operator
+  content: Page_content_operator
   slug: Page_slug_operator
   protected: Page_protected_operator
-  name: Page_name_operator
-  meta__title: Page_meta__title_operator
-  meta__description: Page_meta__description_operator
   updatedAt: Page_updatedAt_operator
   createdAt: Page_createdAt_operator
   _status: Page__status_operator
@@ -2476,84 +2335,14 @@ type pagesDocAccess {
 }
 
 type PagesDocAccessFields {
-  slug: PagesDocAccessFields_slug
-  protected: PagesDocAccessFields_protected
-  name: PagesDocAccessFields_name
   title: PagesDocAccessFields_title
   description: PagesDocAccessFields_description
-  layout: PagesDocAccessFields_layout
+  content: PagesDocAccessFields_content
+  slug: PagesDocAccessFields_slug
+  protected: PagesDocAccessFields_protected
   updatedAt: PagesDocAccessFields_updatedAt
   createdAt: PagesDocAccessFields_createdAt
   _status: PagesDocAccessFields__status
-}
-
-type PagesDocAccessFields_slug {
-  create: PagesDocAccessFields_slug_Create
-  read: PagesDocAccessFields_slug_Read
-  update: PagesDocAccessFields_slug_Update
-  delete: PagesDocAccessFields_slug_Delete
-}
-
-type PagesDocAccessFields_slug_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_slug_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_slug_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_slug_Delete {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_protected {
-  create: PagesDocAccessFields_protected_Create
-  read: PagesDocAccessFields_protected_Read
-  update: PagesDocAccessFields_protected_Update
-  delete: PagesDocAccessFields_protected_Delete
-}
-
-type PagesDocAccessFields_protected_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_protected_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_protected_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_protected_Delete {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name {
-  create: PagesDocAccessFields_name_Create
-  read: PagesDocAccessFields_name_Read
-  update: PagesDocAccessFields_name_Update
-  delete: PagesDocAccessFields_name_Delete
-}
-
-type PagesDocAccessFields_name_Create {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Read {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Update {
-  permission: Boolean!
-}
-
-type PagesDocAccessFields_name_Delete {
-  permission: Boolean!
 }
 
 type PagesDocAccessFields_title {
@@ -2602,26 +2391,72 @@ type PagesDocAccessFields_description_Delete {
   permission: Boolean!
 }
 
-type PagesDocAccessFields_layout {
-  create: PagesDocAccessFields_layout_Create
-  read: PagesDocAccessFields_layout_Read
-  update: PagesDocAccessFields_layout_Update
-  delete: PagesDocAccessFields_layout_Delete
+type PagesDocAccessFields_content {
+  create: PagesDocAccessFields_content_Create
+  read: PagesDocAccessFields_content_Read
+  update: PagesDocAccessFields_content_Update
+  delete: PagesDocAccessFields_content_Delete
 }
 
-type PagesDocAccessFields_layout_Create {
+type PagesDocAccessFields_content_Create {
   permission: Boolean!
 }
 
-type PagesDocAccessFields_layout_Read {
+type PagesDocAccessFields_content_Read {
   permission: Boolean!
 }
 
-type PagesDocAccessFields_layout_Update {
+type PagesDocAccessFields_content_Update {
   permission: Boolean!
 }
 
-type PagesDocAccessFields_layout_Delete {
+type PagesDocAccessFields_content_Delete {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_slug {
+  create: PagesDocAccessFields_slug_Create
+  read: PagesDocAccessFields_slug_Read
+  update: PagesDocAccessFields_slug_Update
+  delete: PagesDocAccessFields_slug_Delete
+}
+
+type PagesDocAccessFields_slug_Create {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_slug_Read {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_slug_Update {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_slug_Delete {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected {
+  create: PagesDocAccessFields_protected_Create
+  read: PagesDocAccessFields_protected_Read
+  update: PagesDocAccessFields_protected_Update
+  delete: PagesDocAccessFields_protected_Delete
+}
+
+type PagesDocAccessFields_protected_Create {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Read {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Update {
+  permission: Boolean!
+}
+
+type PagesDocAccessFields_protected_Delete {
   permission: Boolean!
 }
 
@@ -2729,26 +2564,15 @@ type PageVersion {
 }
 
 type PageVersion_Version {
+  title: String
+  description: String
+  content(depth: Int): JSON
   slug: String
   protected: Boolean
-  name: String
-  meta: PageVersion_Version_Meta
-  content: PageVersion_Version_Content
   updatedAt: DateTime
   createdAt: DateTime
   _status: PageVersion_Version__status
 }
-
-type PageVersion_Version_Meta {
-  title: String
-  description: String
-}
-
-type PageVersion_Version_Content {
-  layout: [PageVersion_Version_Content_Layout!]
-}
-
-union PageVersion_Version_Content_Layout = AlertBlock | ContentBlock | HeroBlock | SectionBlock
 
 enum PageVersion_Version__status {
   draft
@@ -2771,11 +2595,11 @@ type versionsPages {
 
 input versionsPage_where {
   parent: versionsPage_parent_operator
+  version__title: versionsPage_version__title_operator
+  version__description: versionsPage_version__description_operator
+  version__content: versionsPage_version__content_operator
   version__slug: versionsPage_version__slug_operator
   version__protected: versionsPage_version__protected_operator
-  version__name: versionsPage_version__name_operator
-  meta__title: versionsPage_meta__title_operator
-  meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
   version__createdAt: versionsPage_version__createdAt_operator
   version___status: versionsPage_version___status_operator
@@ -2796,6 +2620,31 @@ input versionsPage_parent_operator {
   exists: Boolean
 }
 
+input versionsPage_version__title_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input versionsPage_version__description_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+}
+
+input versionsPage_version__content_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
+}
+
 input versionsPage_version__slug_operator {
   equals: String
   not_equals: String
@@ -2811,33 +2660,6 @@ input versionsPage_version__protected_operator {
   equals: Boolean
   not_equals: Boolean
   exists: Boolean
-}
-
-input versionsPage_version__name_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsPage_meta__title_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
-  in: [String]
-  not_in: [String]
-  all: [String]
-}
-
-input versionsPage_meta__description_operator {
-  equals: String
-  not_equals: String
-  like: String
-  contains: String
 }
 
 input versionsPage_version__updatedAt_operator {
@@ -2917,11 +2739,11 @@ input versionsPage_id_operator {
 
 input versionsPage_where_and {
   parent: versionsPage_parent_operator
+  version__title: versionsPage_version__title_operator
+  version__description: versionsPage_version__description_operator
+  version__content: versionsPage_version__content_operator
   version__slug: versionsPage_version__slug_operator
   version__protected: versionsPage_version__protected_operator
-  version__name: versionsPage_version__name_operator
-  meta__title: versionsPage_meta__title_operator
-  meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
   version__createdAt: versionsPage_version__createdAt_operator
   version___status: versionsPage_version___status_operator
@@ -2935,11 +2757,11 @@ input versionsPage_where_and {
 
 input versionsPage_where_or {
   parent: versionsPage_parent_operator
+  version__title: versionsPage_version__title_operator
+  version__description: versionsPage_version__description_operator
+  version__content: versionsPage_version__content_operator
   version__slug: versionsPage_version__slug_operator
   version__protected: versionsPage_version__protected_operator
-  version__name: versionsPage_version__name_operator
-  meta__title: versionsPage_meta__title_operator
-  meta__description: versionsPage_meta__description_operator
   version__updatedAt: versionsPage_version__updatedAt_operator
   version__createdAt: versionsPage_version__createdAt_operator
   version___status: versionsPage_version___status_operator
@@ -4376,9 +4198,62 @@ type PayloadPreferencesDeleteDocAccess {
 }
 
 type Navigation {
-  links: [LinkArrayField!]
+  links: [FieldLinkArray!]
+  showCta: Boolean
+  callToAction: FieldLinkGroup
   updatedAt: DateTime
   createdAt: DateTime
+}
+
+type FieldLinkArray {
+  text: String
+  icon: String
+  type: FieldLinkArray_type
+  relationship: Page
+  anchor: String
+  url: String
+  rel: [FieldLinkArray_rel!]
+  newTab: Boolean
+  id: String
+}
+
+enum FieldLinkArray_type {
+  internal
+  external
+}
+
+enum FieldLinkArray_rel {
+  noreferrer
+}
+
+type FieldLinkGroup {
+  text: String
+  icon: String
+  type: FieldLinkGroup_type
+  relationship: Page
+  anchor: String
+  url: String
+  rel: [FieldLinkGroup_rel!]
+  newTab: Boolean
+  color: FieldLinkGroup_color
+}
+
+enum FieldLinkGroup_type {
+  internal
+  external
+}
+
+enum FieldLinkGroup_rel {
+  noreferrer
+}
+
+enum FieldLinkGroup_color {
+  neutral
+  neutral_variant
+  primary
+  secondary
+  tertiary
+  danger
 }
 
 type navigationDocAccess {
@@ -4389,6 +4264,8 @@ type navigationDocAccess {
 
 type NavigationDocAccessFields {
   links: NavigationDocAccessFields_links
+  showCta: NavigationDocAccessFields_showCta
+  callToAction: NavigationDocAccessFields_callToAction
   updatedAt: NavigationDocAccessFields_updatedAt
   createdAt: NavigationDocAccessFields_createdAt
 }
@@ -4636,6 +4513,272 @@ type NavigationDocAccessFields_links_id_Delete {
   permission: Boolean!
 }
 
+type NavigationDocAccessFields_showCta {
+  create: NavigationDocAccessFields_showCta_Create
+  read: NavigationDocAccessFields_showCta_Read
+  update: NavigationDocAccessFields_showCta_Update
+  delete: NavigationDocAccessFields_showCta_Delete
+}
+
+type NavigationDocAccessFields_showCta_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_showCta_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_showCta_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_showCta_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction {
+  create: NavigationDocAccessFields_callToAction_Create
+  read: NavigationDocAccessFields_callToAction_Read
+  update: NavigationDocAccessFields_callToAction_Update
+  delete: NavigationDocAccessFields_callToAction_Delete
+  fields: NavigationDocAccessFields_callToAction_Fields
+}
+
+type NavigationDocAccessFields_callToAction_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_Fields {
+  text: NavigationDocAccessFields_callToAction_text
+  icon: NavigationDocAccessFields_callToAction_icon
+  type: NavigationDocAccessFields_callToAction_type
+  relationship: NavigationDocAccessFields_callToAction_relationship
+  anchor: NavigationDocAccessFields_callToAction_anchor
+  url: NavigationDocAccessFields_callToAction_url
+  rel: NavigationDocAccessFields_callToAction_rel
+  newTab: NavigationDocAccessFields_callToAction_newTab
+  color: NavigationDocAccessFields_callToAction_color
+}
+
+type NavigationDocAccessFields_callToAction_text {
+  create: NavigationDocAccessFields_callToAction_text_Create
+  read: NavigationDocAccessFields_callToAction_text_Read
+  update: NavigationDocAccessFields_callToAction_text_Update
+  delete: NavigationDocAccessFields_callToAction_text_Delete
+}
+
+type NavigationDocAccessFields_callToAction_text_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_text_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_text_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_text_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_icon {
+  create: NavigationDocAccessFields_callToAction_icon_Create
+  read: NavigationDocAccessFields_callToAction_icon_Read
+  update: NavigationDocAccessFields_callToAction_icon_Update
+  delete: NavigationDocAccessFields_callToAction_icon_Delete
+}
+
+type NavigationDocAccessFields_callToAction_icon_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_icon_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_icon_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_icon_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_type {
+  create: NavigationDocAccessFields_callToAction_type_Create
+  read: NavigationDocAccessFields_callToAction_type_Read
+  update: NavigationDocAccessFields_callToAction_type_Update
+  delete: NavigationDocAccessFields_callToAction_type_Delete
+}
+
+type NavigationDocAccessFields_callToAction_type_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_type_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_type_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_type_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_relationship {
+  create: NavigationDocAccessFields_callToAction_relationship_Create
+  read: NavigationDocAccessFields_callToAction_relationship_Read
+  update: NavigationDocAccessFields_callToAction_relationship_Update
+  delete: NavigationDocAccessFields_callToAction_relationship_Delete
+}
+
+type NavigationDocAccessFields_callToAction_relationship_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_relationship_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_relationship_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_relationship_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_anchor {
+  create: NavigationDocAccessFields_callToAction_anchor_Create
+  read: NavigationDocAccessFields_callToAction_anchor_Read
+  update: NavigationDocAccessFields_callToAction_anchor_Update
+  delete: NavigationDocAccessFields_callToAction_anchor_Delete
+}
+
+type NavigationDocAccessFields_callToAction_anchor_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_anchor_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_anchor_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_anchor_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_url {
+  create: NavigationDocAccessFields_callToAction_url_Create
+  read: NavigationDocAccessFields_callToAction_url_Read
+  update: NavigationDocAccessFields_callToAction_url_Update
+  delete: NavigationDocAccessFields_callToAction_url_Delete
+}
+
+type NavigationDocAccessFields_callToAction_url_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_url_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_url_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_url_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_rel {
+  create: NavigationDocAccessFields_callToAction_rel_Create
+  read: NavigationDocAccessFields_callToAction_rel_Read
+  update: NavigationDocAccessFields_callToAction_rel_Update
+  delete: NavigationDocAccessFields_callToAction_rel_Delete
+}
+
+type NavigationDocAccessFields_callToAction_rel_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_rel_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_rel_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_rel_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_newTab {
+  create: NavigationDocAccessFields_callToAction_newTab_Create
+  read: NavigationDocAccessFields_callToAction_newTab_Read
+  update: NavigationDocAccessFields_callToAction_newTab_Update
+  delete: NavigationDocAccessFields_callToAction_newTab_Delete
+}
+
+type NavigationDocAccessFields_callToAction_newTab_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_newTab_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_newTab_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_newTab_Delete {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_color {
+  create: NavigationDocAccessFields_callToAction_color_Create
+  read: NavigationDocAccessFields_callToAction_color_Read
+  update: NavigationDocAccessFields_callToAction_color_Update
+  delete: NavigationDocAccessFields_callToAction_color_Delete
+}
+
+type NavigationDocAccessFields_callToAction_color_Create {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_color_Read {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_color_Update {
+  permission: Boolean!
+}
+
+type NavigationDocAccessFields_callToAction_color_Delete {
+  permission: Boolean!
+}
+
 type NavigationDocAccessFields_updatedAt {
   create: NavigationDocAccessFields_updatedAt_Create
   read: NavigationDocAccessFields_updatedAt_Read
@@ -4727,12 +4870,12 @@ type GuestsFields {
   rsvpRehearsalDinner: GuestsFields_rsvpRehearsalDinner
   rsvpWeddingDay: GuestsFields_rsvpWeddingDay
   rsvpPoolDay: GuestsFields_rsvpPoolDay
+  transportationToVenue: GuestsFields_transportationToVenue
+  transportationFromVenue: GuestsFields_transportationFromVenue
   legalName: GuestsFields_legalName
   dateOfBirth: GuestsFields_dateOfBirth
   countryOfBirth: GuestsFields_countryOfBirth
   allergies: GuestsFields_allergies
-  transportationToVenue: GuestsFields_transportationToVenue
-  transportationFromVenue: GuestsFields_transportationFromVenue
   sort: GuestsFields_sort
   updatedAt: GuestsFields_updatedAt
   createdAt: GuestsFields_createdAt
@@ -5016,6 +5159,52 @@ type GuestsFields_rsvpPoolDay_Delete {
   permission: Boolean!
 }
 
+type GuestsFields_transportationToVenue {
+  create: GuestsFields_transportationToVenue_Create
+  read: GuestsFields_transportationToVenue_Read
+  update: GuestsFields_transportationToVenue_Update
+  delete: GuestsFields_transportationToVenue_Delete
+}
+
+type GuestsFields_transportationToVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationToVenue_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue {
+  create: GuestsFields_transportationFromVenue_Create
+  read: GuestsFields_transportationFromVenue_Read
+  update: GuestsFields_transportationFromVenue_Update
+  delete: GuestsFields_transportationFromVenue_Delete
+}
+
+type GuestsFields_transportationFromVenue_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_transportationFromVenue_Delete {
+  permission: Boolean!
+}
+
 type GuestsFields_legalName {
   create: GuestsFields_legalName_Create
   read: GuestsFields_legalName_Read
@@ -5105,52 +5294,6 @@ type GuestsFields_allergies_Update {
 }
 
 type GuestsFields_allergies_Delete {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationToVenue {
-  create: GuestsFields_transportationToVenue_Create
-  read: GuestsFields_transportationToVenue_Read
-  update: GuestsFields_transportationToVenue_Update
-  delete: GuestsFields_transportationToVenue_Delete
-}
-
-type GuestsFields_transportationToVenue_Create {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationToVenue_Read {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationToVenue_Update {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationToVenue_Delete {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationFromVenue {
-  create: GuestsFields_transportationFromVenue_Create
-  read: GuestsFields_transportationFromVenue_Read
-  update: GuestsFields_transportationFromVenue_Update
-  delete: GuestsFields_transportationFromVenue_Delete
-}
-
-type GuestsFields_transportationFromVenue_Create {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationFromVenue_Read {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationFromVenue_Update {
-  permission: Boolean!
-}
-
-type GuestsFields_transportationFromVenue_Delete {
   permission: Boolean!
 }
 
@@ -5947,84 +6090,14 @@ type pagesAccess {
 }
 
 type PagesFields {
-  slug: PagesFields_slug
-  protected: PagesFields_protected
-  name: PagesFields_name
   title: PagesFields_title
   description: PagesFields_description
-  layout: PagesFields_layout
+  content: PagesFields_content
+  slug: PagesFields_slug
+  protected: PagesFields_protected
   updatedAt: PagesFields_updatedAt
   createdAt: PagesFields_createdAt
   _status: PagesFields__status
-}
-
-type PagesFields_slug {
-  create: PagesFields_slug_Create
-  read: PagesFields_slug_Read
-  update: PagesFields_slug_Update
-  delete: PagesFields_slug_Delete
-}
-
-type PagesFields_slug_Create {
-  permission: Boolean!
-}
-
-type PagesFields_slug_Read {
-  permission: Boolean!
-}
-
-type PagesFields_slug_Update {
-  permission: Boolean!
-}
-
-type PagesFields_slug_Delete {
-  permission: Boolean!
-}
-
-type PagesFields_protected {
-  create: PagesFields_protected_Create
-  read: PagesFields_protected_Read
-  update: PagesFields_protected_Update
-  delete: PagesFields_protected_Delete
-}
-
-type PagesFields_protected_Create {
-  permission: Boolean!
-}
-
-type PagesFields_protected_Read {
-  permission: Boolean!
-}
-
-type PagesFields_protected_Update {
-  permission: Boolean!
-}
-
-type PagesFields_protected_Delete {
-  permission: Boolean!
-}
-
-type PagesFields_name {
-  create: PagesFields_name_Create
-  read: PagesFields_name_Read
-  update: PagesFields_name_Update
-  delete: PagesFields_name_Delete
-}
-
-type PagesFields_name_Create {
-  permission: Boolean!
-}
-
-type PagesFields_name_Read {
-  permission: Boolean!
-}
-
-type PagesFields_name_Update {
-  permission: Boolean!
-}
-
-type PagesFields_name_Delete {
-  permission: Boolean!
 }
 
 type PagesFields_title {
@@ -6073,26 +6146,72 @@ type PagesFields_description_Delete {
   permission: Boolean!
 }
 
-type PagesFields_layout {
-  create: PagesFields_layout_Create
-  read: PagesFields_layout_Read
-  update: PagesFields_layout_Update
-  delete: PagesFields_layout_Delete
+type PagesFields_content {
+  create: PagesFields_content_Create
+  read: PagesFields_content_Read
+  update: PagesFields_content_Update
+  delete: PagesFields_content_Delete
 }
 
-type PagesFields_layout_Create {
+type PagesFields_content_Create {
   permission: Boolean!
 }
 
-type PagesFields_layout_Read {
+type PagesFields_content_Read {
   permission: Boolean!
 }
 
-type PagesFields_layout_Update {
+type PagesFields_content_Update {
   permission: Boolean!
 }
 
-type PagesFields_layout_Delete {
+type PagesFields_content_Delete {
+  permission: Boolean!
+}
+
+type PagesFields_slug {
+  create: PagesFields_slug_Create
+  read: PagesFields_slug_Read
+  update: PagesFields_slug_Update
+  delete: PagesFields_slug_Delete
+}
+
+type PagesFields_slug_Create {
+  permission: Boolean!
+}
+
+type PagesFields_slug_Read {
+  permission: Boolean!
+}
+
+type PagesFields_slug_Update {
+  permission: Boolean!
+}
+
+type PagesFields_slug_Delete {
+  permission: Boolean!
+}
+
+type PagesFields_protected {
+  create: PagesFields_protected_Create
+  read: PagesFields_protected_Read
+  update: PagesFields_protected_Update
+  delete: PagesFields_protected_Delete
+}
+
+type PagesFields_protected_Create {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Read {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Update {
+  permission: Boolean!
+}
+
+type PagesFields_protected_Delete {
   permission: Boolean!
 }
 
@@ -6983,6 +7102,8 @@ type navigationAccess {
 
 type NavigationFields {
   links: NavigationFields_links
+  showCta: NavigationFields_showCta
+  callToAction: NavigationFields_callToAction
   updatedAt: NavigationFields_updatedAt
   createdAt: NavigationFields_createdAt
 }
@@ -7230,6 +7351,272 @@ type NavigationFields_links_id_Delete {
   permission: Boolean!
 }
 
+type NavigationFields_showCta {
+  create: NavigationFields_showCta_Create
+  read: NavigationFields_showCta_Read
+  update: NavigationFields_showCta_Update
+  delete: NavigationFields_showCta_Delete
+}
+
+type NavigationFields_showCta_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_showCta_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_showCta_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_showCta_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction {
+  create: NavigationFields_callToAction_Create
+  read: NavigationFields_callToAction_Read
+  update: NavigationFields_callToAction_Update
+  delete: NavigationFields_callToAction_Delete
+  fields: NavigationFields_callToAction_Fields
+}
+
+type NavigationFields_callToAction_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_Fields {
+  text: NavigationFields_callToAction_text
+  icon: NavigationFields_callToAction_icon
+  type: NavigationFields_callToAction_type
+  relationship: NavigationFields_callToAction_relationship
+  anchor: NavigationFields_callToAction_anchor
+  url: NavigationFields_callToAction_url
+  rel: NavigationFields_callToAction_rel
+  newTab: NavigationFields_callToAction_newTab
+  color: NavigationFields_callToAction_color
+}
+
+type NavigationFields_callToAction_text {
+  create: NavigationFields_callToAction_text_Create
+  read: NavigationFields_callToAction_text_Read
+  update: NavigationFields_callToAction_text_Update
+  delete: NavigationFields_callToAction_text_Delete
+}
+
+type NavigationFields_callToAction_text_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_text_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_text_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_text_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_icon {
+  create: NavigationFields_callToAction_icon_Create
+  read: NavigationFields_callToAction_icon_Read
+  update: NavigationFields_callToAction_icon_Update
+  delete: NavigationFields_callToAction_icon_Delete
+}
+
+type NavigationFields_callToAction_icon_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_icon_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_icon_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_icon_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_type {
+  create: NavigationFields_callToAction_type_Create
+  read: NavigationFields_callToAction_type_Read
+  update: NavigationFields_callToAction_type_Update
+  delete: NavigationFields_callToAction_type_Delete
+}
+
+type NavigationFields_callToAction_type_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_type_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_type_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_type_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_relationship {
+  create: NavigationFields_callToAction_relationship_Create
+  read: NavigationFields_callToAction_relationship_Read
+  update: NavigationFields_callToAction_relationship_Update
+  delete: NavigationFields_callToAction_relationship_Delete
+}
+
+type NavigationFields_callToAction_relationship_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_relationship_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_relationship_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_relationship_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_anchor {
+  create: NavigationFields_callToAction_anchor_Create
+  read: NavigationFields_callToAction_anchor_Read
+  update: NavigationFields_callToAction_anchor_Update
+  delete: NavigationFields_callToAction_anchor_Delete
+}
+
+type NavigationFields_callToAction_anchor_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_anchor_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_anchor_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_anchor_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_url {
+  create: NavigationFields_callToAction_url_Create
+  read: NavigationFields_callToAction_url_Read
+  update: NavigationFields_callToAction_url_Update
+  delete: NavigationFields_callToAction_url_Delete
+}
+
+type NavigationFields_callToAction_url_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_url_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_url_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_url_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_rel {
+  create: NavigationFields_callToAction_rel_Create
+  read: NavigationFields_callToAction_rel_Read
+  update: NavigationFields_callToAction_rel_Update
+  delete: NavigationFields_callToAction_rel_Delete
+}
+
+type NavigationFields_callToAction_rel_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_rel_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_rel_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_rel_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_newTab {
+  create: NavigationFields_callToAction_newTab_Create
+  read: NavigationFields_callToAction_newTab_Read
+  update: NavigationFields_callToAction_newTab_Update
+  delete: NavigationFields_callToAction_newTab_Delete
+}
+
+type NavigationFields_callToAction_newTab_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_newTab_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_newTab_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_newTab_Delete {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_color {
+  create: NavigationFields_callToAction_color_Create
+  read: NavigationFields_callToAction_color_Read
+  update: NavigationFields_callToAction_color_Update
+  delete: NavigationFields_callToAction_color_Delete
+}
+
+type NavigationFields_callToAction_color_Create {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_color_Read {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_color_Update {
+  permission: Boolean!
+}
+
+type NavigationFields_callToAction_color_Delete {
+  permission: Boolean!
+}
+
 type NavigationFields_updatedAt {
   create: NavigationFields_updatedAt_Create
   read: NavigationFields_updatedAt_Read
@@ -7347,12 +7734,12 @@ input mutationGuestInput {
   rsvpRehearsalDinner: Guest_rsvpRehearsalDinner_MutationInput
   rsvpWeddingDay: Guest_rsvpWeddingDay_MutationInput
   rsvpPoolDay: Guest_rsvpPoolDay_MutationInput
+  transportationToVenue: Guest_transportationToVenue_MutationInput
+  transportationFromVenue: Guest_transportationFromVenue_MutationInput
   legalName: String
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
-  transportationToVenue: Guest_transportationToVenue_MutationInput
-  transportationFromVenue: Guest_transportationFromVenue_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -7409,12 +7796,12 @@ input mutationGuestUpdateInput {
   rsvpRehearsalDinner: GuestUpdate_rsvpRehearsalDinner_MutationInput
   rsvpWeddingDay: GuestUpdate_rsvpWeddingDay_MutationInput
   rsvpPoolDay: GuestUpdate_rsvpPoolDay_MutationInput
+  transportationToVenue: GuestUpdate_transportationToVenue_MutationInput
+  transportationFromVenue: GuestUpdate_transportationFromVenue_MutationInput
   legalName: String
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
-  transportationToVenue: GuestUpdate_transportationToVenue_MutationInput
-  transportationFromVenue: GuestUpdate_transportationFromVenue_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -7555,23 +7942,14 @@ input mutationMediaUpdate_Sizes_ThumbnailInput {
 }
 
 input mutationPageInput {
+  title: String!
+  description: String!
+  content: JSON
   slug: String
   protected: Boolean
-  name: String
-  meta: mutationPage_MetaInput
-  content: mutationPage_ContentInput
   updatedAt: String
   createdAt: String
   _status: Page__status_MutationInput
-}
-
-input mutationPage_MetaInput {
-  title: String!
-  description: String!
-}
-
-input mutationPage_ContentInput {
-  layout: JSON
 }
 
 enum Page__status_MutationInput {
@@ -7580,23 +7958,14 @@ enum Page__status_MutationInput {
 }
 
 input mutationPageUpdateInput {
+  title: String
+  description: String
+  content: JSON
   slug: String
   protected: Boolean
-  name: String
-  meta: mutationPageUpdate_MetaInput
-  content: mutationPageUpdate_ContentInput
   updatedAt: String
   createdAt: String
   _status: PageUpdate__status_MutationInput
-}
-
-input mutationPageUpdate_MetaInput {
-  title: String!
-  description: String!
-}
-
-input mutationPageUpdate_ContentInput {
-  layout: JSON
 }
 
 enum PageUpdate__status_MutationInput {
@@ -7830,6 +8199,8 @@ enum PayloadPreferenceUpdate_UserRelationshipInputRelationTo {
 
 input mutationNavigationInput {
   links: [mutationNavigation_LinksInput]
+  showCta: Boolean
+  callToAction: mutationNavigation_CallToActionInput!
   updatedAt: String
   createdAt: String
 }
@@ -7848,4 +8219,29 @@ input mutationNavigation_LinksInput {
 
 enum Navigation_Links_rel_MutationInput {
   noreferrer
+}
+
+input mutationNavigation_CallToActionInput {
+  text: String!
+  icon: String
+  type: String!
+  relationship: String
+  anchor: String
+  url: String
+  rel: [Navigation_CallToAction_rel_MutationInput]
+  newTab: Boolean
+  color: Navigation_CallToAction_color_MutationInput!
+}
+
+enum Navigation_CallToAction_rel_MutationInput {
+  noreferrer
+}
+
+enum Navigation_CallToAction_color_MutationInput {
+  neutral
+  neutral_variant
+  primary
+  secondary
+  tertiary
+  danger
 }

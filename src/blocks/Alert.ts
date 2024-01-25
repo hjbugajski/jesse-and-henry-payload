@@ -1,30 +1,57 @@
+import {
+  BoldTextFeature,
+  ItalicTextFeature,
+  lexicalEditor,
+  LinkFeature,
+  OrderedListFeature,
+  ParagraphFeature,
+  StrikethroughTextFeature,
+  SubscriptTextFeature,
+  SuperscriptTextFeature,
+  UnderlineTextFeature,
+  UnorderedListFeature,
+} from '@payloadcms/richtext-lexical';
 import { Block, Field } from 'payload/types';
 
-import { linkGroup } from '../fields';
 import { color } from '../fields/color';
-import { width } from '../fields/width';
+import { heading } from '../fields/heading';
+import { linkGroup, richTextLinkFields } from '../fields/link';
+import useAppendEmptyParagraph from '../hooks/useAppendEmptyParagraph';
 import { deepMerge } from '../utils/deepMerge';
 
-export const Alert: Block = {
+const Alert: Block = {
   slug: 'alert',
-  interfaceName: 'AlertBlock',
+  interfaceName: 'BlockAlert',
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
+    heading,
     {
       name: 'icon',
       type: 'text',
       required: true,
     },
+    color,
     {
       name: 'content',
       type: 'richText',
+      hooks: {
+        beforeValidate: [useAppendEmptyParagraph],
+      },
       required: true,
+      editor: lexicalEditor({
+        features: () => [
+          ParagraphFeature(),
+          BoldTextFeature(),
+          ItalicTextFeature(),
+          UnderlineTextFeature(),
+          StrikethroughTextFeature(),
+          UnorderedListFeature(),
+          OrderedListFeature(),
+          SuperscriptTextFeature(),
+          SubscriptTextFeature(),
+          LinkFeature({ fields: richTextLinkFields }),
+        ],
+      }),
     },
-    color,
     {
       name: 'action',
       type: 'checkbox',
@@ -35,6 +62,7 @@ export const Alert: Block = {
         condition: (_, siblingData) => siblingData.action,
       },
     }),
-    width,
   ],
 };
+
+export default Alert;
