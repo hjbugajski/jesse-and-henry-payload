@@ -6,9 +6,8 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
-export type LinkArrayField =
+export type FieldLinkArray =
   | {
-      color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
       text: string;
       icon?: string | null;
       type: 'internal' | 'external';
@@ -51,12 +50,12 @@ export interface Guest {
   rsvpRehearsalDinner?: ('accept' | 'decline') | null;
   rsvpWeddingDay?: ('accept' | 'decline') | null;
   rsvpPoolDay?: ('accept' | 'decline') | null;
+  transportationToVenue?: ('yes' | 'no') | null;
+  transportationFromVenue?: ('yes' | 'no') | null;
   legalName?: string | null;
   dateOfBirth?: string | null;
   countryOfBirth?: string | null;
   allergies?: string | null;
-  transportationToVenue?: ('yes' | 'no') | null;
-  transportationFromVenue?: ('yes' | 'no') | null;
   sort?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -127,87 +126,28 @@ export interface Media {
 }
 export interface Page {
   id: string;
+  title: string;
+  description: string;
+  content?: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   slug?: string | null;
   protected?: boolean | null;
-  name: string;
-  meta: {
-    title: string;
-    description: string;
-  };
-  content: {
-    layout?: (AlertBlock | ContentBlock | HeroBlock | SectionBlock)[] | null;
-  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-export interface AlertBlock {
-  title: string;
-  icon: string;
-  content: {
-    [k: string]: unknown;
-  }[];
-  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
-  action?: boolean | null;
-  link?: LinkGroupField;
-  width?: ('full' | 'max') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'alert';
-}
-export interface LinkGroupField {
-  text: string;
-  icon?: string | null;
-  type: 'internal' | 'external';
-  relationship?: (string | null) | Page;
-  anchor?: string | null;
-  url?: string | null;
-  rel?: 'noreferrer'[] | null;
-  newTab?: boolean | null;
-}
-export interface ContentBlock {
-  width?: ('full' | 'max') | null;
-  content: {
-    [k: string]: unknown;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'content';
-}
-export interface HeroBlock {
-  titleOne: string;
-  titleTwo: string;
-  subtitle: string;
-  image: string | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'hero';
-}
-export interface SectionBlock {
-  anchorId: string;
-  title: string;
-  description?:
-    | {
-        [k: string]: unknown;
-      }[]
-    | null;
-  border: boolean;
-  layout?: (AlertBlock | ButtonLinksBlock | ContentBlock | PhotosBlock)[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'section';
-}
-export interface ButtonLinksBlock {
-  links?: LinkArrayField;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'buttonLinks';
-}
-export interface PhotosBlock {
-  photos: (string | Media)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'photos';
 }
 export interface User {
   id: string;
@@ -256,9 +196,22 @@ export interface PayloadMigration {
 }
 export interface Navigation {
   id: string;
-  links?: LinkArrayField;
+  links?: FieldLinkArray;
+  showCta?: boolean | null;
+  callToAction?: FieldLinkGroup;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+export interface FieldLinkGroup {
+  text: string;
+  icon?: string | null;
+  type: 'internal' | 'external';
+  relationship?: (string | null) | Page;
+  anchor?: string | null;
+  url?: string | null;
+  rel?: 'noreferrer'[] | null;
+  newTab?: boolean | null;
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
 }
 
 declare module 'payload' {
