@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v8.1.0...v9.0.0) (2024-01-25)
+
+### ⚠ BREAKING CHANGES
+
+- unlock dependencies, replace slate with lexical, refactor pages and blocks
+
+### refactor
+
+- unlock dependencies, replace slate with lexical, refactor pages and blocks ([a8f64da](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a8f64da1f1de5eca3dcc3fc88c5b476da69d1547))
+
+### Features
+
+- **globals/Navigation:** add call to action ([277c3ae](https://github.com/hjbugajski/jesse-and-henry-payload/commit/277c3aea9cd8062478a83eb2489b9f4602972310))
+
+### Bug Fixes
+
+- **collections/Media:** remove video mime type, update image sizes, update dataUrl max length ([35370e8](https://github.com/hjbugajski/jesse-and-henry-payload/commit/35370e8080f0c1dc9d3a9fc24798ab2246535e50))
+
 ## [8.1.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v8.0.0...v8.1.0) (2024-01-23)
 
 ### Features
