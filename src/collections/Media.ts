@@ -23,11 +23,11 @@ const Media: CollectionConfig = {
   upload: {
     adminThumbnail: 'thumbnail',
     staticDir: path.resolve(__dirname, '../../media'),
-    mimeTypes: ['image/*', 'video/*'],
+    mimeTypes: ['image/*'],
     imageSizes: [
       {
         name: 'preview',
-        height: 1000,
+        height: 1080,
       },
       {
         name: 'thumbnail',
@@ -47,6 +47,7 @@ const Media: CollectionConfig = {
       name: 'dataUrl',
       label: 'Data URL',
       type: 'text',
+      maxLength: 1000000,
       admin: {
         position: 'sidebar',
         readOnly: true,
