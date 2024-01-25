@@ -2,6 +2,26 @@ import { Field } from 'payload/types';
 
 import RowLabel from '../components/RowLabel';
 
+export const richTextLinkFields: Field[] = [
+  {
+    name: 'anchor',
+    type: 'text',
+    admin: {
+      condition: (_, siblingData) => siblingData?.linkType === 'internal',
+    },
+  },
+  {
+    name: 'rel',
+    label: 'Rel Attribute',
+    type: 'select',
+    hasMany: true,
+    options: ['noreferrer', 'nofollow'],
+    admin: {
+      condition: (_, siblingData) => siblingData?.linkType === 'custom',
+    },
+  },
+];
+
 export const linkFields: Field[] = [
   {
     type: 'row',
@@ -103,14 +123,14 @@ export const linkFields: Field[] = [
 export const linkGroup: Field = {
   name: 'link',
   type: 'group',
-  interfaceName: 'LinkGroupField',
+  interfaceName: 'FieldLinkGroup',
   fields: linkFields,
 };
 
 export const linkArray: Field = {
   name: 'links',
   type: 'array',
-  interfaceName: 'LinkArrayField',
+  interfaceName: 'FieldLinkArray',
   admin: {
     components: {
       RowLabel: RowLabel('text', 'Link'),

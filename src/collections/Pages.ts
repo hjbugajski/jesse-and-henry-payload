@@ -1,14 +1,15 @@
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import { CollectionConfig, FieldHook } from 'payload/types';
 
 import { hasAuthAndNotProtectedField, hasRole, hasRoleOrPublished, Role } from '../access';
-import { Alert } from '../blocks/Alert';
-import Content from '../blocks/Content';
 import { Hero } from '../blocks/Hero';
 import { Section } from '../blocks/Section';
+import useAppendEmptyParagraph from '../hooks/useAppendEmptyParagraph';
+import { slugify } from '../utils/slugify';
 
 export const useSlug: FieldHook = ({ operation, siblingData }) => {
-  if (operation === 'create') {
-    return siblingData.name.toLowerCase().replace(/\s+/g, '-');
+  if (operation === 'create' || operation === 'update') {
+    return slugify(siblingData?.title);
   }
 };
 
@@ -18,7 +19,8 @@ const Pages: CollectionConfig = {
     drafts: true,
   },
   admin: {
-    useAsTitle: 'name',
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', '_status', 'protected', 'updatedAt'],
   },
   access: {
     create: hasRole(Role.Admin),
@@ -28,11 +30,39 @@ const Pages: CollectionConfig = {
   },
   fields: [
     {
+      name: 'title',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'content',
+      type: 'richText',
+      access: {
+        read: hasAuthAndNotProtectedField(),
+      },
+      hooks: {
+        beforeValidate: [useAppendEmptyParagraph],
+      },
+      editor: lexicalEditor({
+        features: () => [
+          BlocksFeature({
+            blocks: [Hero, Section],
+          }),
+        ],
+      }),
+    },
+    {
       name: 'slug',
       type: 'text',
       unique: true,
       admin: {
         position: 'sidebar',
+        readOnly: true,
       },
       hooks: {
         beforeValidate: [useSlug],
@@ -45,47 +75,6 @@ const Pages: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-      access: {
-        read: hasAuthAndNotProtectedField(),
-      },
-    },
-    {
-      type: 'tabs',
-      tabs: [
-        {
-          name: 'meta',
-          fields: [
-            {
-              name: 'title',
-              type: 'text',
-              required: true,
-            },
-            {
-              name: 'description',
-              type: 'textarea',
-              required: true,
-            },
-          ],
-        },
-        {
-          name: 'content',
-          access: {
-            read: hasAuthAndNotProtectedField(),
-          },
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [Alert, Content, Hero, Section],
-            },
-          ],
-        },
-      ],
     },
   ],
 };

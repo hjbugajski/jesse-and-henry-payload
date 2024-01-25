@@ -2,7 +2,7 @@ import path from 'path';
 
 import { webpackBundler } from '@payloadcms/bundler-webpack';
 import { mongooseAdapter } from '@payloadcms/db-mongodb';
-import { slateEditor } from '@payloadcms/richtext-slate';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload/config';
 
 import Guests from './collections/Guests';
@@ -44,7 +44,7 @@ export default buildConfig({
       dbName: process.env.MONGODB_DATABASE,
     },
   }),
-  editor: slateEditor({}),
+  editor: lexicalEditor({}),
   collections: [Guests, Media, Pages, Parties, Relations, Sides, Users],
   globals: [Navigation],
   typescript: {
