@@ -4,6 +4,13 @@ import RowLabel from '../components/RowLabel';
 
 export const richTextLinkFields: Field[] = [
   {
+    name: 'tempUrl',
+    type: 'text',
+    admin: {
+      condition: (_, siblingData) => siblingData?.linkType === 'custom',
+    },
+  },
+  {
     name: 'anchor',
     type: 'text',
     admin: {

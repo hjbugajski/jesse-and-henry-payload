@@ -1,4 +1,9 @@
 type Query {
+  Faq(id: String!, draft: Boolean): Faq
+  Faqs(draft: Boolean, where: Faq_where, limit: Int, page: Int, sort: String): Faqs
+  docAccessFaq(id: String!): faqsDocAccess
+  versionFaq(id: String): FaqVersion
+  versionsFaqs(where: versionsFaq_where, limit: Int, page: Int, sort: String): versionsFaqs
   Guest(id: String!, draft: Boolean): Guest
   Guests(draft: Boolean, where: Guest_where, limit: Int, page: Int, sort: String): Guests
   docAccessGuest(id: String!): guestsDocAccess
@@ -38,6 +43,487 @@ type Query {
   Navigation(draft: Boolean): Navigation
   docAccessNavigation: navigationDocAccess
   Access: Access
+}
+
+type Faq {
+  id: String
+  question: String
+  answer(depth: Int): JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+  _status: Faq__status
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum Faq__status {
+  draft
+  published
+}
+
+type Faqs {
+  docs: [Faq]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input Faq_where {
+  question: Faq_question_operator
+  answer: Faq_answer_operator
+  updatedAt: Faq_updatedAt_operator
+  createdAt: Faq_createdAt_operator
+  _status: Faq__status_operator
+  id: Faq_id_operator
+  AND: [Faq_where_and]
+  OR: [Faq_where_or]
+}
+
+input Faq_question_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input Faq_answer_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
+}
+
+input Faq_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Faq_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input Faq__status_operator {
+  equals: Faq__status_Input
+  not_equals: Faq__status_Input
+  in: [Faq__status_Input]
+  not_in: [Faq__status_Input]
+  all: [Faq__status_Input]
+  exists: Boolean
+}
+
+enum Faq__status_Input {
+  draft
+  published
+}
+
+input Faq_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input Faq_where_and {
+  question: Faq_question_operator
+  answer: Faq_answer_operator
+  updatedAt: Faq_updatedAt_operator
+  createdAt: Faq_createdAt_operator
+  _status: Faq__status_operator
+  id: Faq_id_operator
+  AND: [Faq_where_and]
+  OR: [Faq_where_or]
+}
+
+input Faq_where_or {
+  question: Faq_question_operator
+  answer: Faq_answer_operator
+  updatedAt: Faq_updatedAt_operator
+  createdAt: Faq_createdAt_operator
+  _status: Faq__status_operator
+  id: Faq_id_operator
+  AND: [Faq_where_and]
+  OR: [Faq_where_or]
+}
+
+type faqsDocAccess {
+  fields: FaqsDocAccessFields
+  create: FaqsCreateDocAccess
+  read: FaqsReadDocAccess
+  update: FaqsUpdateDocAccess
+  delete: FaqsDeleteDocAccess
+  readVersions: FaqsReadVersionsDocAccess
+}
+
+type FaqsDocAccessFields {
+  question: FaqsDocAccessFields_question
+  answer: FaqsDocAccessFields_answer
+  updatedAt: FaqsDocAccessFields_updatedAt
+  createdAt: FaqsDocAccessFields_createdAt
+  _status: FaqsDocAccessFields__status
+}
+
+type FaqsDocAccessFields_question {
+  create: FaqsDocAccessFields_question_Create
+  read: FaqsDocAccessFields_question_Read
+  update: FaqsDocAccessFields_question_Update
+  delete: FaqsDocAccessFields_question_Delete
+}
+
+type FaqsDocAccessFields_question_Create {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_question_Read {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_question_Update {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_question_Delete {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_answer {
+  create: FaqsDocAccessFields_answer_Create
+  read: FaqsDocAccessFields_answer_Read
+  update: FaqsDocAccessFields_answer_Update
+  delete: FaqsDocAccessFields_answer_Delete
+}
+
+type FaqsDocAccessFields_answer_Create {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_answer_Read {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_answer_Update {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_answer_Delete {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_updatedAt {
+  create: FaqsDocAccessFields_updatedAt_Create
+  read: FaqsDocAccessFields_updatedAt_Read
+  update: FaqsDocAccessFields_updatedAt_Update
+  delete: FaqsDocAccessFields_updatedAt_Delete
+}
+
+type FaqsDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_createdAt {
+  create: FaqsDocAccessFields_createdAt_Create
+  read: FaqsDocAccessFields_createdAt_Read
+  update: FaqsDocAccessFields_createdAt_Update
+  delete: FaqsDocAccessFields_createdAt_Delete
+}
+
+type FaqsDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields__status {
+  create: FaqsDocAccessFields__status_Create
+  read: FaqsDocAccessFields__status_Read
+  update: FaqsDocAccessFields__status_Update
+  delete: FaqsDocAccessFields__status_Delete
+}
+
+type FaqsDocAccessFields__status_Create {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields__status_Read {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields__status_Update {
+  permission: Boolean!
+}
+
+type FaqsDocAccessFields__status_Delete {
+  permission: Boolean!
+}
+
+type FaqsCreateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type FaqsReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsDeleteDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsReadVersionsDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqVersion {
+  parent: Faq
+  version: FaqVersion_Version
+  createdAt: DateTime
+  updatedAt: DateTime
+  latest: Boolean
+  id: String
+}
+
+type FaqVersion_Version {
+  question: String
+  answer(depth: Int): JSON
+  updatedAt: DateTime
+  createdAt: DateTime
+  _status: FaqVersion_Version__status
+}
+
+enum FaqVersion_Version__status {
+  draft
+  published
+}
+
+type versionsFaqs {
+  docs: [FaqVersion]
+  hasNextPage: Boolean
+  hasPrevPage: Boolean
+  limit: Int
+  nextPage: Int
+  offset: Int
+  page: Int
+  pagingCounter: Int
+  prevPage: Int
+  totalDocs: Int
+  totalPages: Int
+}
+
+input versionsFaq_where {
+  parent: versionsFaq_parent_operator
+  version__question: versionsFaq_version__question_operator
+  version__answer: versionsFaq_version__answer_operator
+  version__updatedAt: versionsFaq_version__updatedAt_operator
+  version__createdAt: versionsFaq_version__createdAt_operator
+  version___status: versionsFaq_version___status_operator
+  createdAt: versionsFaq_createdAt_operator
+  updatedAt: versionsFaq_updatedAt_operator
+  latest: versionsFaq_latest_operator
+  id: versionsFaq_id_operator
+  AND: [versionsFaq_where_and]
+  OR: [versionsFaq_where_or]
+}
+
+input versionsFaq_parent_operator {
+  equals: JSON
+  not_equals: JSON
+  in: [JSON]
+  not_in: [JSON]
+  all: [JSON]
+  exists: Boolean
+}
+
+input versionsFaq_version__question_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+}
+
+input versionsFaq_version__answer_operator {
+  equals: JSON
+  not_equals: JSON
+  like: JSON
+  contains: JSON
+  exists: Boolean
+}
+
+input versionsFaq_version__updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsFaq_version__createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsFaq_version___status_operator {
+  equals: versionsFaq_version___status_Input
+  not_equals: versionsFaq_version___status_Input
+  in: [versionsFaq_version___status_Input]
+  not_in: [versionsFaq_version___status_Input]
+  all: [versionsFaq_version___status_Input]
+  exists: Boolean
+}
+
+enum versionsFaq_version___status_Input {
+  draft
+  published
+}
+
+input versionsFaq_createdAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsFaq_updatedAt_operator {
+  equals: DateTime
+  not_equals: DateTime
+  greater_than_equal: DateTime
+  greater_than: DateTime
+  less_than_equal: DateTime
+  less_than: DateTime
+  like: DateTime
+  exists: Boolean
+}
+
+input versionsFaq_latest_operator {
+  equals: Boolean
+  not_equals: Boolean
+  exists: Boolean
+}
+
+input versionsFaq_id_operator {
+  equals: String
+  not_equals: String
+  like: String
+  contains: String
+  in: [String]
+  not_in: [String]
+  all: [String]
+  exists: Boolean
+}
+
+input versionsFaq_where_and {
+  parent: versionsFaq_parent_operator
+  version__question: versionsFaq_version__question_operator
+  version__answer: versionsFaq_version__answer_operator
+  version__updatedAt: versionsFaq_version__updatedAt_operator
+  version__createdAt: versionsFaq_version__createdAt_operator
+  version___status: versionsFaq_version___status_operator
+  createdAt: versionsFaq_createdAt_operator
+  updatedAt: versionsFaq_updatedAt_operator
+  latest: versionsFaq_latest_operator
+  id: versionsFaq_id_operator
+  AND: [versionsFaq_where_and]
+  OR: [versionsFaq_where_or]
+}
+
+input versionsFaq_where_or {
+  parent: versionsFaq_parent_operator
+  version__question: versionsFaq_version__question_operator
+  version__answer: versionsFaq_version__answer_operator
+  version__updatedAt: versionsFaq_version__updatedAt_operator
+  version__createdAt: versionsFaq_version__createdAt_operator
+  version___status: versionsFaq_version___status_operator
+  createdAt: versionsFaq_createdAt_operator
+  updatedAt: versionsFaq_updatedAt_operator
+  latest: versionsFaq_latest_operator
+  id: versionsFaq_id_operator
+  AND: [versionsFaq_where_and]
+  OR: [versionsFaq_where_or]
 }
 
 type Guest {
@@ -95,11 +581,6 @@ enum Party_color {
   red
   orange
 }
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
 
 type Side {
   id: String
@@ -263,11 +744,6 @@ input Guest_party_operator {
   all: [JSON]
   exists: Boolean
 }
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
 
 input Guest_side_operator {
   equals: JSON
@@ -1108,11 +1584,6 @@ type GuestsCreateDocAccess {
   permission: Boolean!
   where: JSONObject
 }
-
-"""
-The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSONObject
 
 type GuestsReadDocAccess {
   permission: Boolean!
@@ -4837,6 +5308,7 @@ type NavigationUpdateDocAccess {
 
 type Access {
   canAccessAdmin: Boolean!
+  faqs: faqsAccess
   guests: guestsAccess
   media: mediaAccess
   pages: pagesAccess
@@ -4846,6 +5318,163 @@ type Access {
   users: usersAccess
   payload_preferences: payload_preferencesAccess
   navigation: navigationAccess
+}
+
+type faqsAccess {
+  fields: FaqsFields
+  create: FaqsCreateAccess
+  read: FaqsReadAccess
+  update: FaqsUpdateAccess
+  delete: FaqsDeleteAccess
+  readVersions: FaqsReadVersionsAccess
+}
+
+type FaqsFields {
+  question: FaqsFields_question
+  answer: FaqsFields_answer
+  updatedAt: FaqsFields_updatedAt
+  createdAt: FaqsFields_createdAt
+  _status: FaqsFields__status
+}
+
+type FaqsFields_question {
+  create: FaqsFields_question_Create
+  read: FaqsFields_question_Read
+  update: FaqsFields_question_Update
+  delete: FaqsFields_question_Delete
+}
+
+type FaqsFields_question_Create {
+  permission: Boolean!
+}
+
+type FaqsFields_question_Read {
+  permission: Boolean!
+}
+
+type FaqsFields_question_Update {
+  permission: Boolean!
+}
+
+type FaqsFields_question_Delete {
+  permission: Boolean!
+}
+
+type FaqsFields_answer {
+  create: FaqsFields_answer_Create
+  read: FaqsFields_answer_Read
+  update: FaqsFields_answer_Update
+  delete: FaqsFields_answer_Delete
+}
+
+type FaqsFields_answer_Create {
+  permission: Boolean!
+}
+
+type FaqsFields_answer_Read {
+  permission: Boolean!
+}
+
+type FaqsFields_answer_Update {
+  permission: Boolean!
+}
+
+type FaqsFields_answer_Delete {
+  permission: Boolean!
+}
+
+type FaqsFields_updatedAt {
+  create: FaqsFields_updatedAt_Create
+  read: FaqsFields_updatedAt_Read
+  update: FaqsFields_updatedAt_Update
+  delete: FaqsFields_updatedAt_Delete
+}
+
+type FaqsFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type FaqsFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type FaqsFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type FaqsFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type FaqsFields_createdAt {
+  create: FaqsFields_createdAt_Create
+  read: FaqsFields_createdAt_Read
+  update: FaqsFields_createdAt_Update
+  delete: FaqsFields_createdAt_Delete
+}
+
+type FaqsFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type FaqsFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type FaqsFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type FaqsFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type FaqsFields__status {
+  create: FaqsFields__status_Create
+  read: FaqsFields__status_Read
+  update: FaqsFields__status_Update
+  delete: FaqsFields__status_Delete
+}
+
+type FaqsFields__status_Create {
+  permission: Boolean!
+}
+
+type FaqsFields__status_Read {
+  permission: Boolean!
+}
+
+type FaqsFields__status_Update {
+  permission: Boolean!
+}
+
+type FaqsFields__status_Delete {
+  permission: Boolean!
+}
+
+type FaqsCreateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsDeleteAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type FaqsReadVersionsAccess {
+  permission: Boolean!
+  where: JSONObject
 }
 
 type guestsAccess {
@@ -7674,6 +8303,10 @@ type NavigationUpdateAccess {
 }
 
 type Mutation {
+  createFaq(data: mutationFaqInput!, draft: Boolean): Faq
+  updateFaq(id: String!, autosave: Boolean, data: mutationFaqUpdateInput!, draft: Boolean): Faq
+  deleteFaq(id: String!): Faq
+  restoreVersionFaq(id: String): Faq
   createGuest(data: mutationGuestInput!, draft: Boolean): Guest
   updateGuest(id: String!, autosave: Boolean, data: mutationGuestUpdateInput!, draft: Boolean): Guest
   deleteGuest(id: String!): Guest
@@ -7719,6 +8352,32 @@ type Mutation {
   ): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
   updateNavigation(data: mutationNavigationInput!, draft: Boolean): Navigation
+}
+
+input mutationFaqInput {
+  question: String!
+  answer: JSON
+  updatedAt: String
+  createdAt: String
+  _status: Faq__status_MutationInput
+}
+
+enum Faq__status_MutationInput {
+  draft
+  published
+}
+
+input mutationFaqUpdateInput {
+  question: String
+  answer: JSON
+  updatedAt: String
+  createdAt: String
+  _status: FaqUpdate__status_MutationInput
+}
+
+enum FaqUpdate__status_MutationInput {
+  draft
+  published
 }
 
 input mutationGuestInput {

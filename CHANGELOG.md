@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.1.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.0.0...v9.1.0) (2024-02-13)
+
+
+### Features
+
+* **blocks:** add Faq ([a65309a](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a65309ad4b63f17eef65fbcb87825c5ac96053e5))
+* **collections:** add Faqs ([3ae44a3](https://github.com/hjbugajski/jesse-and-henry-payload/commit/3ae44a334c69eccb04d7de1a5cdd1302d8dcc61f))
+
+
+### Bug Fixes
+
+* **fields/link:** add tempUrl as workaround for broken releationship field ([c5e9c3c](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c5e9c3ca3a33d22fa11a20b8517920fd736c9cd4))
+
 ## [9.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v8.1.0...v9.0.0) (2024-01-25)
 
 ### ⚠ BREAKING CHANGES

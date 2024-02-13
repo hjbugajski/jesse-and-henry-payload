@@ -6,6 +6,10 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FieldLinkArray".
+ */
 export type FieldLinkArray =
   | {
       text: string;
@@ -22,6 +26,7 @@ export type FieldLinkArray =
 
 export interface Config {
   collections: {
+    faqs: Faq;
     guests: Guest;
     media: Media;
     pages: Page;
@@ -36,6 +41,36 @@ export interface Config {
     navigation: Navigation;
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: string;
+  question: string;
+  answer?: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "guests".
+ */
 export interface Guest {
   id: string;
   first?: string | null;
@@ -68,6 +103,10 @@ export interface Guest {
   lockUntil?: string | null;
   password: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "parties".
+ */
 export interface Party {
   id: string;
   value: string;
@@ -77,6 +116,10 @@ export interface Party {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sides".
+ */
 export interface Side {
   id: string;
   value: string;
@@ -85,6 +128,10 @@ export interface Side {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "relations".
+ */
 export interface Relation {
   id: string;
   value: string;
@@ -93,6 +140,10 @@ export interface Relation {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
 export interface Media {
   id: string;
   alt: string;
@@ -124,6 +175,10 @@ export interface Media {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
 export interface Page {
   id: string;
   title: string;
@@ -149,6 +204,10 @@ export interface Page {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
 export interface User {
   id: string;
   roles: ('admin' | 'public')[];
@@ -163,6 +222,10 @@ export interface User {
   lockUntil?: string | null;
   password: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences".
+ */
 export interface PayloadPreference {
   id: string;
   user:
@@ -187,6 +250,10 @@ export interface PayloadPreference {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations".
+ */
 export interface PayloadMigration {
   id: string;
   name?: string | null;
@@ -194,6 +261,10 @@ export interface PayloadMigration {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
 export interface Navigation {
   id: string;
   links?: FieldLinkArray;
@@ -202,16 +273,176 @@ export interface Navigation {
   updatedAt?: string | null;
   createdAt?: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FieldLinkGroup".
+ */
 export interface FieldLinkGroup {
   text: string;
   icon?: string | null;
   type: 'internal' | 'external';
-  relationship?: (string | null) | Page;
+  relationship?:
+    | ({
+        [k: string]: unknown;
+      } | null)
+    | Page;
+  anchor?: string | null;
+  url?: string | null;
+  rel?: 'noreferrer'[] | null;
+  newTab?: boolean | null;
+  id?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockAlert".
+ */
+export interface BlockAlert {
+  heading: string;
+  icon: string;
+  color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+  content: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  action?: boolean | null;
+  link?: FieldLinkGroup;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'alert';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockButtonLink".
+ */
+export interface BlockButtonLink {
+  text: string;
+  icon?: string | null;
+  type: 'internal' | 'external';
+  relationship?:
+    | ({
+        [k: string]: unknown;
+      } | null)
+    | Page;
   anchor?: string | null;
   url?: string | null;
   rel?: 'noreferrer'[] | null;
   newTab?: boolean | null;
   color: 'neutral' | 'neutral-variant' | 'primary' | 'secondary' | 'tertiary' | 'danger';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonLink';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockHero".
+ */
+export interface BlockHero {
+  titleOne: string;
+  titleTwo: string;
+  subtitle: string;
+  image:
+    | {
+        [k: string]: unknown;
+      }
+    | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockFaq".
+ */
+export interface BlockFaq {
+  faqs?:
+    | (
+        | {
+            [k: string]: unknown;
+          }
+        | Faq
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockGallery".
+ */
+export interface BlockGallery {
+  images: (
+    | {
+        [k: string]: unknown;
+      }
+    | Media
+  )[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockImageLink".
+ */
+export interface BlockImageLink {
+  text: string;
+  icon?: string | null;
+  type: 'internal' | 'external';
+  relationship?:
+    | ({
+        [k: string]: unknown;
+      } | null)
+    | Page;
+  anchor?: string | null;
+  url?: string | null;
+  rel?: 'noreferrer'[] | null;
+  newTab?: boolean | null;
+  image:
+    | {
+        [k: string]: unknown;
+      }
+    | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageLink';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BlockSection".
+ */
+export interface BlockSection {
+  heading?: string | null;
+  border: boolean;
+  content?: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section';
 }
 
 declare module 'payload' {
