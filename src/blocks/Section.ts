@@ -18,6 +18,7 @@ import { Block, Field } from 'payload/types';
 
 import Alert from './Alert';
 import ButtonLink from './ButtonLink';
+import Faq from './Faq';
 import Gallery from './Gallery';
 import ImageLink from './ImageLink';
 import { heading } from '../fields/heading';
@@ -57,7 +58,7 @@ export const Section: Block = {
           AlignFeature(),
           LinkFeature({ fields: richTextLinkFields }),
           BlocksFeature({
-            blocks: [Alert, ButtonLink, Gallery, ImageLink, { slug: 'registry', fields: [] }],
+            blocks: [Alert, ButtonLink, Faq, Gallery, ImageLink, { slug: 'registry', fields: [] }],
           }),
         ],
       }),
