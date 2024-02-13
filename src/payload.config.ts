@@ -5,6 +5,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload/config';
 
+import Faqs from './collections/Faqs';
 import Guests from './collections/Guests';
 import Media from './collections/Media';
 import Pages from './collections/Pages';
@@ -45,7 +46,7 @@ export default buildConfig({
     },
   }),
   editor: lexicalEditor({}),
-  collections: [Guests, Media, Pages, Parties, Relations, Sides, Users],
+  collections: [Faqs, Guests, Media, Pages, Parties, Relations, Sides, Users],
   globals: [Navigation],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
