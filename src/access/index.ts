@@ -1,4 +1,5 @@
-import { Access, FieldAccess } from 'payload/types';
+import { AccessResult } from 'payload/config';
+import { Access, AccessArgs, FieldAccess } from 'payload/types';
 
 import { User } from '../payload-types';
 
@@ -30,36 +31,48 @@ export function hasRoleOrSelfField(...roles: Role[]): FieldAccess {
   return ({ req: { user }, id }) => roleAccess(user, roles) || user?.id === id;
 }
 
-export function hasRoleSelfOrParty(...roles: Role[]): Access {
-  return ({ req: { user } }) =>
-    roleAccess(user, roles) || {
-      or: [
+const selfOrPartyQuery = (user: any) => ({
+  or: [
+    {
+      and: [
         {
-          and: [
-            {
-              party: {
-                exists: true,
-              },
-            },
-            {
-              party: {
-                not_equals: null,
-              },
-            },
-            {
-              party: {
-                equals: user?.party?.id,
-              },
-            },
-          ],
+          party: {
+            exists: true,
+          },
         },
         {
-          id: {
-            equals: user?.id,
+          party: {
+            not_equals: null,
+          },
+        },
+        {
+          party: {
+            equals: user?.party?.id,
           },
         },
       ],
-    };
+    },
+    {
+      id: {
+        equals: user?.id,
+      },
+    },
+  ],
+});
+
+export function hasRoleSelfOrParty(...roles: Role[]): Access {
+  return ({ req: { user } }) => roleAccess(user, roles) || selfOrPartyQuery(user);
+}
+
+export async function hasRoleSelfPartyOrBeforeDeadline(
+  { req: { payload, user } }: AccessArgs,
+  ...roles: Role[]
+): Promise<AccessResult> {
+  const beforeDeadline = await payload
+    .findGlobal({ slug: 'config' })
+    .then((config) => (config?.rsvpDeadline ? new Date() < new Date(config.rsvpDeadline) : true));
+
+  return roleAccess(user, roles) || (beforeDeadline && selfOrPartyQuery(user));
 }
 
 export function hasAuthAndNotProtectedField(): FieldAccess {

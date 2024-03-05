@@ -13,6 +13,7 @@ import Parties from './collections/Parties';
 import Relations from './collections/Relations';
 import Sides from './collections/Sides';
 import Users from './collections/Users';
+import Config from './globals/Config';
 import Navigation from './globals/Navigation';
 
 const useDataUrlPath = path.resolve(__dirname, 'hooks/useDataUrl');
@@ -47,7 +48,7 @@ export default buildConfig({
   }),
   editor: lexicalEditor({}),
   collections: [Faqs, Guests, Media, Pages, Parties, Relations, Sides, Users],
-  globals: [Navigation],
+  globals: [Config, Navigation],
   typescript: {
     outputFile: path.resolve(__dirname, 'payload-types.ts'),
   },
