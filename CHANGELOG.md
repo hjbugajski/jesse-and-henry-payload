@@ -2,18 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-## [9.1.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.0.0...v9.1.0) (2024-02-13)
-
+## [9.2.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.1.0...v9.2.0) (2024-03-05)
 
 ### Features
 
-* **blocks:** add Faq ([a65309a](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a65309ad4b63f17eef65fbcb87825c5ac96053e5))
-* **collections:** add Faqs ([3ae44a3](https://github.com/hjbugajski/jesse-and-henry-payload/commit/3ae44a334c69eccb04d7de1a5cdd1302d8dcc61f))
+- add RSVP deadline ([d4c71fc](https://github.com/hjbugajski/jesse-and-henry-payload/commit/d4c71fc34bbd2812f1f0e686aa68af30ea219ae8))
+- **collections/Guests:** add meal preference ([a0e13b3](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a0e13b3bc3a78f18ff3523b7bd8a2d968ac891cd))
 
+## [9.1.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.0.0...v9.1.0) (2024-02-13)
+
+### Features
+
+- **blocks:** add Faq ([a65309a](https://github.com/hjbugajski/jesse-and-henry-payload/commit/a65309ad4b63f17eef65fbcb87825c5ac96053e5))
+- **collections:** add Faqs ([3ae44a3](https://github.com/hjbugajski/jesse-and-henry-payload/commit/3ae44a334c69eccb04d7de1a5cdd1302d8dcc61f))
 
 ### Bug Fixes
 
-* **fields/link:** add tempUrl as workaround for broken releationship field ([c5e9c3c](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c5e9c3ca3a33d22fa11a20b8517920fd736c9cd4))
+- **fields/link:** add tempUrl as workaround for broken releationship field ([c5e9c3c](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c5e9c3ca3a33d22fa11a20b8517920fd736c9cd4))
 
 ## [9.0.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v8.1.0...v9.0.0) (2024-01-25)
 

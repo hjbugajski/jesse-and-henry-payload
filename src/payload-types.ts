@@ -38,6 +38,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {
+    config: Config1;
     navigation: Navigation;
   };
 }
@@ -91,6 +92,7 @@ export interface Guest {
   dateOfBirth?: string | null;
   countryOfBirth?: string | null;
   allergies?: string | null;
+  mealPreference?: ('beef' | 'fish' | 'vegetarian') | null;
   sort?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -260,6 +262,16 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "config".
+ */
+export interface Config1 {
+  id: string;
+  rsvpDeadline: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

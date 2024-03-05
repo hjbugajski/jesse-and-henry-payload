@@ -7,7 +7,7 @@ import {
   PayloadRequest,
 } from 'payload/types';
 
-import { hasRole, hasRoleField, hasRoleSelfOrParty, Role } from '../access';
+import { hasRole, hasRoleField, hasRoleSelfOrParty, hasRoleSelfPartyOrBeforeDeadline, Role } from '../access';
 import GuestList from '../custom/components/GuestList';
 import { Guest } from '../payload-types';
 import { deepMerge } from '../utils/deepMerge';
@@ -149,7 +149,7 @@ const Guests: CollectionConfig = {
   access: {
     create: hasRole(Role.Admin),
     read: hasRoleSelfOrParty(Role.Admin),
-    update: hasRoleSelfOrParty(Role.Admin),
+    update: async (args) => await hasRoleSelfPartyOrBeforeDeadline(args, Role.Admin),
     delete: hasRole(Role.Admin),
   },
   endpoints: [
@@ -349,6 +349,28 @@ const Guests: CollectionConfig = {
     {
       name: 'allergies',
       type: 'textarea',
+    },
+
+    {
+      name: 'mealPreference',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Beef',
+          value: 'beef',
+        },
+        {
+          label: 'Fish',
+          value: 'fish',
+        },
+        {
+          label: 'Vegetarian',
+          value: 'vegetarian',
+        },
+      ],
     },
     {
       name: 'sort',

@@ -171,12 +171,30 @@ const GuestList: React.FC = (props: any) => {
     [fields]
   );
 
-  const getSelectColumnDefs = useCallback(
+  const getYesNoColumnDefs = useCallback(
     (fieldName: string): Partial<ColDef<Guest>> => ({
       cellRenderer: (params: ICellRendererParams<Guest, any>) =>
         params.value ? (
           <Tag value={params.value === 'yes' ? 'Yes' : 'No'} color={params.value === 'yes' ? 'green' : 'red'} />
         ) : null,
+      cellEditor: SelectEditor,
+      cellEditorPopup: true,
+      cellEditorPopupPosition: 'over',
+      cellEditorParams: {
+        getLabel: (v: any) => v.label,
+        getValue: (v: any) => v.value,
+        isClearable: fields.find((f: any) => f.name === fieldName)?.admin.isClearable ?? false,
+        options: fields.find((f: any) => f.name === fieldName)?.options ?? [],
+      },
+    }),
+    [fields]
+  );
+
+  const getSelectColumnDefs = useCallback(
+    (fieldName: string): Partial<ColDef<Guest>> => ({
+      cellRenderer: (params: ICellRendererParams<Guest, any>) => (
+        <span style={{ textTransform: 'capitalize' }}>{params.value}</span>
+      ),
       cellEditor: SelectEditor,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'over',
@@ -422,12 +440,12 @@ const GuestList: React.FC = (props: any) => {
       {
         field: 'transportationToVenue',
         headerName: 'Transportation to Venue',
-        ...getSelectColumnDefs('transportationToVenue'),
+        ...getYesNoColumnDefs('transportationToVenue'),
       },
       {
         field: 'transportationFromVenue',
         headerName: 'Transportation from Venue',
-        ...getSelectColumnDefs('transportationFromVenue'),
+        ...getYesNoColumnDefs('transportationFromVenue'),
       },
       {
         field: 'legalName',
@@ -442,6 +460,11 @@ const GuestList: React.FC = (props: any) => {
         field: 'countryOfBirth',
         headerName: 'Country of Birth',
         initialWidth: 150,
+      },
+      {
+        field: 'mealPreference',
+        headerName: 'Meal Preference',
+        ...getSelectColumnDefs('mealPreference'),
       },
       {
         field: 'allergies',

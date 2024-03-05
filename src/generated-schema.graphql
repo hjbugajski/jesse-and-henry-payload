@@ -40,6 +40,8 @@ type Query {
     sort: String
   ): PayloadPreferences
   docAccessPayloadPreference(id: String!): payload_preferencesDocAccess
+  Config(draft: Boolean): Config
+  docAccessConfig: configDocAccess
   Navigation(draft: Boolean): Navigation
   docAccessNavigation: navigationDocAccess
   Access: Access
@@ -546,6 +548,7 @@ type Guest {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: Guest_mealPreference
   sort: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -656,6 +659,12 @@ enum Guest_transportationFromVenue {
   no
 }
 
+enum Guest_mealPreference {
+  beef
+  fish
+  vegetarian
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
 """
@@ -694,6 +703,7 @@ input Guest_where {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -907,6 +917,21 @@ input Guest_allergies_operator {
   exists: Boolean
 }
 
+input Guest_mealPreference_operator {
+  equals: Guest_mealPreference_Input
+  not_equals: Guest_mealPreference_Input
+  in: [Guest_mealPreference_Input]
+  not_in: [Guest_mealPreference_Input]
+  all: [Guest_mealPreference_Input]
+  exists: Boolean
+}
+
+enum Guest_mealPreference_Input {
+  beef
+  fish
+  vegetarian
+}
+
 input Guest_sort_operator {
   equals: Float
   not_equals: Float
@@ -979,6 +1004,7 @@ input Guest_where_and {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -1007,6 +1033,7 @@ input Guest_where_or {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -1044,6 +1071,7 @@ type GuestsDocAccessFields {
   dateOfBirth: GuestsDocAccessFields_dateOfBirth
   countryOfBirth: GuestsDocAccessFields_countryOfBirth
   allergies: GuestsDocAccessFields_allergies
+  mealPreference: GuestsDocAccessFields_mealPreference
   sort: GuestsDocAccessFields_sort
   updatedAt: GuestsDocAccessFields_updatedAt
   createdAt: GuestsDocAccessFields_createdAt
@@ -1462,6 +1490,29 @@ type GuestsDocAccessFields_allergies_Update {
 }
 
 type GuestsDocAccessFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference {
+  create: GuestsDocAccessFields_mealPreference_Create
+  read: GuestsDocAccessFields_mealPreference_Read
+  update: GuestsDocAccessFields_mealPreference_Update
+  delete: GuestsDocAccessFields_mealPreference_Delete
+}
+
+type GuestsDocAccessFields_mealPreference_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Delete {
   permission: Boolean!
 }
 
@@ -4668,6 +4719,103 @@ type PayloadPreferencesDeleteDocAccess {
   where: JSONObject
 }
 
+type Config {
+  rsvpDeadline: DateTime!
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+type configDocAccess {
+  fields: ConfigDocAccessFields
+  read: ConfigReadDocAccess
+  update: ConfigUpdateDocAccess
+}
+
+type ConfigDocAccessFields {
+  rsvpDeadline: ConfigDocAccessFields_rsvpDeadline
+  updatedAt: ConfigDocAccessFields_updatedAt
+  createdAt: ConfigDocAccessFields_createdAt
+}
+
+type ConfigDocAccessFields_rsvpDeadline {
+  create: ConfigDocAccessFields_rsvpDeadline_Create
+  read: ConfigDocAccessFields_rsvpDeadline_Read
+  update: ConfigDocAccessFields_rsvpDeadline_Update
+  delete: ConfigDocAccessFields_rsvpDeadline_Delete
+}
+
+type ConfigDocAccessFields_rsvpDeadline_Create {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_rsvpDeadline_Read {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_rsvpDeadline_Update {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_rsvpDeadline_Delete {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_updatedAt {
+  create: ConfigDocAccessFields_updatedAt_Create
+  read: ConfigDocAccessFields_updatedAt_Read
+  update: ConfigDocAccessFields_updatedAt_Update
+  delete: ConfigDocAccessFields_updatedAt_Delete
+}
+
+type ConfigDocAccessFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_createdAt {
+  create: ConfigDocAccessFields_createdAt_Create
+  read: ConfigDocAccessFields_createdAt_Read
+  update: ConfigDocAccessFields_createdAt_Update
+  delete: ConfigDocAccessFields_createdAt_Delete
+}
+
+type ConfigDocAccessFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type ConfigDocAccessFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type ConfigReadDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ConfigUpdateDocAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type Navigation {
   links: [FieldLinkArray!]
   showCta: Boolean
@@ -5317,6 +5465,7 @@ type Access {
   sides: sidesAccess
   users: usersAccess
   payload_preferences: payload_preferencesAccess
+  config: configAccess
   navigation: navigationAccess
 }
 
@@ -5505,6 +5654,7 @@ type GuestsFields {
   dateOfBirth: GuestsFields_dateOfBirth
   countryOfBirth: GuestsFields_countryOfBirth
   allergies: GuestsFields_allergies
+  mealPreference: GuestsFields_mealPreference
   sort: GuestsFields_sort
   updatedAt: GuestsFields_updatedAt
   createdAt: GuestsFields_createdAt
@@ -5923,6 +6073,29 @@ type GuestsFields_allergies_Update {
 }
 
 type GuestsFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference {
+  create: GuestsFields_mealPreference_Create
+  read: GuestsFields_mealPreference_Read
+  update: GuestsFields_mealPreference_Update
+  delete: GuestsFields_mealPreference_Delete
+}
+
+type GuestsFields_mealPreference_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Delete {
   permission: Boolean!
 }
 
@@ -7723,6 +7896,97 @@ type PayloadPreferencesDeleteAccess {
   where: JSONObject
 }
 
+type configAccess {
+  fields: ConfigFields
+  read: ConfigReadAccess
+  update: ConfigUpdateAccess
+}
+
+type ConfigFields {
+  rsvpDeadline: ConfigFields_rsvpDeadline
+  updatedAt: ConfigFields_updatedAt
+  createdAt: ConfigFields_createdAt
+}
+
+type ConfigFields_rsvpDeadline {
+  create: ConfigFields_rsvpDeadline_Create
+  read: ConfigFields_rsvpDeadline_Read
+  update: ConfigFields_rsvpDeadline_Update
+  delete: ConfigFields_rsvpDeadline_Delete
+}
+
+type ConfigFields_rsvpDeadline_Create {
+  permission: Boolean!
+}
+
+type ConfigFields_rsvpDeadline_Read {
+  permission: Boolean!
+}
+
+type ConfigFields_rsvpDeadline_Update {
+  permission: Boolean!
+}
+
+type ConfigFields_rsvpDeadline_Delete {
+  permission: Boolean!
+}
+
+type ConfigFields_updatedAt {
+  create: ConfigFields_updatedAt_Create
+  read: ConfigFields_updatedAt_Read
+  update: ConfigFields_updatedAt_Update
+  delete: ConfigFields_updatedAt_Delete
+}
+
+type ConfigFields_updatedAt_Create {
+  permission: Boolean!
+}
+
+type ConfigFields_updatedAt_Read {
+  permission: Boolean!
+}
+
+type ConfigFields_updatedAt_Update {
+  permission: Boolean!
+}
+
+type ConfigFields_updatedAt_Delete {
+  permission: Boolean!
+}
+
+type ConfigFields_createdAt {
+  create: ConfigFields_createdAt_Create
+  read: ConfigFields_createdAt_Read
+  update: ConfigFields_createdAt_Update
+  delete: ConfigFields_createdAt_Delete
+}
+
+type ConfigFields_createdAt_Create {
+  permission: Boolean!
+}
+
+type ConfigFields_createdAt_Read {
+  permission: Boolean!
+}
+
+type ConfigFields_createdAt_Update {
+  permission: Boolean!
+}
+
+type ConfigFields_createdAt_Delete {
+  permission: Boolean!
+}
+
+type ConfigReadAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
+type ConfigUpdateAccess {
+  permission: Boolean!
+  where: JSONObject
+}
+
 type navigationAccess {
   fields: NavigationFields
   read: NavigationReadAccess
@@ -8351,6 +8615,7 @@ type Mutation {
     draft: Boolean
   ): PayloadPreference
   deletePayloadPreference(id: String!): PayloadPreference
+  updateConfig(data: mutationConfigInput!, draft: Boolean): Config
   updateNavigation(data: mutationNavigationInput!, draft: Boolean): Navigation
 }
 
@@ -8399,6 +8664,7 @@ input mutationGuestInput {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: Guest_mealPreference_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -8442,6 +8708,12 @@ enum Guest_transportationFromVenue_MutationInput {
   no
 }
 
+enum Guest_mealPreference_MutationInput {
+  beef
+  fish
+  vegetarian
+}
+
 input mutationGuestUpdateInput {
   first: String
   middle: String
@@ -8461,6 +8733,7 @@ input mutationGuestUpdateInput {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: GuestUpdate_mealPreference_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -8502,6 +8775,12 @@ enum GuestUpdate_transportationToVenue_MutationInput {
 enum GuestUpdate_transportationFromVenue_MutationInput {
   yes
   no
+}
+
+enum GuestUpdate_mealPreference_MutationInput {
+  beef
+  fish
+  vegetarian
 }
 
 type guestsRefreshedGuest {
@@ -8854,6 +9133,12 @@ input PayloadPreferenceUpdate_UserRelationshipInput {
 enum PayloadPreferenceUpdate_UserRelationshipInputRelationTo {
   guests
   users
+}
+
+input mutationConfigInput {
+  rsvpDeadline: String!
+  updatedAt: String
+  createdAt: String
 }
 
 input mutationNavigationInput {
