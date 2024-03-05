@@ -546,6 +546,7 @@ type Guest {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: Guest_mealPreference
   sort: Float
   updatedAt: DateTime
   createdAt: DateTime
@@ -656,6 +657,12 @@ enum Guest_transportationFromVenue {
   no
 }
 
+enum Guest_mealPreference {
+  meat
+  fish
+  vegetarian
+}
+
 """
 A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
 """
@@ -694,6 +701,7 @@ input Guest_where {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -907,6 +915,21 @@ input Guest_allergies_operator {
   exists: Boolean
 }
 
+input Guest_mealPreference_operator {
+  equals: Guest_mealPreference_Input
+  not_equals: Guest_mealPreference_Input
+  in: [Guest_mealPreference_Input]
+  not_in: [Guest_mealPreference_Input]
+  all: [Guest_mealPreference_Input]
+  exists: Boolean
+}
+
+enum Guest_mealPreference_Input {
+  meat
+  fish
+  vegetarian
+}
+
 input Guest_sort_operator {
   equals: Float
   not_equals: Float
@@ -979,6 +1002,7 @@ input Guest_where_and {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -1007,6 +1031,7 @@ input Guest_where_or {
   dateOfBirth: Guest_dateOfBirth_operator
   countryOfBirth: Guest_countryOfBirth_operator
   allergies: Guest_allergies_operator
+  mealPreference: Guest_mealPreference_operator
   sort: Guest_sort_operator
   updatedAt: Guest_updatedAt_operator
   createdAt: Guest_createdAt_operator
@@ -1044,6 +1069,7 @@ type GuestsDocAccessFields {
   dateOfBirth: GuestsDocAccessFields_dateOfBirth
   countryOfBirth: GuestsDocAccessFields_countryOfBirth
   allergies: GuestsDocAccessFields_allergies
+  mealPreference: GuestsDocAccessFields_mealPreference
   sort: GuestsDocAccessFields_sort
   updatedAt: GuestsDocAccessFields_updatedAt
   createdAt: GuestsDocAccessFields_createdAt
@@ -1462,6 +1488,29 @@ type GuestsDocAccessFields_allergies_Update {
 }
 
 type GuestsDocAccessFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference {
+  create: GuestsDocAccessFields_mealPreference_Create
+  read: GuestsDocAccessFields_mealPreference_Read
+  update: GuestsDocAccessFields_mealPreference_Update
+  delete: GuestsDocAccessFields_mealPreference_Delete
+}
+
+type GuestsDocAccessFields_mealPreference_Create {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Read {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Update {
+  permission: Boolean!
+}
+
+type GuestsDocAccessFields_mealPreference_Delete {
   permission: Boolean!
 }
 
@@ -5505,6 +5554,7 @@ type GuestsFields {
   dateOfBirth: GuestsFields_dateOfBirth
   countryOfBirth: GuestsFields_countryOfBirth
   allergies: GuestsFields_allergies
+  mealPreference: GuestsFields_mealPreference
   sort: GuestsFields_sort
   updatedAt: GuestsFields_updatedAt
   createdAt: GuestsFields_createdAt
@@ -5923,6 +5973,29 @@ type GuestsFields_allergies_Update {
 }
 
 type GuestsFields_allergies_Delete {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference {
+  create: GuestsFields_mealPreference_Create
+  read: GuestsFields_mealPreference_Read
+  update: GuestsFields_mealPreference_Update
+  delete: GuestsFields_mealPreference_Delete
+}
+
+type GuestsFields_mealPreference_Create {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Read {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Update {
+  permission: Boolean!
+}
+
+type GuestsFields_mealPreference_Delete {
   permission: Boolean!
 }
 
@@ -8399,6 +8472,7 @@ input mutationGuestInput {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: Guest_mealPreference_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -8442,6 +8516,12 @@ enum Guest_transportationFromVenue_MutationInput {
   no
 }
 
+enum Guest_mealPreference_MutationInput {
+  meat
+  fish
+  vegetarian
+}
+
 input mutationGuestUpdateInput {
   first: String
   middle: String
@@ -8461,6 +8541,7 @@ input mutationGuestUpdateInput {
   dateOfBirth: String
   countryOfBirth: String
   allergies: String
+  mealPreference: GuestUpdate_mealPreference_MutationInput
   sort: Float
   updatedAt: String
   createdAt: String
@@ -8502,6 +8583,12 @@ enum GuestUpdate_transportationToVenue_MutationInput {
 enum GuestUpdate_transportationFromVenue_MutationInput {
   yes
   no
+}
+
+enum GuestUpdate_mealPreference_MutationInput {
+  meat
+  fish
+  vegetarian
 }
 
 type guestsRefreshedGuest {

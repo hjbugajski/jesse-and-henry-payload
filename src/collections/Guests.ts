@@ -350,6 +350,28 @@ const Guests: CollectionConfig = {
       name: 'allergies',
       type: 'textarea',
     },
+
+    {
+      name: 'mealPreference',
+      type: 'select',
+      admin: {
+        isClearable: true,
+      },
+      options: [
+        {
+          label: 'Beef',
+          value: 'beef',
+        },
+        {
+          label: 'Fish',
+          value: 'fish',
+        },
+        {
+          label: 'Vegetarian',
+          value: 'vegetarian',
+        },
+      ],
+    },
     {
       name: 'sort',
       type: 'number',

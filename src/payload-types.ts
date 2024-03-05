@@ -91,6 +91,7 @@ export interface Guest {
   dateOfBirth?: string | null;
   countryOfBirth?: string | null;
   allergies?: string | null;
+  mealPreference?: ('beef' | 'fish' | 'vegetarian') | null;
   sort?: number | null;
   updatedAt: string;
   createdAt: string;
