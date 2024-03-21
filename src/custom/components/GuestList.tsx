@@ -1,6 +1,5 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import * as Tooltip from '@radix-ui/react-tooltip';
 import {
   CellEditingStoppedEvent,
   ColDef,
@@ -14,56 +13,17 @@ import { AgGridReact } from 'ag-grid-react';
 import { Pill } from 'payload/components';
 import { Meta, useConfig } from 'payload/components/utilities';
 import { getTranslation } from 'payload/dist/utilities/getTranslation';
-import { stringify } from 'qs';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import DeleteMany from './DeleteMany';
-import EditMany from './EditMany';
-import Icon from './Icon';
 import SelectEditor from './SelectEditor';
 import Tag from './Tag';
 import TextareaEditor from './TextareaEditor';
 import { Guest, Party } from '../../payload-types';
-import { PayloadFormOnSuccess, PayloadGetApi, PayloadPostApi } from '../types/api';
+import { PayloadGetApi, PayloadPostApi } from '../types/api';
 
 import 'ag-grid-community/styles/ag-grid-no-native-widgets.css';
 import './GuestList.scss';
-
-interface AddRowRendererParams extends ICellRendererParams<Guest, any> {
-  onClick: (index: number) => void | Promise<void>;
-}
-
-const AddRowRenderer: React.FC<AddRowRendererParams> = memo(({ node: { rowIndex }, onClick }) => {
-  const onClickInternal = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      const index = e.altKey ? rowIndex : rowIndex + 1;
-
-      await onClick(index);
-    },
-    [rowIndex]
-  );
-
-  return (
-    <Tooltip.Provider>
-      <Tooltip.Root>
-        <Tooltip.Trigger onClick={onClickInternal} className="button--icon">
-          <Icon name="add" />
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content side="bottom" sideOffset={4} className="tooltip--content">
-            <div>
-              Click <span className="text--low-contrast">to add below</span>
-            </div>
-            <div>
-              Option-click <span className="text--low-contrast">to add above</span>
-            </div>
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    </Tooltip.Provider>
-  );
-});
 
 const GuestList: React.FC = (props: any) => {
   const {
@@ -78,7 +38,6 @@ const GuestList: React.FC = (props: any) => {
   // State
   const [error, setError] = useState<string | null>(null);
   const [rowData, setRowData] = useState<Guest[]>([]);
-  const [selectedRows, setSelectedRows] = useState<Guest[]>([]);
 
   // Hooks
   const {
@@ -266,29 +225,7 @@ const GuestList: React.FC = (props: any) => {
     [api, serverURL, slug]
   );
 
-  const onDeleteMany = useCallback(() => {
-    gridRef.current.api.applyTransaction({
-      remove: selectedRows,
-    });
-  }, [gridRef, selectedRows]);
-
-  const onEditMany = useCallback(
-    (json: PayloadFormOnSuccess<Guest>) => {
-      gridRef.current.api.deselectAll();
-      gridRef.current.api.applyTransaction({
-        update: json.docs,
-      });
-    },
-    [gridRef]
-  );
-
   const onRowDragEnd = useCallback(async (e: RowDragEndEvent<Guest>) => await reorderDocs(e.api), []);
-
-  const onSelectionChanged = useCallback(() => {
-    const rows = gridRef.current.api.getSelectedRows() ?? [];
-
-    setSelectedRows([...rows]);
-  }, [gridRef]);
 
   const reorderDocs = useCallback(
     async (gridApi: GridApi<Guest>) => {
@@ -322,18 +259,6 @@ const GuestList: React.FC = (props: any) => {
     [api, serverURL, slug]
   );
 
-  const stringifySelectedDocsQuery = useCallback(
-    () =>
-      stringify({
-        where: {
-          id: {
-            in: selectedRows.map((g) => g.id),
-          },
-        },
-      }),
-    [selectedRows]
-  );
-
   // Memoized
   const columnDefs: ColDef<Guest>[] = useMemo(
     () => [
@@ -346,28 +271,6 @@ const GuestList: React.FC = (props: any) => {
         rowDrag: true,
         singleClickEdit: false,
         width: 31,
-      },
-      {
-        cellClass: 'ag-cell--no-padding ag-cell--no-hover',
-        editable: false,
-        minWidth: 26,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 26,
-        cellRenderer: (params: ICellRendererParams<Guest, any>) => <AddRowRenderer {...params} onClick={addGuest} />,
-      },
-      {
-        cellClass: 'ag-cell--checkbox ag-cell--no-hover',
-        checkboxSelection: true,
-        editable: false,
-        headerCheckboxSelection: true,
-        headerClass: 'ag-header-cell--checkbox',
-        minWidth: 32,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 32,
       },
       {
         field: 'first',
@@ -487,7 +390,7 @@ const GuestList: React.FC = (props: any) => {
 
   const defaultColDef: ColDef<Guest> = useMemo(
     () => ({
-      editable: true,
+      editable: false,
       minWidth: 120,
       resizable: true,
       singleClickEdit: true,
@@ -547,26 +450,6 @@ const GuestList: React.FC = (props: any) => {
           <Pill onClick={async () => await addGuest()} className="pill margin--bottom">
             {t('createNew')}
           </Pill>
-          <div className="flex--grow" />
-          {selectedRows.length > 0 && (
-            <div className="row row--selection">
-              <span className="selected-text margin--bottom">
-                {selectedRows.length} {getTranslation(collection.labels.plural, i18n)} selected
-              </span>
-              <EditMany
-                count={selectedRows.length}
-                queryParams={stringifySelectedDocsQuery()}
-                collection={collection}
-                onSuccess={onEditMany}
-              />
-              <DeleteMany
-                count={selectedRows.length}
-                collection={collection}
-                onDelete={onDeleteMany}
-                queryParams={stringifySelectedDocsQuery()}
-              />
-            </div>
-          )}
         </div>
         {error && <p>{error}</p>}
         <AgGridReact
@@ -580,7 +463,6 @@ const GuestList: React.FC = (props: any) => {
           icons={icons}
           onCellEditingStopped={onCellEditingStopped}
           onRowDragEnd={onRowDragEnd}
-          onSelectionChanged={onSelectionChanged}
           rowClassRules={rowClassRules}
           rowData={rowData}
           rowDragManaged={true}
