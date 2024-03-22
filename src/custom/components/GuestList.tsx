@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import * as Tooltip from '@radix-ui/react-tooltip';
 import {
@@ -14,58 +14,174 @@ import { AgGridReact } from 'ag-grid-react';
 import { Pill } from 'payload/components';
 import { Meta, useConfig } from 'payload/components/utilities';
 import { getTranslation } from 'payload/dist/utilities/getTranslation';
-import { stringify } from 'qs';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import DeleteMany from './DeleteMany';
-import EditMany from './EditMany';
-import Icon from './Icon';
 import SelectEditor from './SelectEditor';
 import Tag from './Tag';
 import TextareaEditor from './TextareaEditor';
 import { Guest, Party } from '../../payload-types';
-import { PayloadFormOnSuccess, PayloadGetApi, PayloadPostApi } from '../types/api';
+import { PayloadGetApi, PayloadPostApi } from '../types/api';
 
 import 'ag-grid-community/styles/ag-grid-no-native-widgets.css';
 import './GuestList.scss';
 
-interface AddRowRendererParams extends ICellRendererParams<Guest, any> {
-  onClick: (index: number) => void | Promise<void>;
-}
+const Providers = ({ children }: { children: React.ReactNode }) => (
+  <Tooltip.Provider delayDuration={50}>
+    <Tooltip.Root>{children}</Tooltip.Root>
+  </Tooltip.Provider>
+);
 
-const AddRowRenderer: React.FC<AddRowRendererParams> = memo(({ node: { rowIndex }, onClick }) => {
-  const onClickInternal = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      const index = e.altKey ? rowIndex : rowIndex + 1;
+const FirstRenderer = (params: ICellRendererParams<any>) => {
+  if (params.data.type === 'pinned') {
+    return `Total: ${params.value}`;
+  }
 
-      await onClick(index);
-    },
-    [rowIndex]
-  );
+  return <Link to={`/admin/collections/guests/${params.data?.id}`}>{params.value ?? '<No First Name>'}</Link>;
+};
 
-  return (
-    <Tooltip.Provider>
+const RsvpRenderer = (params: ICellRendererParams<any, any>) => {
+  if (params.data.type === 'pinned') {
+    return (
       <Tooltip.Root>
-        <Tooltip.Trigger onClick={onClickInternal} className="button--icon">
-          <Icon name="add" />
+        <Tooltip.Trigger asChild>
+          <div className="bar-cell">
+            <span
+              className="bar-cell--item bar-cell--item--green"
+              style={{ width: `${(params.value.accept / params.value.total) * 100}%` }}
+            />
+            <span
+              className="bar-cell--item bar-cell--item--red"
+              style={{ width: `${(params.value.decline / params.value.total) * 100}%` }}
+            />
+            <span className="bar-cell--item bar-cell--item--gray bar-cell--item--grow" />
+          </div>
         </Tooltip.Trigger>
         <Tooltip.Portal>
-          <Tooltip.Content side="bottom" sideOffset={4} className="tooltip--content">
-            <div>
-              Click <span className="text--low-contrast">to add below</span>
+          <Tooltip.Content side="bottom" sideOffset={4} className="tooltip--content tooltip__bar-cell">
+            <div className="tooltip__bar-cell--item">
+              Accepted
+              <strong>{params.value.accept}</strong>
             </div>
-            <div>
-              Option-click <span className="text--low-contrast">to add above</span>
+            <div className="tooltip__bar-cell--item">
+              Declined
+              <strong>{params.value.decline}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              No Response
+              <strong>{params.value.noResponse}</strong>
             </div>
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
-    </Tooltip.Provider>
-  );
-});
+    );
+  }
 
-const GuestList: React.FC = (props: any) => {
+  return params.value ? (
+    <Tag
+      value={params.value === 'accept' ? 'Accepted' : 'Declined'}
+      color={params.value === 'accept' ? 'green' : 'red'}
+    />
+  ) : null;
+};
+
+const YesNoRenderer = (params: ICellRendererParams<any>) => {
+  if (params.data.type === 'pinned') {
+    return (
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <div className="bar-cell">
+            <span
+              className="bar-cell--item bar-cell--item--green"
+              style={{ width: `${(params.value.yes / params.value.total) * 100}%` }}
+            />
+            <span
+              className="bar-cell--item bar-cell--item--red"
+              style={{ width: `${(params.value.no / params.value.total) * 100}%` }}
+            />
+            <span className="bar-cell--item bar-cell--item--gray bar-cell--item--grow" />
+          </div>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content side="bottom" sideOffset={4} className="tooltip--content tooltip__bar-cell">
+            <div className="tooltip__bar-cell--item">
+              Yes
+              <strong>{params.value.yes}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              No
+              <strong>{params.value.no}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              No Response
+              <strong>{params.value.noResponse}</strong>
+            </div>
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    );
+  }
+
+  return params.value ? (
+    <Tag value={params.value === 'yes' ? 'Yes' : 'No'} color={params.value === 'yes' ? 'green' : 'red'} />
+  ) : null;
+};
+
+const MealPreferenceRenderer = (params: ICellRendererParams<any>) => {
+  if (params.data.type === 'pinned') {
+    return (
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <div className="bar-cell">
+            <span
+              className="bar-cell--item bar-cell--item--orange"
+              style={{ width: `${(params.value.beef / params.value.total) * 100}%` }}
+            />
+            <span
+              className="bar-cell--item bar-cell--item--pink"
+              style={{ width: `${(params.value.fish / params.value.total) * 100}%` }}
+            />
+            <span
+              className="bar-cell--item bar-cell--item--green"
+              style={{ width: `${(params.value.vegetarian / params.value.total) * 100}%` }}
+            />
+            <span className="bar-cell--item bar-cell--item--gray bar-cell--item--grow" />
+          </div>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content side="bottom" sideOffset={4} className="tooltip--content tooltip__bar-cell">
+            <div className="tooltip__bar-cell--item">
+              Beef
+              <strong>{params.value.beef}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              Fish
+              <strong>{params.value.fish}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              Vegetarian
+              <strong>{params.value.vegetarian}</strong>
+            </div>
+            <div className="tooltip__bar-cell--item">
+              No Response
+              <strong>{params.value.noResponse}</strong>
+            </div>
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    );
+  }
+
+  return params.value ? (
+    <Tag
+      value={params.value}
+      color={params.value === 'beef' ? 'orange' : params.value === 'fish' ? 'pink' : 'green'}
+      style={{ textTransform: 'capitalize' }}
+    />
+  ) : null;
+};
+
+const GuestList = (props: any) => {
   const {
     collection,
     collection: { fields, slug },
@@ -78,7 +194,6 @@ const GuestList: React.FC = (props: any) => {
   // State
   const [error, setError] = useState<string | null>(null);
   const [rowData, setRowData] = useState<Guest[]>([]);
-  const [selectedRows, setSelectedRows] = useState<Guest[]>([]);
 
   // Hooks
   const {
@@ -123,6 +238,20 @@ const GuestList: React.FC = (props: any) => {
     [api, gridRef, serverURL, slug]
   );
 
+  const convertToCsv = useCallback(() => {
+    const csvData = gridRef.current.api.getDataAsCsv();
+    const fileName = `guests-${new Date().toISOString()}.csv`;
+    const url = URL.createObjectURL(new Blob([csvData], { type: 'text/csv;charset=utf-8;' }));
+    const link = document.createElement('a');
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, []);
+
   const fetchDocs = useCallback(
     async (limit = 10) => {
       try {
@@ -151,13 +280,7 @@ const GuestList: React.FC = (props: any) => {
 
   const getRsvpColumnDefs = useCallback(
     (fieldName: string): Partial<ColDef<Guest>> => ({
-      cellRenderer: (params: ICellRendererParams<Guest, any>) =>
-        params.value ? (
-          <Tag
-            value={params.value === 'accept' ? 'Accepted' : 'Declined'}
-            color={params.value === 'accept' ? 'green' : 'red'}
-          />
-        ) : null,
+      cellRenderer: RsvpRenderer,
       cellEditor: SelectEditor,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'over',
@@ -173,10 +296,7 @@ const GuestList: React.FC = (props: any) => {
 
   const getYesNoColumnDefs = useCallback(
     (fieldName: string): Partial<ColDef<Guest>> => ({
-      cellRenderer: (params: ICellRendererParams<Guest, any>) =>
-        params.value ? (
-          <Tag value={params.value === 'yes' ? 'Yes' : 'No'} color={params.value === 'yes' ? 'green' : 'red'} />
-        ) : null,
+      cellRenderer: YesNoRenderer,
       cellEditor: SelectEditor,
       cellEditorPopup: true,
       cellEditorPopupPosition: 'over',
@@ -266,29 +386,7 @@ const GuestList: React.FC = (props: any) => {
     [api, serverURL, slug]
   );
 
-  const onDeleteMany = useCallback(() => {
-    gridRef.current.api.applyTransaction({
-      remove: selectedRows,
-    });
-  }, [gridRef, selectedRows]);
-
-  const onEditMany = useCallback(
-    (json: PayloadFormOnSuccess<Guest>) => {
-      gridRef.current.api.deselectAll();
-      gridRef.current.api.applyTransaction({
-        update: json.docs,
-      });
-    },
-    [gridRef]
-  );
-
   const onRowDragEnd = useCallback(async (e: RowDragEndEvent<Guest>) => await reorderDocs(e.api), []);
-
-  const onSelectionChanged = useCallback(() => {
-    const rows = gridRef.current.api.getSelectedRows() ?? [];
-
-    setSelectedRows([...rows]);
-  }, [gridRef]);
 
   const reorderDocs = useCallback(
     async (gridApi: GridApi<Guest>) => {
@@ -322,18 +420,6 @@ const GuestList: React.FC = (props: any) => {
     [api, serverURL, slug]
   );
 
-  const stringifySelectedDocsQuery = useCallback(
-    () =>
-      stringify({
-        where: {
-          id: {
-            in: selectedRows.map((g) => g.id),
-          },
-        },
-      }),
-    [selectedRows]
-  );
-
   // Memoized
   const columnDefs: ColDef<Guest>[] = useMemo(
     () => [
@@ -348,35 +434,11 @@ const GuestList: React.FC = (props: any) => {
         width: 31,
       },
       {
-        cellClass: 'ag-cell--no-padding ag-cell--no-hover',
-        editable: false,
-        minWidth: 26,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 26,
-        cellRenderer: (params: ICellRendererParams<Guest, any>) => <AddRowRenderer {...params} onClick={addGuest} />,
-      },
-      {
-        cellClass: 'ag-cell--checkbox ag-cell--no-hover',
-        checkboxSelection: true,
-        editable: false,
-        headerCheckboxSelection: true,
-        headerClass: 'ag-header-cell--checkbox',
-        minWidth: 32,
-        pinned: 'left',
-        resizable: false,
-        singleClickEdit: false,
-        width: 32,
-      },
-      {
         field: 'first',
         initialWidth: 125,
         pinned: 'left',
         singleClickEdit: false,
-        cellRenderer: (params: ICellRendererParams<Guest, string>) => (
-          <Link to={`/admin/collections/guests/${params.data.id}`}>{params.value ?? '<No First Name>'}</Link>
-        ),
+        cellRenderer: FirstRenderer,
       },
       {
         field: 'last',
@@ -465,6 +527,7 @@ const GuestList: React.FC = (props: any) => {
         field: 'mealPreference',
         headerName: 'Meal Preference',
         ...getSelectColumnDefs('mealPreference'),
+        cellRenderer: MealPreferenceRenderer,
       },
       {
         field: 'allergies',
@@ -482,12 +545,12 @@ const GuestList: React.FC = (props: any) => {
         field: 'email',
       },
     ],
-    [addGuest, getRsvpColumnDefs, getTagsColumnDefs]
+    [getRsvpColumnDefs, getSelectColumnDefs, getTagsColumnDefs, getYesNoColumnDefs]
   );
 
   const defaultColDef: ColDef<Guest> = useMemo(
     () => ({
-      editable: true,
+      editable: false,
       minWidth: 120,
       resizable: true,
       singleClickEdit: true,
@@ -505,25 +568,78 @@ const GuestList: React.FC = (props: any) => {
     []
   );
 
+  const pinnedRowData = useMemo(
+    () => [
+      {
+        first: rowData.length,
+        rsvpWelcomeParty: {
+          accept: rowData.filter((r) => r.rsvpWelcomeParty === 'accept').length,
+          decline: rowData.filter((r) => r.rsvpWelcomeParty === 'decline').length,
+          noResponse: rowData.filter((r) => !r.rsvpWelcomeParty).length,
+          total: rowData.length,
+        },
+        rsvpRehearsalDinner: {
+          accept: rowData.filter((r) => r.rsvpRehearsalDinner === 'accept').length,
+          decline: rowData.filter((r) => r.rsvpRehearsalDinner === 'decline').length,
+          noResponse: rowData.filter((r) => !r.rsvpRehearsalDinner).length,
+          total: rowData.length,
+        },
+        rsvpWeddingDay: {
+          accept: rowData.filter((r) => r.rsvpWeddingDay === 'accept').length,
+          decline: rowData.filter((r) => r.rsvpWeddingDay === 'decline').length,
+          noResponse: rowData.filter((r) => !r.rsvpWeddingDay).length,
+          total: rowData.length,
+        },
+        rsvpPoolDay: {
+          accept: rowData.filter((r) => r.rsvpPoolDay === 'accept').length,
+          decline: rowData.filter((r) => r.rsvpPoolDay === 'decline').length,
+          noResponse: rowData.filter((r) => !r.rsvpPoolDay).length,
+          total: rowData.length,
+        },
+        transportationToVenue: {
+          yes: rowData.filter((r) => r.transportationToVenue === 'yes').length,
+          no: rowData.filter((r) => r.transportationToVenue === 'no').length,
+          noResponse: rowData.filter((r) => !r.transportationToVenue).length,
+          total: rowData.length,
+        },
+        transportationFromVenue: {
+          yes: rowData.filter((r) => r.transportationFromVenue === 'yes').length,
+          no: rowData.filter((r) => r.transportationFromVenue === 'no').length,
+          noResponse: rowData.filter((r) => !r.transportationFromVenue).length,
+          total: rowData.length,
+        },
+        mealPreference: {
+          beef: rowData.filter((r) => r.mealPreference === 'beef').length,
+          fish: rowData.filter((r) => r.mealPreference === 'fish').length,
+          vegetarian: rowData.filter((r) => r.mealPreference === 'vegetarian').length,
+          noResponse: rowData.filter((r) => !r.mealPreference).length,
+          total: rowData.length,
+        },
+        type: 'pinned',
+      },
+    ],
+    [rowData]
+  );
+
   const rowClassRules = useMemo(
     () => ({
-      'green--background': (params: RowClassParams) => params.data.party?.color === 'green',
-      'teal--background': (params: RowClassParams) => params.data.party?.color === 'teal',
-      'cyan--background': (params: RowClassParams) => params.data.party?.color === 'cyan',
-      'blue--background': (params: RowClassParams) => params.data.party?.color === 'blue',
-      'violet--background': (params: RowClassParams) => params.data.party?.color === 'violet',
-      'purple--background': (params: RowClassParams) => params.data.party?.color === 'purple',
-      'plum--background': (params: RowClassParams) => params.data.party?.color === 'plum',
-      'pink--background': (params: RowClassParams) => params.data.party?.color === 'pink',
-      'red--background': (params: RowClassParams) => params.data.party?.color === 'red',
-      'orange--background': (params: RowClassParams) => params.data.party?.color === 'orange',
+      'green--background': (params: RowClassParams) => params.data?.party?.color === 'green',
+      'teal--background': (params: RowClassParams) => params.data?.party?.color === 'teal',
+      'cyan--background': (params: RowClassParams) => params.data?.party?.color === 'cyan',
+      'blue--background': (params: RowClassParams) => params.data?.party?.color === 'blue',
+      'violet--background': (params: RowClassParams) => params.data?.party?.color === 'violet',
+      'purple--background': (params: RowClassParams) => params.data?.party?.color === 'purple',
+      'plum--background': (params: RowClassParams) => params.data?.party?.color === 'plum',
+      'pink--background': (params: RowClassParams) => params.data?.party?.color === 'pink',
+      'red--background': (params: RowClassParams) => params.data?.party?.color === 'red',
+      'orange--background': (params: RowClassParams) => params.data?.party?.color === 'orange',
       'border-bottom--none': (params: RowClassParams) => {
-        const rowParty = params.data.party?.id ?? null;
+        const rowParty = params.data?.party?.id ?? null;
         const rows = [];
 
         params.api.forEachNode((node) => rows.push(node));
 
-        const nextRowParty = rows[(params?.node?.rowIndex ?? 0) + 1]?.data.party?.id ?? null;
+        const nextRowParty = rows[(params?.node?.rowIndex ?? 0) + 1]?.data?.party?.id ?? null;
 
         return rowParty && nextRowParty && rowParty === nextRowParty;
       },
@@ -547,50 +663,34 @@ const GuestList: React.FC = (props: any) => {
           <Pill onClick={async () => await addGuest()} className="pill margin--bottom">
             {t('createNew')}
           </Pill>
-          <div className="flex--grow" />
-          {selectedRows.length > 0 && (
-            <div className="row row--selection">
-              <span className="selected-text margin--bottom">
-                {selectedRows.length} {getTranslation(collection.labels.plural, i18n)} selected
-              </span>
-              <EditMany
-                count={selectedRows.length}
-                queryParams={stringifySelectedDocsQuery()}
-                collection={collection}
-                onSuccess={onEditMany}
-              />
-              <DeleteMany
-                count={selectedRows.length}
-                collection={collection}
-                onDelete={onDeleteMany}
-                queryParams={stringifySelectedDocsQuery()}
-              />
-            </div>
-          )}
+          <Pill onClick={convertToCsv} className="pill margin--bottom">
+            Export to CSV
+          </Pill>
         </div>
         {error && <p>{error}</p>}
-        <AgGridReact
-          ref={gridRef}
-          animateRows={true}
-          className="guest-data-grid"
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          getRowId={getRowId}
-          headerHeight={32}
-          icons={icons}
-          onCellEditingStopped={onCellEditingStopped}
-          onRowDragEnd={onRowDragEnd}
-          onSelectionChanged={onSelectionChanged}
-          rowClassRules={rowClassRules}
-          rowData={rowData}
-          rowDragManaged={true}
-          rowDragMultiRow={true}
-          rowHeight={36}
-          rowSelection={'multiple'}
-          stopEditingWhenCellsLoseFocus={true}
-          suppressColumnVirtualisation={true}
-          suppressRowClickSelection={true}
-        />
+        <Providers>
+          <AgGridReact
+            ref={gridRef}
+            animateRows={true}
+            className="guest-data-grid"
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            getRowId={getRowId}
+            headerHeight={32}
+            icons={icons}
+            onCellEditingStopped={onCellEditingStopped}
+            onRowDragEnd={onRowDragEnd}
+            pinnedTopRowData={pinnedRowData}
+            rowClassRules={rowClassRules}
+            rowData={rowData}
+            rowDragManaged={true}
+            rowDragMultiRow={true}
+            rowHeight={36}
+            stopEditingWhenCellsLoseFocus={true}
+            suppressColumnVirtualisation={true}
+            suppressRowClickSelection={true}
+          />
+        </Providers>
       </div>
     </div>
   );

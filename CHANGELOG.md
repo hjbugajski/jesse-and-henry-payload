@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.3.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.2.0...v9.3.0) (2024-03-22)
+
+### Features
+
+- **custom/component/GuestList:** add percentage bars/totals, add csv export ([c09edc5](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c09edc5129200614c18d400ab70709a1dfa2aed8))
+
+### Bug Fixes
+
+- **custom/components/GuestList:** disable editing, remove edit/delete many ([c68b7ac](https://github.com/hjbugajski/jesse-and-henry-payload/commit/c68b7ac57c6638962af3dde61fe8193b0b8e7215))
+
 ## [9.2.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.1.0...v9.2.0) (2024-03-05)
 
 ### Features
