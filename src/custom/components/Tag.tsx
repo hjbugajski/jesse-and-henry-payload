@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { forwardRef, HTMLProps } from 'react';
 
 import { classes } from '../utils/classes';
 
 import './Tag.scss';
 
 type Props = {
+  className?: string;
   color?: string;
   value: any;
 };
 
-const Tag: React.FC<Props> = ({ color, value }: Props) => {
-  return <span className={classes('tag', color && `tag--${color}`)}>{value}</span>;
-};
+const Tag = forwardRef<HTMLSpanElement, HTMLProps<HTMLSpanElement> & Props>(
+  ({ className, color, value, ...props }, ref) => (
+    <span ref={ref} className={classes('tag', color && `tag--${color}`, className)} {...props}>
+      {value}
+    </span>
+  )
+);
 
 export default Tag;
