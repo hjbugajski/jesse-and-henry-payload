@@ -23,7 +23,6 @@ import TextareaEditor from './TextareaEditor';
 import { Guest, Party } from '../../payload-types';
 import { PayloadGetApi, PayloadPostApi } from '../types/api';
 
-import 'ag-grid-community/styles/ag-grid-no-native-widgets.css';
 import './GuestList.scss';
 
 const Providers = ({ children }: { children: React.ReactNode }) => (
