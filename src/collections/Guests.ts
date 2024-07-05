@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { customAlphabet } from 'nanoid';
 import {
   CollectionAfterChangeHook,
   CollectionBeforeValidateHook,
@@ -18,20 +19,18 @@ dotenv.config();
 const cleanString = (str: string) => str.toLowerCase().replace(/[^a-zA-Z]/g, '');
 
 const generateRandomEmail = async (req: PayloadRequest, limit: number) => {
-  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  const existingEmails = await req.payload
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789', 32);
+  const emails = await req.payload
     .find({ collection: 'guests', limit })
-    .then((data) => data.docs.map((doc) => doc.email));
-
-  let newEmail = '';
+    .then((data) => data.docs.map((doc) => doc.email))
+    .then((emails) => new Set(emails));
+  let email: string;
 
   do {
-    newEmail =
-      Array.from({ length: 10 }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('') +
-      process.env.EMAIL;
-  } while (existingEmails.includes(newEmail));
+    email = nanoid() + process.env.EMAIL;
+  } while (emails.has(email));
 
-  return newEmail;
+  return email;
 };
 
 const beforeValidateHook: CollectionBeforeValidateHook<Guest> = async ({ data, req }) => {
