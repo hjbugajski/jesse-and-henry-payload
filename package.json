@@ -41,7 +41,7 @@
     "react-router-dom": "^5.3.4",
     "react-select": "^5.8.0",
     "sharp": "^0.33.4",
-    "webpack": "^5.92.0"
+    "webpack": "^5.94.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
