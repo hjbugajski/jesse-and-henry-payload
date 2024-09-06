@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [9.3.1](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.3.0...v9.3.1) (2024-09-06)
+
+
+### Bug Fixes
+
+* add default admin user ([b2a7a13](https://github.com/hjbugajski/jesse-and-henry-payload/commit/b2a7a13735bf961b81ae6a1ae79ac0ef3483893a))
+* remove translations ([7f9e08a](https://github.com/hjbugajski/jesse-and-henry-payload/commit/7f9e08a336249b5626630e17bf254b4338b384cc))
+
+
+### Build
+
+* **deps:** bump express from 4.19.1 to 4.19.2 ([1413b6b](https://github.com/hjbugajski/jesse-and-henry-payload/commit/1413b6b166df1571de164348ccffa2326931de71))
+* fix Dockerfile issues ([987f1cc](https://github.com/hjbugajski/jesse-and-henry-payload/commit/987f1cc08dd36f90c9145a388224b2f495bcbc63))
+
 ## [9.3.0](https://github.com/hjbugajski/jesse-and-henry-payload/compare/v9.2.0...v9.3.0) (2024-03-22)
 
 ### Features
