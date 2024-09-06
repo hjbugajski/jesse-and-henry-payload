@@ -458,5 +458,6 @@ export interface BlockSection {
 }
 
 declare module 'payload' {
+  // @ts-ignore
   export interface GeneratedTypes extends Config {}
 }
