@@ -1,3 +1,4 @@
+import { customAlphabet } from 'nanoid';
 import { CollectionBeforeValidateHook, CollectionConfig } from 'payload/types';
 
 import Tags from './Tags';
@@ -10,15 +11,17 @@ const beforeValidateHook: CollectionBeforeValidateHook<Party> = async ({ data, o
     return data;
   }
 
-  const characters = '1234567890';
+  const nanoid = customAlphabet('1234567890', 6);
   const limit = await req.payload.find({ collection: 'parties' }).then((data) => data.totalDocs);
-  const existingCodes = (await req.payload.find({ collection: 'parties', limit })).docs.map((doc) => doc.code);
-
-  let code = '';
+  const codes = await req.payload
+    .find({ collection: 'parties', limit })
+    .then((data) => data.docs.map((doc) => doc.code))
+    .then((codes) => new Set(codes));
+  let code: string;
 
   do {
-    code = Array.from({ length: 6 }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
-  } while (existingCodes.includes(code));
+    code = nanoid();
+  } while (codes.has(code));
 
   return { ...data, code };
 };

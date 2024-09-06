@@ -13,8 +13,6 @@ import {
 import { AgGridReact } from 'ag-grid-react';
 import { Pill } from 'payload/components';
 import { Meta, useConfig } from 'payload/components/utilities';
-import { getTranslation } from 'payload/dist/utilities/getTranslation';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import SelectEditor from './SelectEditor';
@@ -182,7 +180,6 @@ const MealPreferenceRenderer = (params: ICellRendererParams<any>) => {
 
 const GuestList = (props: any) => {
   const {
-    collection,
     collection: { fields, slug },
     data: { docs, totalDocs },
   } = props;
@@ -199,7 +196,6 @@ const GuestList = (props: any) => {
     serverURL,
     routes: { api },
   } = useConfig();
-  const { t, i18n } = useTranslation('general');
 
   // Callbacks
   const addGuest = useCallback(
@@ -655,12 +651,12 @@ const GuestList = (props: any) => {
 
   return (
     <div className="default-page-template">
-      <Meta title={getTranslation(collection.labels.plural, i18n)} />
+      <Meta title="Guests" />
       <div className="gutter--left gutter--right collection-list__wrap component">
         <div className="row">
-          <h1>{getTranslation(collection.labels.plural, i18n)}</h1>
+          <h1>Guests</h1>
           <Pill onClick={async () => await addGuest()} className="pill margin--bottom">
-            {t('createNew')}
+            Create New
           </Pill>
           <Pill onClick={convertToCsv} className="pill margin--bottom">
             Export to CSV

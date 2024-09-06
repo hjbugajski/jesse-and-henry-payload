@@ -1,18 +1,18 @@
-FROM node:18-bullseye-slim as build
-ARG NODE_ENV=production
+FROM node:20-bullseye-slim AS build
+ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /app
-COPY ./package.json ./tsconfig.json ./
+COPY ./package.json ./pnpm-lock.yaml ./tsconfig.json ./
 ADD src /app/src
-RUN npm install
-ENV PATH /app/node_modules/.bin:$PATH
-RUN npm run build
+RUN corepack enable pnpm && pnpm install --frozen-lockfile
+ENV PATH=/app/node_modules/.bin:$PATH
+RUN pnpm run build
 
 FROM node:18-bullseye-slim
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /app
 COPY --from=build /app ./
-ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH=/app/node_modules/.bin:$PATH
 EXPOSE 3000
-CMD ["npm", "run", "serve"]
+CMD ["pnpm", "run", "serve"]
